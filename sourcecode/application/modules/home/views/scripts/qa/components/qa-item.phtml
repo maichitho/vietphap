@@ -1,0 +1,64 @@
+<div class="row f-qa">
+    <ul class="f-qa-items"
+        data-control="for: qa in qas">
+        <li class="f-qa-item">
+            <h4 class="f-qa-question">
+                <a class="f-qa-content">
+                    <img src="/img/icon/question_blue.png"/>
+                    <span class="f-qa-title" data-item="qa.title"></span>
+                    <div 
+                        class="f-qa-description b-news-description"
+                        data-type='html'
+                        data-item="strimStringOfDom(qa.description,100)"
+                        ></div>
+                </a>
+                <span class="f-icon f-collapse-down"></span>
+                <div class="f-qa-author">Người hỏi: <strong data-item="qa.asker"></strong> (<span data-item='qa.createTime'></span>)</div>
+            </h4>
+            <div class="f-qa-answer"
+                 style="cursor: default;">
+                <span class="f-qa-subtitle">Chi tiết câu hỏi:</span>
+                <div class="f-qa-subdescription b-news-description" data-item="qa.description"
+                     data-type="html">
+                </div>
+                <span class="f-qa-subtitle">Trả lời:</span>
+                <div class="f-qa-subcontent b-news-description" 
+                     data-item="qa.content"
+                     data-type="html">
+                </div>
+                <div class="f-sharing">
+                    <a class="f-link-item"
+                       style="cursor: pointer;"
+                       data-attr="href:document.URL" 
+                       target="_blank" 
+                       data-call="click: shareFacebook(qa.title, qa.rewriteUrl)">
+                        <img src="/img/icon/facebook.png"/>
+                    </a>
+                    <a class="f-link-item" 
+                       style="cursor: pointer;"
+                       data-attr="href:document.URL" 
+                       target="_blank" title="Share on Google+" 
+                       data-call="click: shareGoogle(qa.title, qa.rewriteUrl)">
+                        <img src="/img/icon/googleplus.png"/>
+                    </a>
+                    <a class="f-link-item" 
+                       style="cursor: pointer;"
+                       data-attr="href:document.URL" 
+                       target="_blank" title="Tweet" 
+                       data-call="click: shareTwitter(qa.title, qa.rewriteUrl)">
+                        <img src="/img/icon/twitter.png"/>
+                    </a>
+                </div>
+            </div>
+        </li>        
+    </ul>
+    <!--    <div class="link--more" 
+             id="div-load-more"
+             data-control="if: qaListVM.showMoreLink == '1'">
+            <a 
+               style="font-size: 13px; color:#0076BC;"
+                data-call="click: loadMore()">Tải thêm</a> 
+            <img src="/img/icon/loading.gif" style="width: 20px; display: none;"
+                 id="img-loading-more"/>
+        </div>-->
+</div>

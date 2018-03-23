@@ -1,0 +1,52 @@
+<div class="table-footer">
+    <?php
+    if (isset($this->pagesInRange) && count($this->pagesInRange) > 1) {
+        ?>
+        <ul class="pagination--btn rounded--sm" 
+            style="float: right; margin-top: 3px;">
+                <?php
+                // Render each the title of each post for the current page in a list-item
+                $parsedParts = parse_url($_SERVER['REQUEST_URI']);
+                $stdQuery = '';
+                if (key_exists('query', $parsedParts)) {
+                    $query = $parsedParts['query'];
+                    $parameters = null;
+                    parse_str($query, $parameters);
+                    foreach ($parameters as $key => $value) {
+                        if ($value != '' && $key != 'pageId') {
+                            if ($stdQuery != '') {
+                                $stdQuery .= '&';
+                            } else {
+                                $stdQuery .= '?';
+                            }
+                            $stdQuery .= $key . '=' . $value;
+                        }
+                    }
+                }
+                //echo $stdQuery;
+                if ($stdQuery == '') {
+                    $stdQuery = $parsedParts['path'] . '?pageId=';
+                } else {
+                    $stdQuery = $parsedParts['path'] . $stdQuery . '&pageId=';
+                }
+                ?>
+            <li><a href="<?php echo $this->current > 1 ? $stdQuery . ($this->current - 1) : '#' ?>">&laquo;</a></li>
+            <?php
+            foreach ($this->pagesInRange as $page) {
+                if (($page) != $this->current) {
+                    ?>
+                    <li><a href="<?php echo $stdQuery . ($page ) ?>"><?= $page ?></a></li>
+                    <?php
+                } else {
+                    ?>
+                    <li class="page-active"><a href="#"><?= $page ?></a></li>
+                    <?php
+                }
+            }
+            ?>  
+            <li><a href="<?php echo ($this->current < count($this->pagesInRange) ? $stdQuery . ($this->current + 1) : '#' ) ?>">&raquo;</a></li>
+        </ul>
+        <?php
+    }
+    ?>
+</div>

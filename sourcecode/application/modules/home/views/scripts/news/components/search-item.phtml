@@ -1,0 +1,21 @@
+<div class="row f-search">
+    <ul class="f-qa-items" data-control="for: entry in entries">
+        <li class="f-qa-item">
+            <h4 class="f-qa-question">
+                <a data-attr="href: '/'+change_alias(entry.title) +'-'+ entry.id+'.html'">
+                    <span class="f-qa-title" data-item="entry.title"></span>
+                    <span class="f-qa-description" 
+                          data-item="entry.description"
+                           data-type='html'></span>
+                </a>
+                <span class="f-collapse-next"></span>
+                <div class="f-qa-author">Chuyên mục: 
+                    <a class="f-link"
+                       data-item="entry.categoryName" 
+                       data-attr="href: '/'+change_alias(entry.categoryName)+'-'+entry.categoryId">
+                    </a>
+                </div>
+            </h4>
+        </li>
+    </ul>
+</div>

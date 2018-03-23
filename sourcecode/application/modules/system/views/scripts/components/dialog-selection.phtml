@@ -1,0 +1,105 @@
+<style>
+   #dialog_selection .table--list .dialog-list tr:first-child{
+        border-top: 1px solid transparent;
+    }
+
+    #dialog_selection .table--list .dialog-list tr:last-child{
+        border-bottom: 1px solid #ddd;
+    }
+
+    #dialog_selection .dialog-message{
+        height: 30px;
+        width: 100%;
+        display: none;
+        font-size: 12px;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+   #dialog_selection .dialog-loading{
+        width: 100%;
+        height: 100%;
+        border: none;
+        display: none;
+    }
+
+    #dialog_selection .dialog-loading td{
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    #dialog_selection .dialog-loading td img{
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+    }
+
+</style>
+
+<div id="dialog_selection" 
+     class="dialog dialog--close"
+     style="display: none; height: 400px; height: 25rem;"
+     data-title="Thông báo">
+    <div class="dialog-content" style="padding: 10px;">
+        <div id="dialog_list">
+            <div class="row">
+                <input id="dialog_query"
+                       type="text"
+                       placeholder="<?= Util::translate("dialog.placeholder.search") ?>"/>
+            </div>
+            <div style="overflow: auto; height: 270px; margin-top:5px; border: 1px solid #ddd;">
+                <div class="table table--list" style="margin: 0;">
+                    <table class="dialog-list">
+                        <tbody data-control="for: item in mapItems">
+                            <tr class="row-item"
+                                data-attr="data-index: item.$index, data-row-id:item.id">
+                                <td class="text-center"
+                                    style="width: 50px;">
+                                    <input class="check-item" 
+                                           type="checkbox"
+                                           data-call="click: updateSelectedItem($dom)"/>
+                                </td>
+                                <td data-item="item.code"
+                                    style='text-align: left;'
+                                    class="item-select"></td>
+                                <td class="item-select"
+                                    data-item="item.name"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="dialog-message">
+                    <?= Util::translate("form.input.search.more") ?>
+                </div>
+                <table class="dialog-loading">
+                    <tr>
+                        <td>
+                            <img src="/img/icon/loading.gif"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="dialog-footer" style="height: 30px; height: 1.785rem;">
+        <a id="check_all" 
+           type="button"
+           class="button button--sm"  
+           style="float: left; margin: 3px 10px 10px 10px;">
+               <?= Util::translate("form.button.select_all") ?>
+        </a>
+        <a id="uncheck_all" 
+           type="button"
+           class="button button--sm" 
+           style="float: left; display:none; margin: 3px 10px 10px 10px;">
+               <?= Util::translate("form.button.unselect_all") ?>
+        </a>
+        <a id="dialog_ok"
+           type="button"
+           class="button button--sm"
+           style="float: right; margin: 3px 10px 10px 0;">
+            <?= Util::translate("form.button.add") ?>
+        </a>
+    </div>
+</div>
+

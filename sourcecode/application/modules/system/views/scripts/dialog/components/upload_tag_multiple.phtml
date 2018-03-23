@@ -1,0 +1,55 @@
+<script src="/js/jquery.form.js"></script>
+<script type="text/javascript">
+<?php $timestamp = time(); ?>
+    $(function() {
+        $("#file_upload_overlay").click(function() {
+            $("#file_upload").click();
+        });
+
+        readURL($("#file_upload").get(0));
+
+        $("#file_upload").change(function() {
+            readURL(this);
+            $(".upload-cancel").show();
+            $(".upload-ok").show();
+            $(".upload-select").hide();
+        });
+
+        $(".upload-cancel").click(function() {
+            $(this).hide();
+            $("#file_upload").replaceWith($("#file_upload").clone(true));
+            $("#image_preview").empty();
+            $(".upload-ok").hide();
+            $(".upload-select").show();
+        });
+    });
+
+    function readURL(input) {
+        if (input.files) {
+            $("#image_preview").empty();
+            var onload = function(e) {
+                $("#image_preview").append(
+                        "<img class=\"upload_preview\"style=\"height: 50px; width:50px;margin:0 5px 5px 0;\" src=\"" + e.target.result + "\"/>");
+            };
+            for (var i = 0; i < input.files.length; i++) {
+                var reader = new FileReader();
+                reader.onload = onload;
+                reader.readAsDataURL(input.files[i]);
+            }
+        }
+    }
+
+</script>
+<form class="ajax_upload_form" 
+      action="/admin/upload/upload" 
+      method="POST" 
+      enctype="multipart/form-data">
+    <input id="file_upload" name="file_upload[]" type="file" multiple="true"><br/>
+    <input type="hidden" name="ajax" value="1"/>
+    <input type="hidden" name="token" value="random"/>
+    <input type="hidden" name="module" value="<?= Zend_Controller_Front::getInstance()->getRequest()->getParam('module') ?>"/>
+    <input type="hidden" name="controller" value="<?= Zend_Controller_Front::getInstance()->getRequest()->getParam('controller') ?>"/>
+    <input type="hidden" name="action" value="<?= Zend_Controller_Front::getInstance()->getRequest()->getParam('action') ?>"/>
+    <div id="image_preview" style="width: 300px;height: 60px;border: 1px solid #0171bc; overflow: hidden; padding: 5px;">
+    </div>
+</form>

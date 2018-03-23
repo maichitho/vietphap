@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="hot-news-box" 
+         style="min-height: 0; width: 100%;">
+        <div class="row" 
+             data-control="for: entry in suggestionEntries">
+            <div class="nar-12 pad-6 med-6 wid-6">
+                <div class="hot-news-relative"
+                     style="margin:5px; min-height:70px; border-bottom: 1px dashed #ccc; overflow: hidden;padding-bottom: 10px;">
+                    <div style="width: 80px; height:45px; overflow: hidden;float:left; margin: 0px 5px 3px 0;">
+                        <img style="width: 100%; height: auto;" 
+                            data-attr="src:entry.thumbnailUrl"
+                             onerror="this.setAttribute('src', '/img/icon/question_qa.png')"/>
+                    </div>
+                    <a data-attr="href: '/'+ entry.rewriteUrl">
+                        <span style='font-size: 13px;'
+                              data-item="strimStringOfDom(entry.title, 55)"></span>
+<!--                        <span style="font-style: italic" -->
+<!--                              data-item="' (' + entry.createTime + ')'"></span>-->
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

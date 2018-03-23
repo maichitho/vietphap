@@ -1,0 +1,310 @@
+<?php
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$status = isset($this->flag) ? $this->flag : $request->getParam("flag");
+?>
+<style>
+    ul{
+        list-style: none;
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/system/user/",
+                    name: "vm-user-list.js"
+                }
+            ],
+            messages: {
+                deleteTitle: '<?= Util::translate("message.delete.image.title") ?>',
+                deleteUser: '<?= Util::translate("message.delete.user") ?>',
+                deleteUserError: '<?= Util::translate("message.delete.user.error") ?>',
+                deleteUserSuccess: '<?= Util::translate("message.delete.user.success") ?>',
+                resetTitle: '<?= Util::translate("message.reset_password.title") ?>',
+                resetMessage: '<?= Util::translate("message.reset_password") ?>',
+                resetError: '<?= Util::translate("message.reset_password.error") ?>',
+                resetSuccess: '<?= Util::translate("message.reset_password.success") ?>'
+            },
+            bindings: [
+                {
+                    viewer: "UserListV",
+                    viewmodeler: "userListVM",
+                    linkback: true,
+                    data: {
+                        users: <?= json_encode($this->users) ?>,
+                        user: <?= json_encode($this->user) ?>,
+                        statuses: <?= json_encode($this->statuses) ?>,
+                        userTypes: <?= json_encode($this->userTypes) ?>,
+                        type: '<?= $this->type ?>',
+                        userType: '<?= $this->userType ?>'
+                    }
+                }
+            ]
+        });
+    });
+</script>
+
+<div class="panel content">
+    <div data-viewmodeler="UserListV">
+        <div id="alert_success"
+             class="alert--success rounded--sm"
+             style="<?= isset($status) && $status == "success" ? 'display: block;' : 'display: none;' ?>">
+            <span class="alert-content">
+                <?php if ($this->type == "update") {
+                    ?>
+                    <?= Util::translate("message.update.success", array("name" => Util::translate("user"))) ?> 
+                <?php } else {
+                    ?>
+                    <?= Util::translate("message.create.success", array("name" => Util::translate("user"))) ?> 
+                <?php }
+                ?>
+            </span>
+            <span class="alert-close" 
+                  onclick="$(this).parent().hide();">&times;</span>
+        </div>
+        <div id="alert_error"
+             class="alert--error rounded--sm"
+             style="<?= isset($status) && $status == "error" ? 'display: block;' : 'display: none;' ?>">
+            <span class="alert-content">
+                <?php if ($this->type == "update") {
+                    ?>
+                    <?= Util::translate("message.update.error", array("name" => Util::translate("user"))) ?> 
+                <?php } else {
+                    ?>
+                    <?= Util::translate("message.create.error", array("name" => Util::translate("user"))) ?> 
+                <?php }
+                ?>
+            </span>
+            <span class="alert-close" 
+                  onclick="$(this).parent().hide();">&times;</span>
+        </div> 
+        <form id="form" data-call="submit: updateValueForm" action="
+        <?php
+        if ($this->type == "update") {
+            echo '/system/user/update';
+        } else {
+            echo '/system/user/create';
+        }
+        ?>" method="POST">
+            <div class="user-cnu">
+                <h6 class="sys-title center-text">
+                    <?php
+                    //create
+                    if ($this->type == "create") {
+                        echo Util::translate("user.list.create.title");
+                    } else if ($this->type == "update") {
+                        echo Util::translate("user.list.update.title");
+                    } else {
+                        echo Util::translate("user.list.cnu.title");
+                    }
+                    ?>                    
+                </h6>
+                <div class="row border--thin rounded--sm"
+                     style="margin: 15px; padding-right: 15px;">
+                    <table class="table--info" style="width: 100%;">
+                        <tr>
+                            <td class="width-120">
+                                <?= Util::translate("person.fullname") ?>
+                            </td>
+                            <td>
+                                <input name="fullName" 
+                                       type="text"
+                                       data-in="user.fullName"
+                                       disabled="disabled"/>
+                            </td>
+                            <td style="width: 26px;">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td class="width-120">
+                                <?= Util::translate("person.username") ?>
+                            </td>
+                            <td>
+                                <span id="message_for_user"
+                                      class="fgr--error"
+                                      style="display: none;">
+                                          <?= Util::translate("user.existing.error") ?> 
+                                </span>
+                                <span data-message-for="username" 
+                                      class="fgr--error"></span>
+                                <input id="username" 
+                                       name="username" 
+                                       type="text"
+                                       data-in="user.username"
+                                       disabled="disabled"
+                                       data-check="username: required"
+                                       data-required-message="<?= Util::translate("message.input.required", array("name" => Util::translate("person.username"))) ?>"/>
+                            </td>
+                            <td>
+                                <img  id="user_loading_img"
+                                      src="/img/icon/loading.gif" 
+                                      width="22" 
+                                      height="22"
+                                      style="display: none;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="width-120">
+                                <?= Util::translate("person.email") ?>
+                            </td>
+                            <td>
+                                <span id="message_for_email"
+                                      class="fgr--error"
+                                      style="display: none;">
+                                          <?= Util::translate("email.existing.error") ?> 
+                                </span>
+                                <span data-message-for="email" 
+                                      class="fgr--error"></span>
+                                <input id="email" 
+                                       name="email" 
+                                       type="text"
+                                       data-in="user.email"
+                                       disabled="disabled"
+                                       data-check="email: isemail"
+                                       data-isemail-message="<?= Util::translate("message.input.isemail", array("name" => Util::translate("person.email"))) ?>"/>
+                            </td>
+                            <td>
+                                <img  id="email_loading_img"
+                                      src="/img/icon/loading.gif" 
+                                      width="22" 
+                                      height="22"
+                                      style="display: none;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?= Util::translate("person.password") ?>
+                            </td>
+                            <td>
+                                <button class="button--sm"
+                                        id="reset_password"
+                                        type="button"
+                                        data-call="click: showResetPasswordDialog">
+                                            <?= Util::translate("form.label.reset_password") ?>
+                                </button>
+                                <span data-message-for="password" 
+                                      class="fgr--error">
+                                </span>
+                                <input name="password"
+                                       type="password"
+                                       disabled="disabled"
+                                       data-check="password: required"
+                                       data-required-message="<?= Util::translate("message.input.required", array("name" => Util::translate("person.password"))) ?>"/>
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?= Util::translate("person.re_password") ?>
+                            </td>
+                            <td>
+                                <span  class="fgr--error"
+                                       id="re_password"
+                                       style='display: none;'>
+                                           <?= Util::translate("message.password.confirm") ?>  
+                                </span>
+                                <input name="repassword"
+                                       type="password"
+                                       disabled="disabled"/>
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Quyền
+                            </td>
+                            <td>
+                                <select  name="userType"
+                                         class="width-select"                                         
+                                         data-out='userTypes'
+                                         disabled="disabled">
+                                </select>
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?= Util::translate("person.status") ?>
+                            </td>
+                            <td>
+                                <select  name="status"
+                                         class="width-select"                                         
+                                         data-out='statuses'
+                                         disabled="disabled">
+                                </select>
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                    </table>
+                    <input name="supplierId"
+                           type="hidden"
+                           data-in="user.supplierId"/>
+                    <input name="id"
+                           type="hidden"
+                           data-in="user.id"/>
+                    <div class="table-footer"
+                         style="text-align: right; padding: 5px 10px 15px 0">
+                        <button class="button--sm button--sm-action"
+                                id='cancel_user'
+                                type="button"
+                                onclick="document.location.href = '/system/user/list'"
+                                style='display: none;'>
+                                    <?= Util::translate("form.button.cancel") ?>
+                        </button> 
+                        <button type="submit"
+                                id='save_user'
+                                class="button--sm" 
+                                style="margin-left: 5px; display: none">
+                                    <?= Util::translate("form.button.save") ?>
+                        </button>
+                        <button type="button"
+                                id='add_user'
+                                class="button--sm" 
+                                style="margin-left: 5px;">
+                                    <?= Util::translate("form.button.add") ?>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="user-list">
+            <h6 class="sys-title center-text">
+                <?= Util::translate("user.list.title") ?> 
+            </h6>
+            <div class="table table--list" 
+                 style="padding: 10px;">
+                <div class="border--thin rounded--sm">
+                    <table>
+                        <thead>
+                            <tr class="fnt--12">
+                                <th class="width-50">
+                                    <?= Util::translate("form.label.order") ?> 
+                                </th>
+                                <th>
+                                    <?= Util::translate("person.fullname") ?> 
+                                </th>
+                                <th class="width-120">
+                                    <?= Util::translate("person.username") ?>
+                                </th>
+                                <th class="width-120">
+                                    <?= Util::translate("person.email") ?> 
+                                </th>
+                                <th class="width-120">
+                                    Quyền 
+                                </th>
+                                <th class="width-100"><?= Util::translate("person.status") ?></th>
+                                <th class="width-100">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody data-control="for: usr in users"
+                               id="user_list">
+                            <?php echo $this->render("user/components/user-item.phtml"); ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php echo $this->render("components/dialog-confirm.phtml"); ?>
+</div>

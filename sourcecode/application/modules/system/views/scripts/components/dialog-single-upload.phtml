@@ -1,0 +1,213 @@
+<script src="/js/lib/jquploadfile/js/vendor/jquery.ui.widget.js"></script>
+<script src="/js/lib/jquploadfile/js/jquery.iframe-transport.js"></script>
+<script src="/js/lib/jquploadfile/js/jquery.fileupload.js"></script>    
+<script src="/js/lib/jquploadfile/js/jquery.fileupload-process.js"></script>
+<script src="/js/lib/jquploadfile/js/jquery.fileupload-validate.js"></script>
+
+<script>
+    var jqXHRUpload = null;
+    //init parameters
+        +(function(window, document, $, undefined) {
+        var uploadFileParam = {
+            url: "/system/file/async-upload",
+            dataType: 'json',
+            sequentialUploads: true,
+            maxFileSize: 5000000, // Maximum File Size in Bytes - 5 MB
+            minFileSize: 5000, // Minimum File Size in Bytes - 5 KB
+            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i, // Allowed File Types
+            progress: function(e, data) {
+                var percent = parseInt(data.loaded / data.total * 100, 10);
+                if (data.loaded == data.total) {
+                    percent = 100;
+                }
+                $(".upload-name").text(data.files[0].name);
+                $(".progressbar").updateProgress(percent);
+            },
+            add: function(e, data) {
+                if (data.files.length > 0 && data.files.length < 2) {
+                    $(".upload-loading").show();
+                    $(".upload-error").hide();
+                    $("#upload_processing").showDialog({width: "400px"});
+                    data.submit();
+                } else {
+                    $("#upload_processing").hideDialog();
+                    confirmDialog.show({
+                        title: '<?= Util::translate("form.label.notification") ?>',
+                        info: '<?= Util::translate("message.upload.error.filenumer") ?>',
+                        isAlert: true
+                    });
+                    return false;
+                }
+            },
+            done: function(e, data) {
+                $.each(data.result.files, function(index, file) {
+                    //                    console.log(file);
+                    //                    console.log("done:: " + uploaded + " file:: " + file.url);
+                    $("#dialog_multi_upload .thumbnail-img").eq(index).attr("src", file.thumbnailUrl);
+                    uploadDialogVM.screens[index]['url'] = file.url;
+                });
+            },
+            send: function(e, data) {
+                $(".upload-loading").show();
+                $(".upload-error").hide();
+                $("#upload_processing").showDialog({width: "400px"});
+            },
+            fail: function(e, data) {
+                data.jqXHR.abort();
+                $(".upload-loading").hide();
+                $("#upload_processing").hideDialog();
+                confirmDialog.show({
+                    title: '<?= Util::translate("form.label.notification") ?>',
+                    info: '<?= Util::translate("message.upload.error") ?>',
+                    isAlert: true
+                });
+                console.log(data.errorThrown);
+                console.log(data.textStatus);
+            }
+        };
+
+        if (window.uploadUtil !== undefined) {
+            window.uploadUtil.upload = function(id, params) {
+                var options = $.extend({}, uploadFileParam, params);
+                if (id !== undefined) {
+                    $("#" + id).fileupload(options).prop('disabled', !$.support.fileInput)
+                    .parent().addClass($.support.fileInput ? undefined : 'disabled');
+                    $("#" + id).bind('fileuploadfinished', function(e, data) {
+                        $("table tbody.files").empty();
+                    });
+                }
+            };
+            window.uploadUtil.hideLoading = function() {
+                $("#upload_processing").hideDialog();
+            };
+
+        } else {
+            window.uploadUtil = new function() {
+                // public methods
+                return {
+                    upload: function(id, params) {
+                        var options = $.extend({}, uploadFileParam, params);
+                        if (id !== undefined) {
+                            $("#" + id).fileupload(options).prop('disabled', !$.support.fileInput)
+                            .parent().addClass($.support.fileInput ? undefined : 'disabled');
+                            $("#" + id).bind('fileuploadfinished', function(e, data) {
+                                $("table tbody.files").empty();
+                            });
+                        }
+                    },
+                    hideLoading: function() {
+                        $("#upload_processing").hideDialog();
+                    }
+                };
+            }();
+        }
+    }
+    (window, document, window.jQuery));
+</script>
+<style>
+    #upload_processing .uploadify-button{
+        background-color: transparent;
+        border: 0;
+        color: #4D1F66;
+        text-shadow: none;
+        text-align: left;
+        font-weight: normal;
+        height: 28px !important;
+        width: 100px !important;
+    }
+
+    #upload_processing .upload-button object{
+        height: 32px !important;
+        width: 100px !important;
+    }
+
+    #upload_processing .upload-button{
+        height: 32px !important;
+        width: 100px !important;
+        position: relative;
+    }
+
+    #upload_processing .thumbnail-image{
+        width: 100%;
+    }
+
+    #upload_processing .thumbnail-image img{
+        max-width: 100%;
+    }
+
+    #upload_processing .dialog-content{
+        display: block;
+        position: relative;
+        margin: 0 auto;
+        padding: 5px;
+        overflow: hidden;
+    }
+
+    #upload_processing .upload-loading{
+        margin-left: 0;
+    }
+</style>
+<style type="text/css">    
+    #upload-file{
+        margin: 0;
+    }
+    .uploadify-button{
+        background-color: transparent;
+        border: 0;
+        /*color: blue;*/
+        text-shadow: none;
+        text-align: left;
+        font-weight: normal;
+        color: blue;
+        display: inline-block;
+    }
+
+    .upload-cancel{
+        /*display: none;*/
+    }
+
+    .upload-error{
+        display: none;
+        font-size: 14px;
+        padding: 15px;
+        color: red;
+    }
+
+    .upload-loading{
+        width: 380px;
+        font-size: 13px;
+        margin-top: 20px;
+        margin-left: 10px;
+        margin-right: auto;
+    }
+
+    .upload-name{
+        font-size: 12px;
+        padding-bottom: 3px;
+        display: inline-block;
+        margin-left: 2px;
+    }
+</style>
+<div id="upload_processing"
+     style="display:none; width: 400px;"
+     class="dialog"> 
+    <div class="dialog-content" style="height: 80px; width: 400px;">
+        <div class="upload-loading">
+            <span class="upload-name"></span>
+            <div class="progressbar" 
+                 data-value="0" 
+                 style="margin: 0 auto; width:380px;"></div>
+        </div>
+        <div class="upload-error">
+            <?= Util::translate("message.upload.error") ?>
+        </div>
+    </div>
+    <div class="dialog-footer"
+         style="height: 35px">
+        <button class="button button--sm upload-cancel"
+                style="float: right; margin-bottom: 5px;margin-right: 10px;display: none;"
+                onclick="$('#upload_processing').hideDialog();">
+                    <?= Util::translate("form.button.cancel") ?>
+        </button>
+    </div>
+</div>

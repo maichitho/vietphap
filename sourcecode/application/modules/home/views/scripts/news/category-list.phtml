@@ -1,0 +1,43 @@
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/home/news/",
+                    name: "vm-category-list.js"
+                }
+            ],
+            bindings: [
+                {
+                    viewer: "CategoryListV",
+                    viewmodeler: "categoryListVM",
+                    linkback: true,
+                    data: {
+                        categories: <?= json_encode($this->categories) ?>
+                    }
+                }
+            ]
+        });
+    });
+</script>
+<?php echo $this->render('breadcrumb.phtml'); ?>
+<div class="row">
+    <div class="main-box" 
+         data-viewmodeler="CategoryListV">
+        <div class="nar-12 colunm-left">
+           
+            <div  data-control="for: category in categories">
+                <?php echo $this->render('news/components/category-item.phtml'); ?>
+            </div>
+            
+        </div>
+        <div class="nar-12 colunm-right">
+            <?php echo $this->render('/home/components/supports-box.phtml'); ?>
+            <?php echo $this->render('/home/components/network-box.phtml'); ?>
+            <?php echo $this->render('/home/components/subcrible-box.phtml'); ?>
+            <?php echo $this->render('menu-right.phtml'); ?>
+            <?php echo $this->render('/home/components/advertising-box.phtml'); ?>
+            <?php echo $this->render('/home/components/video-box.phtml'); ?>
+        </div>
+    </div>
+</div>

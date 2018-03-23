@@ -1,0 +1,37 @@
+<tr>
+    <td data-item="locate.$index"
+        style="text-align: center;"></td> 
+    <td data-item="locate.displayName"></td>
+    <td data-item="locate.code"></td>
+    <td>
+        <ul class="menu-hr menu-hr--center" >
+            <li class="menu-item divider">
+                <a data-attr="href: '/system/category/up-location?id=' + locate.id">
+                    <img src="/img/icon/up_16.png"
+                         title="<?= Util::translate("form.label.up") ?>"/>
+                </a>
+            </li>
+            <li class="menu-item divider">
+                <a data-attr="href: '/system/category/down-location?id=' + locate.id">
+                    <img src="/img/icon/down_16.png"
+                         title="<?= Util::translate("form.label.down") ?>"/>
+                </a>
+            </li>
+            <li class="menu-item divider" >
+                <a  class="icon-function"
+                    data-call="click: updateLocation($dom)"
+                    data-attr="id: locate.id">
+                    <img src="/img/icon/edit.png" title="<?= Util::translate("form.label.update") ?>"
+                         /> 
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="icon-function"
+                   data-call="click: showDialogConfirm($dom, locate.id)">
+                    <img src="/img/icon/trash.png" title="<?= Util::translate("form.label.delete") ?>"
+                         />
+                </a>
+            </li>
+        </ul>
+    </td>
+</tr>

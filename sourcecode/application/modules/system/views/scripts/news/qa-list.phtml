@@ -1,0 +1,121 @@
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/system/news/",
+                    name: "vm-qa-list.js"
+                }
+            ],
+            messages: {
+                deleteTitle: '<?= Util::translate("message.delete.image.title") ?>',
+                deleteNews: '<?= Util::translate("dialog.delete.qa") ?>',
+                dateFormat: "<?= Util::getDateFormat("vi") ?>",
+                allCategory: '<?= Util::translate("form.select.option.all") ?>',
+                errorUpdateDisplayStatus: '<?= Util::translate("qa.update.status.error") ?>'
+            },
+            bindings: [
+                {
+                    viewer: "QasV",
+                    viewmodeler: "qasVM",
+                    linkback: true,
+                    data: {
+                        //                        categories: <?= json_encode($this->categories) ?>,
+                        qas: <?= json_encode($this->qas) ?>,
+                        createTimeFrom: '<?= $this->createTimeFrom ?>',
+                        createTimeTo: '<?= $this->createTimeTo ?>',
+                        selectedCateId: '<?= $this->categoryId ?>',
+                        keyword: '<?= $this->keyword ?>',
+                        asker: '<?= $this->asker ?>',
+                        askerEmail: '<?= $this->askerEmail ?>'
+                    }
+                }
+            ]
+        });
+
+
+    });
+
+</script>
+<div class="panel content">
+    <div data-viewmodeler="QasV">
+        <div class="row">
+            <form id="form" 
+                  action="/system/news/list-qa"
+                  method="GET">
+                <div style="padding: 15px 0 0 15px;">
+                    <div class="search-product">
+                        <table style="margin: 15px 0px 0px 15px;">
+                            <tr>
+                                <td class="width-120"><?= Util::translate("qNa.question_content") ?></td>
+                                <td colspan="3">
+                                    <input name="keyword" id="keyword"
+                                           type="text"
+                                           data-in="keyword"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><?= Util::translate("qa.asker") ?> </td>
+                                <td class="width-200">
+                                    <input name="asker" id="asker"
+                                           type="text"
+                                           data-in="asker"/>
+                                </td>
+                                <td class="width-120"><?= Util::translate("qa.asker_email") ?></td>
+                                <td class="width-200">
+                                    <input name="askerEmail" id="askerEmail"
+                                           type="text"
+                                           data-in="askerEmail"/>
+                                </td>
+                                <td>
+                                    <button class="button button--sm"
+                                            onclick="$('#form').submit();">
+                                                <?= Util::translate("form.button.search") ?>
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </form>
+            <div class="table table--list" 
+                 style="padding: 15px;">
+                <div class="border--thin rounded--sm">
+                    <table>
+                        <thead>
+                            <tr class="fnt--12">
+                                <th class="width-50">
+                                    <?= Util::translate("form.label.order") ?> 
+                                </th>
+                                <th class="width-150">
+                                    <?= Util::translate("qa.asker") ?> 
+                                </th>
+                                <th class="width-200">
+                                    <?= Util::translate("qa.asker_email") ?> 
+                                </th>
+                                <th>
+                                    <?= Util::translate("qa.title") ?> 
+                                </th>
+                                <th class="width-80">
+                                    <?= Util::translate("news.display") ?> 
+                                </th>
+<!--                                <th class="width-150">
+                                <?= Util::translate("qa.category") ?> 
+                                </th>-->
+                                <th class="width-100">
+                                    <?= Util::translate("news.create_date") ?> 
+                                </th>                                
+                                <th class="width-150">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody data-control="for: qa in qas">
+                            <?php echo $this->render("news/components/qa-item.phtml"); ?>
+                        </tbody>
+                    </table>
+                </div>
+                <?php echo $this->paginationControl($this->paginator); ?>
+            </div>
+        </div>
+    </div>
+    <?php echo $this->render("components/dialog-confirm.phtml"); ?>
+</div>

@@ -1,0 +1,21 @@
+<?php
+$adv = Services::createConfigurationService()->get("home.adv.menu.link");
+if ($adv != NULL) {
+    ?>
+    <div class="row visible-pad visible-med visible-wid">
+        <div class="f-menu-right-item">
+            <div class="f-menu-header">
+                <h4>QUẢNG CÁO</h4>
+            </div>
+            <div class="f-menu-right-content">
+                <div class="f-menu-right-image">
+                    <a href="">
+                        <img src="<?= $adv->getValue() ?>" alt="quang cao"/>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php
+}
+?>

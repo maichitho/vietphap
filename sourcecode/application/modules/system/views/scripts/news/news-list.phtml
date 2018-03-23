@@ -1,0 +1,153 @@
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/system/news/",
+                    name: "vm-news-list.js"
+                }
+            ],
+            messages: {
+                deleteTitle: '<?= Util::translate("message.delete.image.title") ?>',
+                deleteNews: '<?= Util::translate("dialog.delete.news") ?>',
+                dateFormat: "<?= Util::getDateFormat("vi") ?>",
+                allCategory: '<?= Util::translate("form.select.option.all") ?>',
+                typeService: '<?= SA_Entity_Category::TYPE_SERVICE ?>'
+            },
+            bindings: [
+                {
+                    viewer: "NewsV",
+                    viewmodeler: "newsVM",
+                    linkback: true,
+                    data: {
+                        categories: <?= json_encode($this->categories) ?>,
+                        entries: <?= json_encode($this->entries) ?>,
+                        createTimeFrom: '<?= $this->createTimeFrom ?>',
+                        createTimeTo: '<?= $this->createTimeTo ?>',
+                        selectedCateId: '<?= $this->categoryId ?>',
+                        keyword: '<?= $this->keyword ?>'
+                    }
+                }
+            ]
+        });
+
+
+    });
+
+</script>
+<div class="panel content">
+    <div data-viewmodeler="NewsV">
+        <div class="row">
+            <div class="pad-2 med-2 wid-2 f-menu-left">
+                <div class="f-header-title">
+                    <h4>
+                        <?= Util::translate("news.category") ?>
+                    </h4>
+                </div>
+                <ul class="menu-vr" data-control="for: item in categories">
+                    <li class="menu-item tree-link-parent"
+                        data-control="if: item.parentId == '0'">
+                        <a data-attr="href: '/system/news/list?categoryId='+item.id"
+                           data-item="item.name">
+                        </a>
+                        <span class="plus-icon tree-collapse"
+                              data-attr="data-id: item.id"></span>
+                    </li>
+                    <li class="menu-item tree-link-child"
+                        data-control="if: item.parentId != '0'"
+                        data-attr="data-parent: item.parentId">
+                        <a data-attr="href: '/system/news/list?categoryId='+item.id"
+                           data-item="item.name">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="pad-10 med-10 wid-10">
+                <form id="form" 
+                      action="/system/news/list"
+                      method="GET">
+                    <table style="margin: 15px 0px 0px 15px;">
+                        <tr>
+                            <td class="width-120"><?= Util::translate("news.title") ?></td>
+                            <td colspan="3">
+                                <input name="keyword" id="keyword"
+                                       type="text"
+                                       data-in="keyword"/></td>
+                            <td class="width-120">
+                                <?= Util::translate("news.category") ?> 
+                            </td>
+                            <td>
+                                <select id="categoryId" 
+                                        class="width-200" 
+                                        name="categoryId" 
+                                        data-in="selectedCateId"
+                                        data-control="for: cat in categories"
+                                        onchange="$('#form').submit();">
+                                    <option data-attr="value: cat.id" 
+                                            data-item="cat.name"></option>                                                                             
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?= Util::translate("form.label.from_date") ?>
+                            </td>
+                            <td>
+                                <input type="text"
+                                       class="input-date"
+                                       id="startTimeDate" name="createTimeFrom"
+                                       data-in="createTimeFrom"
+                                       placeholder="<?= Util::getDateFormat("vi") ?>"/> 
+                            </td>
+                            <td>
+                                <?= Util::translate("form.label.to_date") ?>
+                            </td>
+                            <td>
+                                <input type="text"
+                                       class="input-date"
+                                       id="endTimeDate" name="createTimeTo"
+                                       data-in="createTimeTo"
+                                       placeholder="<?= Util::getDateFormat("vi") ?>"/>
+                            </td>
+                            <td><button class="button button--sm"
+                                        onclick="$('#form').submit();">
+                                            <?= Util::translate("form.button.search") ?>
+                                </button></td>
+                    </table>
+                </form>
+                <div class="table table--list" 
+                     style="padding: 15px;">
+                    <div class="border--thin rounded--sm">
+                        <table>
+                            <thead>
+                                <tr class="fnt--12">
+                                    <th class="width-80">
+                                        <?= Util::translate("form.label.avatar1") ?> 
+                                    </th>
+                                    <th>
+                                        <?= Util::translate("news.title") ?> 
+                                    </th>
+                                    <th class="width-150">
+                                        <?= Util::translate("news.category") ?> 
+                                    </th>
+                                    <th class="width-80">
+                                        <?= Util::translate("news.author") ?> 
+                                    </th>
+                                    <th class="width-80">
+                                        <?= Util::translate("news.create_date") ?> 
+                                    </th>                                
+                                    <th class="width-150">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody data-control="for: entry in entries">
+                                <?php echo $this->render("news/components/news-item.phtml"); ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <?php echo $this->paginationControl($this->paginator); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php echo $this->render("components/dialog-confirm.phtml"); ?>
+</div>

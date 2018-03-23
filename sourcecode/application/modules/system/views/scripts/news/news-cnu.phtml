@@ -1,0 +1,480 @@
+
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/system/dialog/",
+                    name: "vm-dialog-m-upload.js"
+                },
+                {
+                    src: "/js/system/news/",
+                    name: "vm-news-cnu.js"
+                },
+                {
+                    src: "/js/system/dialog/",
+                    name: "vm-dialog-selection.js"
+                }
+            ],
+            messages: {
+                deleteImage: '<?= Util::translate("dialog.delete.image") ?>',
+                titleAlert: '<?= Util::translate("dialog.alert.info.title") ?>',
+                uploadError: '<?= Util::translate("dialog.upload.upload.error") ?>',
+                selectError: '<?= Util::translate("dialog.upload.select.error") ?>',
+                typeService: '<?= SA_Entity_Category::TYPE_SERVICE ?>',
+                cancelUpload: '<?= Util::translate("message.upload.cancel") ?>',
+                notifyInputError: '<?= Util::translate("news.cnu.require_information") ?>',
+                rewriteUrlError: '<?= Util::translate("news.cnu.rewriteurl.error") ?>'
+            },
+            bindings: [
+                {
+                    viewer: "NewsCnuV",
+                    viewmodeler: "newsCnuVM",
+                    linkback: true,
+                    data: {
+                        categories: <?= json_encode($this->categories) ?>,
+                        selectiveEntries: <?= json_encode($this->selectiveEntries) ?>,
+                        relatedEntries: <?= json_encode($this->relatedEntries) ?>,
+                        type: '<?= $this->type ?>',
+                        entryId: '<?= $this->entryId ?>',
+                        entry: <?= json_encode($this->entry) ?>,
+                        typeUpdate: '<?= $this->typeUpdate ?>'
+                    }
+                },
+                {
+                    viewer: "UploadDialogV",
+                    viewmodeler: "uploadDialogVM",
+                    linkback: true,
+                    data: {
+                    }
+                },
+                {
+                    viewer: "SelectionDialogV",
+                    viewmodeler: "selectionDialogVM",
+                    linkback: true,
+                    data: {
+                    }
+                }
+            ]
+        });
+    });
+</script>
+<div class="panel content">
+    <div data-viewmodeler="NewsCnuV">
+        <?php
+        if (isset($this->result)) {
+            ?>
+            <div id="alert_success" class="<?php
+            if (isset($this->result) && $this->result == TRUE) {
+                echo "alert--success";
+            } else {
+                echo "alert--error";
+            }
+            ?> rounded--sm">
+                <span class="alert-content">
+                    <?php
+                    if (isset($this->result) && $this->result == TRUE) {
+                        echo Util::translate("news.cnu.message.success");
+                    } else {
+                        echo Util::translate("news.cnu.message.error");
+                    }
+                    ?>
+                </span>
+                <span class="alert-close" 
+                      onclick="$(this).parent().hide();">&times;</span>
+            </div>
+            <?php
+        } else {
+            
+        }
+        ?>
+        <div class="row">
+            <div class="pad-2 med-2 wid-2 f-menu-left">
+                <div class="f-header-title">
+                    <h4>
+                        <?= Util::translate("news.category") ?>
+                    </h4>
+                </div>
+                <ul class="menu-vr" data-control="for: item in categories">
+                    <li class="menu-item tree-link-parent"
+                        data-control="if: item.parentId == '0'">
+                        <a data-attr="href: '/system/news/list?categoryId='+item.id"
+                           data-item="item.name">
+                        </a>
+                        <span class="plus-icon tree-collapse"
+                              data-attr="data-id: item.id"></span>
+                    </li>
+                    <li class="menu-item tree-link-child"
+                        data-control="if: item.parentId != '0'"
+                        data-attr="data-parent: item.parentId">
+                        <a data-attr="href: '/system/news/list?categoryId='+item.id"
+                           data-item="item.name">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="news-info dogo-body pad-10 med-10 wid-10">
+                <div class="row"
+                     style="margin: 15px 15px 0 15px;">
+                    <ul class="menu-hr header-tab">
+                        <li class="menu-item tab-active menu-general-info">
+                            <a>
+                                <img src="/img/icon/icon_text.png" 
+                                     class="icon"/>
+                                     <?= Util::translate("news.tab.general_info") ?>
+                            </a>
+                        </li>
+                        <li class="menu-item menu-seo-info"
+                            style="border-right: 1px solid #ddd;">
+                            <a>
+                                <img src="/img/icon/seo-tag.png" 
+                                     class="icon"/>
+                                     <?= Util::translate("news.tab.seo_info") ?>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row border--thin"
+                     style="margin:0 15px 15px 15px; border-top:none; position: relative;">
+                    <form id="form"
+                          data-call="submit: validateInput"
+                          method="POST"
+                          action="
+                          <?php
+                          if ($this->type == "create") {
+                              echo '/system/news/create';
+                          } else {
+                              echo '/system/news/update?id=' . $this->entryId . (isset($this->typeUpdate) ? "&type=copy" : "");
+                          }
+                          ?>">
+                        <div class="table-footer"
+                             style="position: absolute; right: 15px; top: -32px;">
+                            <button class="button--sm" 
+                                    style="margin-left: 5px;">
+                                        <?= Util::translate("form.button.cancel") ?>
+                            </button>
+                            <button class="button--sm" 
+                                    type="submit">
+                                        <?= Util::translate("form.button.save") ?>
+                            </button>
+                        </div>
+                        <div class="row">
+                            <div class="div-general-content" style="margin: 15px 25px 10px 10px;">
+                                <table class="table--info" 
+                                       style="width: 100%;">
+                                    <tr>
+                                        <td class="width-200">
+                                            <?= Util::translate("news.title") ?>(*)
+                                        </td>
+                                        <td colspan="3">
+                                            <span data-message-for="title" 
+                                                  class="fgr--error"></span>
+                                            <input type="text"
+                                                   name ="title"
+                                                   id="title" 
+                                                   data-in="entry.title"
+                                                   data-check="title: required"
+                                                   data-required-message="<?= Util::translate("entry.title.error.required") ?>"/>
+                                        </td>
+                                        <td class="width-100" rowspan="4"
+                                            style="vertical-align: top">
+                                                <?= Util::translate("form.label.avatar") ?>
+                                        </td>
+                                        <td rowspan="4" style="vertical-align: top">
+                                            <div class="thumbnail" 
+                                                 data-skip 
+                                                 style="max-width: 175px;max-height: 175px; display: inline-block; width: auto;"
+                                                 data-attr='data-path: entry.imagePath'>
+                                                <a class="thumbnail-link">
+                                                    <img  data-attr="src:entry.imagePath"
+                                                          style="max-width: 165px;max-height: 165px" 
+                                                          onerror="this.setAttribute('src','/img/icon/picture.png')"
+                                                          class="thumbnail-img home-img">
+                                                </a>
+                                                <input type="hidden"
+                                                       name="imagePath"
+                                                       data-in="entry.imagePath" />
+                                            </div>
+                                            <a class="link link-delete delete-image" 
+                                               data-call="click: showDeleteImageDialog($dom,'/img/icon/picture.png')"
+                                               style="display: none;">
+                                                   <?= Util::translate("form.label.delete") ?> 
+                                            </a> 
+                                            <div class="link button-upload"
+                                                 style="margin-top: 5px;position: relative">
+                                                <span>
+                                                    <?= Util::translate("form.button.upload.image") ?>
+                                                </span>
+                                                <input id="avatar_image"
+                                                       name="file" 
+                                                       type="file"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <?= Util::translate("news.category") ?>
+                                        </td>
+                                        <td class="width-200">
+                                            <select id="categoryId"
+                                                    name="categoryId" 
+                                                    data-control="for: category in categories">
+                                                <option data-row data-attr="value: category.id" 
+                                                        data-item="category.name"></option>                                                                             
+                                            </select>
+                                        </td>
+                                        <td style="padding-left: 30px; width: 350px;">
+                                            <?= Util::translate("news.display") ?> 
+                                            <input type="checkbox" id="chk-display"
+                                                   style="margin-left: 5px;"
+                                                   data-control="if: entry.display == '1'" checked/>
+                                            <input type="checkbox" id="chk-display"
+                                                   style="margin-left: 5px;"
+                                                   data-control="if: entry.display != '1'"/>
+                                            <input type="hidden" name="display" id="displayValue"/>
+                                            <span class="fnt--11 italic"><?= Util::translate("news.display.suggestion") ?></span>
+                                        </td>
+                                        <td style="padding-left: 30px; width: 250px;">
+                                            <?= Util::translate("news.is_top") ?> 
+                                            <input type="checkbox" id="chk-isTop"
+                                                   style="margin-left: 5px;"
+                                                   data-control="if: entry.isTop == '1'" checked/>
+                                            <input type="checkbox" id="chk-isTop"
+                                                   style="margin-left: 5px;"
+                                                   data-control="if: entry.isTop != '1'"/>
+                                            <input type="hidden" name="isTop" id="isTopValue"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <?= Util::translate("news.tags") ?>
+                                        </td>
+                                        <td colspan="3">
+                                            <div data-control="for: item in tagArr">
+                                                <span class="label--default"
+                                                      data-attr="data-id: item.id">
+                                                    <span data-item="item.name"></span> 
+                                                    <span data-call="click: deleteTags(item.id)">
+                                                        &Cross;
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <div style="margin-top: 5px;margin-bottom: 40px;">
+                                                <input type="text" id="tags" class="width-500"
+                                                       style="float: left;"
+                                                       placeholder="<?= Util::translate('news.tag.placeholder') ?>"/>
+                                                <span class="fnt--11 italic"
+                                                      style="float: left;margin-left: 10px; margin-top: 5px;"><?= Util::translate("news.tags.suggestion") ?></span>
+                                            </div>
+                                            <input type="hidden" name="tags" id="tagStr">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <?= Util::translate("news.rewriteUrl") ?>(*)
+                                        </td>
+                                        <td colspan="3">
+                                            <span data-message-for="rewriteUrl" 
+                                                  class="fgr--error"></span>
+                                            <input type="text" 
+                                                   id="rewriteUrl"
+                                                   name="rewriteUrl"
+                                                   class="width-500"
+                                                   style="float: left;"
+                                                   placeholder="Rewrite Url"
+                                                   data-in="entry.rewriteUrl"
+                                                   data-check="rewriteUrl: required"
+                                                   data-required-message="<?= Util::translate("entry.rewriteUrl.error.required") ?>"/>
+                                            <span class="fnt--11 italic"
+                                                  style="float: left;margin-left: 10px; margin-top: 5px;"><?= Util::translate("news.rewriteUrl.suggestion") ?></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <?= Util::translate("news.relative") ?>
+                                        </td>
+                                        <td colspan="3">
+                                            <div id="related_entry"
+                                                 data-control="for: rentry in entry.relatedEntries">
+                                                <span class="label--default"
+                                                      data-attr="data-id: rentry.id">
+                                                    <span data-item="rentry.title">
+                                                    </span> 
+                                                    <span data-call="click: deleteRelatedEntry(rentry.id)">
+                                                        &Cross;
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <a class="button--sm"
+                                               style="margin-bottom: 0; display: inline-block;"
+                                               data-call="click: showRelatedEntryDialog( '<?= Util::translate("entry.relate.select") ?>')">
+                                                   <?= Util::translate("form.button.update") ?>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <?= Util::translate("news.summary") ?>
+                                        </td>
+                                        <td colspan="5">
+                                            <textarea id="summary" 
+                                                      type="text" 
+                                                      data-in='entry.description'
+                                                      rows="5"
+                                                      name="summary"></textarea> 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <?= Util::translate("news.add_image") ?>
+                                        </td>
+                                        <td style="padding-top: 15px; text-align: left;">
+                                            <div class="button button--sm button-upload"
+                                                 style="margin-top: 5px;">
+                                                     <?= Util::translate("form.button.select") ?>
+                                                <input id="upload_file" 
+                                                       type="file" 
+                                                       name="files[]" 
+                                                       multiple 
+                                                       style="width: 100px;"/> 
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr >
+                                        <td>
+                                            <?= Util::translate("news.content") ?>
+                                        </td>
+                                        <td colspan="5">
+                                            <textarea id="news_content" 
+                                                      data-out='entry.content'
+                                                      name='content'
+                                                      rows="25"></textarea>
+                                            <!--                                            <div class="button button--sm button-upload">
+                                            <?= Util::translate("form.button.select") ?>
+                                                                                            <input id="upload_file" 
+                                                                                                   type="file" 
+                                                                                                   name="files[]" 
+                                                                                                   multiple 
+                                                                                                   style="width: 100px;"/> 
+                                                                                        </div>-->
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="div-seo-content" style="margin: 15px 25px 10px 10px; display: none;">
+                                <table class="table--info" >
+                                    <tr>
+                                        <td class="width-120">
+                                            <?= Util::translate("news.label.order_number") ?>
+                                        </td>
+                                        <td style="min-width: 800px">
+                                            <input type="number" class="width-120"
+                                                   data-in="entry.orderNumber"
+                                                   name="orderNumber"
+                                                   style="float: left;"/>
+                                            <span class="fnt--11 italic"
+                                                  style="float: left; margin-left: 10px;margin-top: 5px;"><?= Util::translate("news.order_number.suggestion") ?></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <?= Util::translate("news.label.seo_title") ?>(*)
+                                        </td>
+                                        <td>
+                                            <span data-message-for="seoTitle" 
+                                                  class="fgr--error"></span>
+                                            <input type="text"
+                                                   name ="seoTitle"
+                                                   id="seoTitle" 
+                                                   data-in="entry.seoTitle"
+                                                   data-check="seoTitle: required"
+                                                   data-required-message="<?= Util::translate("entry.seoTitle.error.required") ?>"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <?= Util::translate("news.label.seo_keyword") ?>(*)
+                                        </td>
+                                        <td>
+                                            <span data-message-for="seoKeyword" 
+                                                  class="fgr--error"></span>
+                                            <input type="text"
+                                                   name ="seoKeyword"
+                                                   id="seoKeyword" 
+                                                   data-in="entry.seoKeyword"
+                                                   data-check="seoKeyword: required"
+                                                   data-required-message="<?= Util::translate("entry.seoKeyword.error.required") ?>"/>
+                                        </td>                                    
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <?= Util::translate("news.label.seo_description") ?>(*)
+                                        </td>
+                                        <td>
+                                            <span data-message-for="seoDescription" 
+                                                  class="fgr--error"></span>
+                                            <input type="text"
+                                                   name ="seoDescription"
+                                                   id="seoDescription" 
+                                                   data-in="entry.seoDescription"
+                                                   data-check="seoDescription: required"
+                                                   data-required-message="<?= Util::translate("entry.seoDescription.error.required") ?>"/>
+                                        </td>                                    
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <input type="hidden"
+                               name="entryIds" />
+                        <div class="table-footer"
+                             style="text-align: right; padding: 10px 20px 15px 0">
+                            <button class="button--sm" 
+                                    style="margin-left: 5px;">
+                                        <?= Util::translate("form.button.cancel") ?>
+                            </button>
+                            <button class="button--sm" 
+                                    type="submit">
+                                        <?= Util::translate("form.button.save") ?>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div data-viewmodeler='UploadDialogV'>
+        <?php echo $this->render("components/dialog-multi-upload.phtml") ?>
+    </div>
+    <?= $this->render("components/dialog-single-upload.phtml") ?>
+    <?php echo $this->render("components/dialog-confirm.phtml"); ?>
+</div>
+
+<div data-viewmodeler="SelectionDialogV">
+    <?php echo $this->render('components/dialog-selection.phtml'); ?>
+</div>
+
+<script>
+    $(document).ready(function() {
+        uploadUtil.uploadMultipleFile("upload_file", {
+            title: '<?= Util::translate("news.upload.file") ?>',
+            callbackFn: newsCnuVM.insertImages
+        });
+        uploadUtil.upload("avatar_image", {
+            done: function(e, data) {
+                $.each(data.result.files, function(index, file) {
+                    $(".home-img").attr("src", file.url);
+                    $("input[name='imagePath']").val(file.url);
+                    $(".delete-image").parent().find(".thumbnail").attr("data-path", file.url);
+                    $(".delete-image").parent().find(".link-delete").show();
+                    uploadUtil.hideLoading();
+                });
+            }
+        });
+    });
+    CKEDITOR.replace('news_content', {
+        height: "400px"
+    });
+
+</script>

@@ -1,0 +1,183 @@
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/system/drugstore/",
+                    name: "vm-drugstore-list.js"
+                }
+            ],
+            messages: {
+                deleteTitle: '<?= Util::translate("message.delete.image.title") ?>',
+                deleteNews: '<?= Util::translate("dialog.delete.news") ?>'
+            },
+            bindings: [
+                {
+                    viewer: "DrugstoreV",
+                    viewmodeler: "drugstoreVM",
+                    linkback: true,
+                    data: {
+                        districtIdSelected: '<?= $this->districtId ?>',
+                        selectedCityId: '<?= $this->cityId ?>',
+                        keyword: '<?= $this->keyword ?>',
+                        address: '<?= $this->address ?>',
+                        cities: <?= json_encode($this->cities) ?>,
+                        districts: <?= json_encode($this->districts) ?>,
+                        drugstores: <?= json_encode($this->drugstores) ?>
+                    }
+                }
+            ]
+        });
+
+
+    });
+
+</script>
+<div class="panel content">
+    <div data-viewmodeler="DrugstoreV">
+        <div class="row">
+            <form id="form" 
+                  action="/system/drugstore/list"
+                  method="GET">
+                <table style="margin: 15px 0px 0px 15px;">
+                    <tr>
+                        <td class="width-120"><?= Util::translate("news.title") ?></td>
+                        <td colspan="3">
+                            <input name="keyword" id="keyword"
+                                   type="text"
+                                   data-in="keyword"/></td>
+                        <td>&nbsp;</td>
+
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <?= Util::translate("form.label.address") ?>(*)
+                        </td>
+                        <td colspan="3">
+                            <span data-message-for="address" 
+                                  class="fgr--error"></span>
+                            <input type="text"
+                                   name ="address"
+                                   data-in="address"/>
+                        </td>
+                        <td><button class="button button--sm"
+                                    onclick="$('#form').submit();">
+                                        <?= Util::translate("form.button.search") ?>
+                            </button></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?= Util::translate("drugstore.city") ?>
+                        </td>
+                        <td class="width-200">
+                            <select id="cityId" style="width: 100%"
+                                    name="cityId"
+                                    data-control="for: city in cities"
+                                    onchange="$('#form').submit();">
+                                <option data-row data-attr="value: city.id" 
+                                        data-item="city.name"></option>                                                                             
+                            </select>
+                        </td>
+                        <td class="width-100">
+                            <?= Util::translate("drugstore.district") ?>
+                        </td>
+                        <td class="width-200">
+                            <select id="districtId" style="width: 100%"
+                                    name="districtId" 
+                                    data-control="for: district in districts"
+                                    onchange="$('#form').submit();">
+                                <option data-row data-attr="value: district.id" 
+                                        data-item="district.name"></option>                                                                             
+                            </select>
+                        </td>
+                        <td rowspan="1" style="vertical-align: top;">
+
+                            <div class="link button-upload"
+                                 style="margin-top: 5px;position: relative; width: 200px;">
+                                <span style="width: 200px;">
+                                    Nhập nhà thuốc từ excel
+                                </span>
+
+                                <input id="excel_file"
+                                       name="file" 
+                                       type="file"/>
+                            </div>
+                            <p style="font-style: italic">
+                                (Chọn tỉnh và quận để import)
+                            </p>
+
+                        </td>
+                        <td rowspan="3">
+
+                            <span >
+                                Ghi đè
+                            </span>
+                            <input type="checkbox"
+                                   style='display: inline-block; margin-left: 5px;'
+                                   name='deleteData'
+                                   />
+                            <p style="font-style: italic">
+                                (Check để xóa danh sách cũ)
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+            <div class="table table--list" 
+                 style="padding: 15px;">
+                <div class="border--thin rounded--sm">
+                    <table>
+                        <thead>
+                            <tr class="fnt--12">
+                                <th class="width-100">
+                                    <?= Util::translate("form.label.avatar1") ?> 
+                                </th>
+                                <th class="width-200">
+                                    <?= Util::translate("drugstore.name") ?> 
+                                </th>
+                                <th class="width-80">
+                                    <?= Util::translate("form.label.phone") ?> 
+                                </th>
+                                <th>
+                                    <?= Util::translate("form.label.address") ?> 
+                                </th>
+                                <th class="width-150">
+                                    <?= Util::translate("drugstore.district") ?> 
+                                </th>
+                                <th class="width-100">
+                                    <?= Util::translate("drugstore.city") ?> 
+                                </th>                            
+                                <th class="width-150">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody data-control="for: store in drugstores">
+                            <?php echo $this->render("drugstore/components/drugstore-item.phtml"); ?>
+                        </tbody>
+                    </table>
+                </div>
+                <?php echo $this->paginationControl($this->paginator); ?>
+            </div>
+        </div>
+    </div>
+    <?php echo $this->render("components/dialog-confirm.phtml"); ?>
+</div>
+<?= $this->render("components/dialog-single-upload-excel.phtml") ?>
+<script>
+    $(document).ready(function() {
+        uploadUtil.upload("excel_file", {
+            done: function(e, data) {
+                $.each(data.result.files, function(index, file) {
+                    $(".home-img").attr("src", file.url);
+                    $("input[name='imagePath']").val(file.url);
+                    $(".delete-image").parent().find(".thumbnail").attr("data-path", file.url);
+                    $(".delete-image").parent().find(".link-delete").show();
+                    uploadUtil.hideLoading();
+                });
+                alert("Lấy danh sách nhà thuốc thành công");
+            }
+        });
+    });
+
+</script>

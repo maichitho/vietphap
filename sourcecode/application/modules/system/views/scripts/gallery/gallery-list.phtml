@@ -1,0 +1,39 @@
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/system/gallery/",
+                    name: "vm-gallery-list.js"
+                }
+            ],
+            messages: {
+                isMobile: <?= Util::isMobile() ?>,
+                deleteTitle: '<?= Util::translate("message.delete.title") ?>',
+                deleteGallery: '<?= Util::translate("message.gallery.delete") ?>',
+                deleteGalleryError: '<?= Util::translate("message.gallery.delete.error") ?>'
+            },
+            bindings: [
+                {
+                    viewer: "GalleryListV",
+                    viewmodeler: "galleryListVM",
+                    linkback: true,
+                    data: {
+                        galleries: <?= json_encode($this->galleries) ?>
+                    }
+                }
+            ]
+        });
+    });
+
+</script>
+<div class="panel content duhoc-body"
+     data-viewmodeler="GalleryListV">
+    <div class="gallery-pl rounded--sm">
+        <div class="row">
+            <?php echo $this->render('gallery/components/gallery-item.phtml'); ?>
+        </div>
+        <?php echo $this->render('components/dialog-confirm.phtml'); ?>
+        <?php echo $this->render('gallery/components/gallery-dialog.phtml'); ?>
+    </div>
+</div>

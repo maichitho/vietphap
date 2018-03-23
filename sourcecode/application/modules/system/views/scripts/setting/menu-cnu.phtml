@@ -1,0 +1,342 @@
+
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/system/setting/",
+                    name: "vm-menu-cnu.js"
+                }
+            ],
+            messages:
+                    {
+                        deleteTitle: '<?= Util::translate("message.delete.image.title") ?>',
+                        deleteImage: '<?= Util::translate("message.delete.image") ?>',
+                        deleteImageError: '<?= Util::translate("message.delete.image.error") ?>',
+                        cancelUpload: '<?= Util::translate("message.upload.cancel") ?>',
+                        suggestion_manual: '<?= Util::translate("system.menu.type_suggestion.manual") ?>',
+                        suggestion_image: '<?= Util::translate("system.menu.type_suggestion.image") ?>',
+                        suggestion_html: '<?= Util::translate("system.menu.type_suggestion.html") ?>',
+                        suggestion_Service_Type: '<?= Util::translate("system.menu.type_suggestion.service") ?>',
+                        suggestion_service: '<?= Util::translate("system.menu.type_suggestion.service_category") ?>',
+                        suggestion_qNa: '<?= Util::translate("system.menu.type_suggestion.qa_category") ?>',
+                        suggestion_QA_Type: '<?= Util::translate("system.menu.type_suggestion.qa") ?>',
+                        suggestion_mom_child: '<?= Util::translate("system.menu.type_suggestion.fix_mom_child") ?>',
+                        suggestion_distribution: '<?= Util::translate("system.menu.type_suggestion.fix_distribution") ?>',
+                        fix_link_mom_child: '<?= ControllerUtils::FIX_LINK_MOM_CHILD ?>',
+                        fix_link_distribution: '<?= ControllerUtils::FIX_LINK_DISTRIBUTION ?>'
+                    },
+            bindings: [
+                {
+                    viewer: "MenuCnuV",
+                    viewmodeler: "menuCnuVM",
+                    linkback: true,
+                    data: {
+                        manualType: "<?= SA_Entity_Menu::LINK_TYPE_MANUAL ?>",
+                        serviceType: "<?= SA_Entity_Menu::LINK_TYPE_SERVICE ?>",
+                        newsType: "<?= SA_Entity_Menu::LINK_TYPE_NEWS ?>",
+                        oneCategoryType: "<?= SA_Entity_Menu::LINK_TYPE_ONE_CATEGORY ?>",
+                        entryType: "<?= SA_Entity_Menu::LINK_TYPE_ENTRY ?>",
+                        categoriesType: "<?= SA_Entity_Menu::LINK_TYPE_CATEGORIES ?>",
+                        qaType: "<?= SA_Entity_Menu::LINK_TYPE_QA ?>",
+                        qaCategoryType: "<?= SA_Entity_Menu::LINK_TYPE_QA_CATEGORY ?>",
+                        imageType: "<?= SA_Entity_Menu::LINK_TYPE_IMAGE ?>",
+                        htmlType: "<?= SA_Entity_Menu::LINK_TYPE_HTML ?>",
+                        menu: <?= json_encode($this->menu) ?>,
+                        types: <?= json_encode($this->types) ?>,
+                        parentMenus: <?= json_encode($this->parentMenus) ?>,
+                        treeMenus: <?= json_encode($this->treeMenus) ?>,
+                        treeName: '<?= $this->treeName ?>'
+                    }
+                }
+            ]
+        });
+    });</script>
+
+<div class="panel content">
+    <div data-viewmodeler="MenuCnuV">
+        <div class="row">
+            <div class="nar-12 pad-2 med-2 wid-2 f-menu-menu"
+                 style="padding: 10px 0 0 10px;">
+                <div class="f-header-title"
+                     style='margin: 0;'>
+                    <h4 data-out="treeName"  data-type="text"
+                        style="text-transform: uppercase;">
+                    </h4>
+                </div>
+                <table>
+                    <tbody data-control="for: menu in treeMenus">
+                        <?php echo $this->render("setting/components/tree-menu-item.phtml"); ?>
+                    </tbody>  
+                </table>
+            </div>
+            <div class="nar-12 pad-10 med-10 wid-10"
+                 style="padding: 10px 10px 0 10px;">
+                <div class="panel-menu">
+                    <span data-out="'<?= Util::translate('system.menu.update_title') ?>'.toUpperCase()" data-type="text"
+                          class='sys-title'></span>
+                    <form action="/system/setting/<?php
+                    if ($this->type == "update") {
+                        echo "update-menu?id=" . $this->menu["id"];
+                    } else {
+                        echo "create-menu";
+                    }
+                    ?>" method="POST"
+                          data-call="submit: validateInput">
+                        <table class="table--info" 
+                               style="width: 100%;">
+                            <tr>
+                                <td class="width-100"
+                                    style="padding-left: 15px;">
+                                        <?= Util::translate("setting.menu.name") ?>
+                                </td>
+                                <td colspan="5">
+<!--                                    <span data-message-for="name" 
+                                          class="fgr--error"></span>-->
+                                    <input data-in="menu.name"
+                                           name="name" id="name"
+                                           type="text"
+                                           />
+                                </td>
+                                <td rowspan="2" style="vertical-align: top;">
+                                    <?= Util::translate("form.label.logo") ?> 
+                                </td>
+                                <td rowspan="2" style="vertical-align: top;">
+                                    <div class="thumbnail" 
+                                         data-skip 
+                                         style="max-width: 60px;max-height: 60px; display: inline-block; width: auto;"
+                                         data-attr='data-path: menu.logoPath'>
+                                        <a class="thumbnail-link">
+                                            <img  data-attr="src:menu.logoPath"
+                                                  style="height: 50px;" 
+                                                  onerror="this.setAttribute('src', '/img/icon/picture.png')"
+                                                  class="thumbnail-img logo-img"
+                                                  id="logo-path-id">
+                                        </a>
+                                        <input type="hidden"
+                                               name="logoPath"
+                                               data-in="menu.logoPath" />
+                                    </div>
+                                    <a class="link link-delete delete-logo" 
+                                       data-call="click: showDeleteImageDialog($dom,'/img/icon/picture.png')"
+                                       style="display: none;"
+                                       id="a-delete-logo-image">
+                                           <?= Util::translate("form.label.delete") ?> 
+                                    </a> 
+                                    <div class="link button-upload"
+                                         style="margin-top: 5px; position: relative">
+                                        <span>
+                                            <?= Util::translate("form.button.upload.image") ?>
+                                        </span>
+                                        <input id="logo_image"
+                                               name="files" 
+                                               type="file"/>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left: 15px;">
+                                    <?= Util::translate("setting.menu.type") ?>
+                                </td>
+                                <td class="width-150">
+                                    <select id="type" style="width: 100%"
+                                            style="margin-bottom: 5px;"
+                                            name="type"
+                                            data-in="menu.type"
+                                            data-control="for: type in types">
+                                        <option data-attr="value: type.code" data-item="type.name"></option>
+                                    </select> 
+                                    <img id="loading-parent-menu" src="/img/icon/loading.gif" style="display: none;height: 20px;"/>
+                                </td>
+                                <td style="padding-left: 15px; text-align: right; width: 100px; ">
+                                    <?= Util::translate("setting.menu.parent") ?>
+                                </td>
+                                <td class="width-150">
+                                    <select style="width: 100%"
+                                            style="margin-bottom: 5px;"
+                                            name="parentId"
+                                            data-in="menu.parentId"
+                                            data-control="for: pMenu in parentMenus"> 
+                                        <option data-item="pMenu.name" data-attr="value: pMenu.id"></option>
+                                    </select> 
+                                </td>
+
+                                <td class="width-80">
+                                    <?= Util::translate("news.display") ?>
+                                </td>
+                                <td>
+                                    <input type="checkbox" 
+                                           id="chk-display"
+                                           style="margin-left: 5px;"
+                                           name="checked"
+                                           data-control="if: menu.status === '1'" checked/>
+                                    <input type="checkbox" 
+                                           id="chk-display"
+                                           style="margin-left: 5px;"
+                                           name="unchecked"
+                                           data-control="if: menu.status !== '1'"/>
+                                    <input type="hidden" name="status" id="statusValue"/>
+                                    <span class="fnt--11 italic"><?= Util::translate("system.menu.display.suggestion") ?></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fnt--12 fgr-text"
+                                    style="padding-left: 15px;">
+                                        <?= Util::translate("setting.menu.rewrite_url") ?>
+                                </td>
+                                <td  colspan="7">
+                                    <input type="text" 
+                                           data-in="menu.rewriteUrl"
+                                           name="rewriteUrl"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fnt--12 fgr-text"
+                                    style="padding-left: 15px;">
+                                        <?= Util::translate("setting.menu.description") ?>
+                                </td>
+                                <td  colspan="7">
+                                    <textarea data-out="menu.description"
+                                              name="description"
+                                              rows="2"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fnt--12 fgr-text"
+                                    style="padding-left: 15px; vertical-align: top;">
+                                        <?= Util::translate("setting.menu.link") ?>                                    
+                                </td>
+                                <td style="vertical-align: top;">
+                                    <select id="linkType"
+                                            class="width-150"
+                                            name="linkType"
+                                            data-in="menu.linkType">
+                                        <option value="<?= SA_Entity_Menu::LINK_TYPE_MANUAL ?>" ><?= Util::translate("system.menu.type.manual") ?>
+                                        </option>
+                                        <option value="<?= SA_Entity_Menu::LINK_TYPE_NEWS ?>" ><?= Util::translate("system.menu.type.news") ?>
+                                        </option>
+                                        <option value="<?= SA_Entity_Menu::LINK_TYPE_ONE_CATEGORY ?>" ><?= Util::translate("system.menu.type.one_category") ?>
+                                        </option>
+                                        <option value="<?= SA_Entity_Menu::LINK_TYPE_IMAGE ?>" ><?= Util::translate("system.menu.type.image") ?>
+                                        </option>
+                                        <option value="<?= SA_Entity_Menu::LINK_TYPE_HTML ?>" ><?= Util::translate("system.menu.type.html") ?>
+                                        </option>
+                                        <option value="<?= SA_Entity_Menu::LINK_TYPE_CATEGORIES ?>"><?= Util::translate("system.menu.type.service_category") ?>
+                                        </option>
+                                        <option  value="<?= SA_Entity_Menu::LINK_TYPE_ENTRY ?>"><?= Util::translate("system.menu.type.service") ?>
+                                        </option>
+                                        <option value="<?= SA_Entity_Menu::LINK_TYPE_QA_CATEGORY ?>"><?= Util::translate("system.menu.type.qa_category") ?>
+                                        </option>
+                                    </select>
+                                </td>
+                                <td  colspan="6">
+                                    <img id="processing-img" src="/img/icon/loading.gif" style="display: none;height: 20px;"/>
+                                    <input id="linkUrl" name="linkUrl" data-in="menu.linkUrl"
+                                           type="text"
+                                           placeholder="http://"/>
+                                    <input id="linkId" name="linkId" data-in="menu.linkId" type="hidden"/>
+                                    <div id="linkCategory" class="border--thin"
+                                         style="height: 200px;overflow-y: auto" >
+                                    </div>
+                                    <div id="imageUpload"
+                                         style="margin-top: 10px;">
+                                        <div class="thumbnail" 
+                                             data-skip 
+                                             style="max-width: 180px;max-height: 180px; display: inline-block; width: auto;"
+                                             data-attr='data-path: menu.imagePath'>
+                                            <a class="thumbnail-link">
+                                                <img  data-attr="src:menu.imagePath"
+                                                      style="height: 150px;" 
+                                                      onerror="this.setAttribute('src', '/img/icon/picture.png')"
+                                                      class="thumbnail-img logo-img"
+                                                      id="image-path-id">
+                                            </a>
+                                            <input type="hidden"
+                                                   name="imagePath"
+                                                   data-in="menu.imagePath" />
+                                        </div>
+                                        <a class="link link-delete delete-logo" 
+                                           data-call="click: showDeleteImageDialog($dom,'/img/icon/picture.png')"
+                                           style="display: none;"
+                                           id="a-delete-menu-image">
+                                               <?= Util::translate("form.label.delete") ?> 
+                                        </a> 
+                                        <div class="link button-upload"
+                                             style="margin-top: 5px; position: relative">
+                                            <span>
+                                                <?= Util::translate("form.button.upload.image") ?>
+                                            </span>
+                                            <input id="menu_image"
+                                                   name="files" 
+                                                   type="file"/>
+                                        </div>
+                                    </div>
+                                    <div id="htmlInput">
+                                        <textarea name="htmlCode" data-in="menu.htmlCode"
+                                                  rows="4" id="htmlCode"></textarea>
+                                        <div id="demo-html-view" data-type="html"
+                                             style="margin-top: 5px;"
+                                             data-in="menu.htmlCode">
+                                        </div>
+                                    </div>
+                                    <span id="span-type-suggestion"
+                                          class="fnt--11 italic"><?= Util::translate("system.menu.type_suggestion.manual") ?></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td colspan="3">
+                                    <a href="/system/setting/list-menu"
+                                       class="button--sm">
+                                           <?= Util::translate("form.label.cancel") ?>
+                                    </a>
+                                    <button type="submit"
+                                            class="button--sm">
+                                                <?= Util::translate("form.label.save") ?>
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="row"
+                             style="text-align: left; padding: 15px;">
+
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <?= $this->render("components/dialog-confirm.phtml"); ?>
+    <?= $this->render("components/dialog-single-upload.phtml") ?>
+</div> 
+
+<script>
+    $(document).ready(function() {
+
+        uploadUtil.upload("menu_image", {
+            done: function(e, data) {
+                $.each(data.result.files, function(index, file) {
+                    $("#image-path-id").attr("src", file.url);
+                    $("input[name='imagePath']").val(file.url);
+                    $("#a-delete-menu-image").parent().find(".thumbnail").attr("data-path", file.url);
+                    $("#a-delete-menu-image").parent().find(".link-delete").show();
+                    uploadUtil.hideLoading();
+                });
+            }
+        });
+
+        uploadUtil.upload("logo_image", {
+            done: function(e, data) {
+                $.each(data.result.files, function(index, file) {
+                    $("#logo-path-id").attr("src", file.url);
+                    $("input[name='logoPath']").val(file.url);
+                    $("#a-delete-logo-image").parent().find(".thumbnail").attr("data-path", file.url);
+                    $("#a-delete-logo-image").parent().find(".link-delete").show();
+                    uploadUtil.hideLoading();
+                });
+            }
+        });
+    });
+</script>

@@ -1,0 +1,86 @@
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/system/home/",
+                    name: "vm-home.js"
+                }
+            ],
+            messages:
+                {
+                //                deleteTitle: '<?= Util::translate("message.delete.image.title") ?>',
+                //                deleteImage: '<?= Util::translate("message.delete.image") ?>',
+                //                deleteImageError: '<?= Util::translate("message.delete.image.error") ?>',
+                //                cancelUpload: '<?= Util::translate("message.upload.cancel") ?>'
+            },
+            bindings: [
+                {
+                    viewer: "HomeV",
+                    viewmodeler: "homeVM",
+                    linkback: true,
+                    data: {
+                        //                        manualType: "<?= SA_Entity_Menu::LINK_TYPE_MANUAL ?>",
+                        //                        entryType: "<?= SA_Entity_Menu::LINK_TYPE_ENTRY ?>",
+                        //                        entryCategoryType: "<?= SA_Entity_Menu::LINK_TYPE_ENTRY_CATEGORY ?>",
+                        //                        serviceType: "<?= SA_Entity_Menu::LINK_TYPE_SERVICE ?>",
+                        //                        serviceCategoryType: "<?= SA_Entity_Menu::LINK_TYPE_SERVICE_CATEGORY ?>",
+                        //                        qaType: "<?= SA_Entity_Menu::LINK_TYPE_QA ?>",
+                        //                        qaCategoryType: "<?= SA_Entity_Menu::LINK_TYPE_QA_CATEGORY ?>",
+                        //                        albumType: "<?= SA_Entity_Menu::LINK_TYPE_ALBUM ?>",
+                        //                        eventType: "<?= SA_Entity_Menu::LINK_TYPE_EVENT ?>",
+                        //                        menu: <?= json_encode($this->menu) ?>,
+                        //                        types: <?= json_encode($this->types) ?>,
+                        //                        parentMenus: <?= json_encode($this->parentMenus) ?>,
+                        headerTreeMenus: <?= json_encode($this->headerTreeMenus) ?>,
+                        footerTreeMenus: <?= json_encode($this->footerTreeMenus) ?>,
+                        treeName: '<?= $this->treeName ?>'
+                    }
+                }
+            ]
+        });
+    });
+</script>
+
+<div class="panel content welcome">
+    <div data-viewmodeler="HomeV">
+        <div class="row">
+            <div class="nar-12 pad-3 med-3 wid-3"
+                 style="padding: 10px 0 0 10px;">
+<!--                <span data-out="'<?= Util::translate('system.menu_type.header') ?>'.toUpperCase()" data-type="text" 
+                      style="text-decoration: underline;"></span>
+                <table class="table--info"
+                       style="padding: 10px 0 0 10px;">
+                    <tbody data-control="for: menu in headerTreeMenus">
+                <?php echo $this->render("setting/components/tree-menu-item.phtml"); ?>
+                    </tbody>  
+                </table>
+
+                <span data-out="'<?= Util::translate('system.menu_type.footer') ?>'.toUpperCase()" data-type="text" 
+                      style="text-decoration: underline;"></span>
+                <table class="table--info"
+                       style="padding: 10px 0 0 10px;">
+                    <tbody data-control="for: menu in footerTreeMenus">
+                <?php echo $this->render("setting/components/tree-menu-item.phtml"); ?>
+                    </tbody>  
+                </table>-->
+            </div>
+            <div class="nar-12 pad-9 med-9 wid-9">
+                <div class="panel-menu">
+
+                </div>
+            </div>
+        </div>
+        <?php
+        if (isset($this->rightMsg)) {
+            echo $this->rightMsg;
+        }
+        ?>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $(".toolbar").hide();
+        $(".welcome").css("min-height", $(window).height() - 102);
+    });
+</script>

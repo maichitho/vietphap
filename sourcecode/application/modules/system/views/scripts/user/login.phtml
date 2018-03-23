@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>        
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <!--timjs-->
+        <script type="text/javascript" src="/js/jquery/jquery-1.10.1.min.js"></script>
+        <script type="text/javascript" src="/js/timjs/timjs-1.3.4.1.js"></script>
+
+        <!--timstyle-->
+        <link href="/css/timstyle/normalize.css" rel="stylesheet" media="screen"></link>
+        <link href="/css/timstyle/timstyle.core-1.3.css" rel="stylesheet" media="screen"></link>
+        <link href="/css/timstyle/timstyle.theme-1.3.css" rel="stylesheet" media="screen"></link>
+        <script type="text/javascript" src="/css/timstyle/timstyle-1.3.js"></script>        
+        <!--dogo-->
+        <link href="/css/system/timweb-system.css" rel="stylesheet" media="screen"></link>
+        <script type="text/javascript" src="/js/system/system.js"></script>
+    </head>
+    <body>
+        <div class="panel login-body">
+            <div class="login-panel">
+                <div class="login-content border--thin rounded--sm">                    
+                    <h6 class="login-title">
+                        <?= Util::translate( "login.title" ) ?>         
+                    </h6>
+                    <form class="row" 
+                          method="post" 
+                          action="/system/user/login">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td class="width-120">
+                                    <?= Util::translate( "person.username" ) ?> 
+                                </td>
+                                <td>
+                                    <input type="text" 
+                                           name="username"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  class="width-120">
+                                    <?= Util::translate( "person.password" ) ?> 
+                                </td>
+                                <td>
+                                    <input type="password"                                            
+                                           name="password"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="login-footer">
+                            <button type="submit" 
+                                    class="button--sm float--right">
+                                        <?= Util::translate( "form.button.login" ) ?> 
+                            </button>
+                        </div>
+                    </form>
+                    <?php
+                    if ( isset( $this->result ) ) {
+                        if ( $this->result == TRUE ) {
+                            ?>
+                            <div class="alert--success">Process successfully</div>
+                            <?php
+                        } else {
+                            ?>
+                            <div style="background-color: red;color: #fff;font-weight: bold;" class="alert--fail"><?= Util::translate( "dialog.login.fail" ) ?></div>
+                            <?php
+                        }
+                    }
+                    ?>      
+                </div>
+            </div>    
+        </div>
+        <div class="row">
+            <div class="footer">
+                <div class="footer-item">
+                    <h6>
+                        Copyright &COPY; 2014 - Sililab VietNam - www.sililab.com
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+

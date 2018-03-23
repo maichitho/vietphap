@@ -1,0 +1,51 @@
+<tr class='user-row'
+    data-attr="data-index: usr.$index">
+    <td class="center-text"
+        data-item="usr.$index"></td> 
+    <td data-item="usr.fullName"></td>
+    <td data-item="usr.username"></td>
+    <td data-item="usr.email"></td>
+      <td class="center-text"
+        data-control="if: usr.type == '<?= SA_Entity_User::TYPE_ADMINISTRATOR ?>'">
+           Admin
+    </td>
+    <td class="center-text"
+        data-control="if: usr.type == '<?= SA_Entity_User::TYPE_MANAGER ?>'">
+          Quản lý
+    </td>
+    <td class="center-text"
+        data-control="if: usr.type == '<?= SA_Entity_User::TYPE_EDITOR ?>'">
+           Biên tập
+    </td>
+    <td class="center-text"
+        data-control="if: usr.status == '<?= SA_Entity_User::STATUS_ACTIVE ?>'">
+            <?= Util::translate("form.label.status.active") ?>
+    </td>
+    <td class="center-text"
+        data-control="if: usr.status == '<?= SA_Entity_User::STATUS_BLOCK ?>'">
+            <?= Util::translate("form.label.status.block") ?>
+    </td>
+    <td class="center-text"
+        data-control="if: usr.status == '<?= SA_Entity_User::STATUS_INACTIVE ?>'">
+            <?= Util::translate("form.label.status.inactive") ?>
+    </td>
+    
+   
+    
+    <td>
+        <ul class="menu-hr menu-hr--center" >
+            <li class="menu-item divider" >
+                <a class="icon-function"
+                   data-attr="href: '/system/user/update?id=' + usr.id">
+                    <img src="/img/icon/edit.png" />
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="icon-function"
+                   data-call="click: showDeleteUserDialog($dom, usr.id)">
+                    <img src="/img/icon/trash.png"/>
+                </a>
+            </li>
+        </ul>
+    </td>
+</tr>

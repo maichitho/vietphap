@@ -1,0 +1,176 @@
+<?php
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$controllerName = $request->getControllerName();
+$actionName = $request->getActionName();
+?>
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/home/home/",
+                    name: "vm-header.js"
+                }
+            ],
+            bindings: [
+                {
+                    viewer: "HeaderV",
+                    viewmodeler: "headerVM",
+                    linkback: true,
+                    data: {
+                        hotline: '<?= $this->hotline ?>',
+                        email: '<?= $this->email ?>',
+                        companyLogo: '<?= $this->companyLogo ?>',
+                        companySlogan: '<?= $this->companySlogan ?>',
+                        companySloganMobile: '<?= $this->companySloganMobile ?>',
+                        bannerImage: '<?= $this->bannerImage ?>',
+                        companyLogoMobile: '<?= $this->companyLogoMobile ?>',
+                        headerRootMenus: <?= json_encode($this->menuRootHeader) ?>,
+                        isHome: '<?= $this->isHome ?>',
+                        headerMenus: <?= json_encode($this->menuHeader) ?>,
+                        rightMenus: <?= json_encode($this->menuRight) ?>,
+                        leftMenus: <?= json_encode($this->menuLeft) ?>,
+                        navigations: <?= isset($this->navigations) ? json_encode($this->navigations) : array() ?>
+                    }
+                }
+            ]
+        });
+    });
+
+</script>
+<div class="panel" 
+     data-viewmodeler="HeaderV">
+    <div class="row visible-nar">
+        <div class="main-box b-header-panel-mobile">
+            <a class="f-logo" href="/">
+                <img data-attr="src: headerVM.companyLogoMobile"
+                     alt="Trang chủ"/>
+            </a>
+            <a class="f-menu-mobile">
+                <img src="/img/fobic/menu_icon.png" 
+                     alt="Trang chủ"/> 
+            </a>
+
+        </div>
+        <div class="f-popup-mobile">
+            <ul class="f-qa-items"
+                data-control="for: mHeader in headerRootMenus">
+                <li class="f-qa-item">
+                    <h4 class="f-qa-question f-qa-button">
+                        <a target="_blank"
+                           data-attr="href: mHeader.linkUrl, "
+                           data-item="mHeader.name"
+                           data-control="if: mHeader.linkUrl.length > 0 && mHeader.linkType === 'Manual'"> 
+                        </a>
+                        <a data-attr="href: mHeader.linkUrl"
+                           data-item="mHeader.name"
+                           data-control="if: mHeader.linkUrl.length > 0 && mHeader.linkType !== 'Manual'"> 
+                        </a>
+                        <a href="#" data-control="if: mHeader.linkUrl.length == 0"
+                           data-item="mHeader.name"> 
+                        </a>
+                        <span class="f-collapse-next"></span>
+                    </h4>
+                    <div class="f-qa-answer"                                 
+                         data-control="if: headerVM.getChidNodes(mHeader.id).length > 0">
+                        <ul class="menu-vr"
+                            data-control="for: cHeader in headerVM.getChidNodes(mHeader.id)">
+                            <li class="menu-item">
+                                <a target="_blank"
+                                   data-attr="href: cHeader.linkUrl"
+                                   data-item="cHeader.name"
+                                   data-control="if: cHeader.linkUrl.length > 0 && cHeader.linkType === 'Manual'"> 
+                                </a>
+                                <a data-attr="href: cHeader.linkUrl"
+                                   data-item="cHeader.name"
+                                   data-control="if: cHeader.linkUrl.length > 0 && cHeader.linkType !== 'Manual'"> 
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row visible-pad visible-med visible-wid">
+        <div class="f-header row">
+             <div class="pad-3 med-3 wid-3"
+                 style="text-align: right; padding-right: 15px;padding-top: 5px;">
+                <a href="/">
+                    <img data-attr="src: headerVM.companyLogo"
+                         alt="Trang chủ"/>
+                </a>
+            </div>
+            <div class="pad-7 med-7 wid-7" 
+                 style="position: relative; text-align: center;">
+                <img style="display: inline-block; max-width: 100%" 
+                     data-attr="src: headerVM.companySlogan" />
+            </div>
+            
+          
+        </div>
+        <div class="row">
+            <div class="b-header-panel"
+                 style="width: 100%;">
+                <div class="b-header">
+                    <div class="main-box">
+                        <div class="f-menu-hr">
+                            <ul class="menu-hr"     
+                                data-control="for: mHeader in headerRootMenus">
+                                <li class="menu-item f-main-item"
+                                    data-style="mHeader.id == <?= isset($this->selectedMenuId) ? $this->selectedMenuId : '' ?>: menu-item-selected">
+                                    <a href="#" data-control="if: mHeader.linkUrl.length == 0"
+                                       data-item="mHeader.name"> 
+                                    </a>
+                                    <!--Link sang website khac-->
+                                    <a target="_blank"                                    
+                                       data-attr="href: mHeader.linkUrl"
+                                       data-control="if: mHeader.linkUrl.length > 0 &&  mHeader.linkUrl != '/' && mHeader.linkType === 'Manual'">
+                                        <span class="f-main-menu-title"
+                                              data-item="mHeader.name">
+                                        </span>
+                                    </a>
+                                    <!--Link binh thuong-->
+                                    <a data-attr="href: mHeader.linkUrl"
+                                       data-control="if: mHeader.linkUrl.length > 0 && mHeader.linkType !== 'Manual'">
+                                        <span class="f-main-menu-title"
+                                              data-item="mHeader.name">
+                                        </span>
+                                    </a>
+                                    <!--Trang chu-->
+                                    <a data-attr="href: mHeader.linkUrl"
+                                       data-control="if: mHeader.linkUrl.length > 0 && mHeader.linkType == 'Manual' && mHeader.linkUrl == '/'">
+                                        <img data-attr="src: mHeader.logoPath"
+                                             class="f-menu-image"/>
+                                    </a>
+                                    <!--menu so xuong-->
+                                    <div class="f-toolbar-menu"
+                                         data-style="mHeader.id == <?= isset($this->selectedMenuId) ? $this->selectedMenuId : '' ?>: is-show"
+                                         data-control="if: headerVM.getChidNodes(mHeader.id).length > 0">
+                                        <!--                                    <div class="f-popup-top-layer"></div>-->
+                                        <ul class="menu-hr"
+                                            data-control="for: cHeader in headerVM.getChidNodes(mHeader.id)">
+                                            <li class="menu-item">
+                                                <a target="_blank"
+                                                   data-control="if: cHeader.linkUrl.length > 0 && cHeader.linkType === 'Manual'"
+                                                   data-attr="href: cHeader.linkUrl"
+                                                   data-item="cHeader.name"></a>
+                                                <a  data-control="if: cHeader.linkUrl.length > 0 && cHeader.linkType !== 'Manual'"
+                                                    data-attr="href: cHeader.linkUrl"
+                                                    data-item="cHeader.name"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="f-bar-layer">
+                </div>
+                <div class="f-toolbar-layer">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

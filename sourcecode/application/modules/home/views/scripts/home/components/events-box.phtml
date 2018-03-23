@@ -1,0 +1,83 @@
+<div class="border--thin"
+     style="margin-top: 5px; margin-right: 10px;">
+    <h6 class="event-header">
+        <a href="/danh-sach-hoi-thao">Sự kiện, Hội thảo »</a>
+    </h6>
+    <div data-control="for: workshop in workshopMap">
+        <table class="event-item"
+               style="width: 100%;">
+            <tr>
+                <td rowspan="2"
+                    style="width: 75px; vertical-align: top;">
+                    <div class="event-time" style="margin-left: 5px;">
+                        <p class="time-m" 
+                           data-item="'Tháng ' + workshop.startMonth"></p>
+                        <p class="time-d" 
+                           data-item="workshop.startDay"></p>
+                        <p class="time-y" 
+                           data-item="workshop.startYear"></p>
+                    </div>
+                </td>
+                <td>
+                    <a data-attr="href: '/hoi-thao/'+workshop.id+'-'+change_alias(workshop.title)+ '.html'" >
+                        <h4 style="font-weight: bold" data-item="workshop.title"></h4>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="display: inline-block; margin: 0;">
+                        <img src="/img/banner/clock.png" 
+                             width="16"
+                             height="16"
+                             style="float: left; margin: 3px 5px;"/>
+                        <span style="display: inline-block; color: #333; font-size: 80%; margin-top: 5px;"
+                              data-item="workshop.startTime">
+                        </span>
+                    </div>
+                    <div style="display: inline-block; margin: 0;">
+                        <img src="/img/banner/audience.png" 
+                             width="16"
+                             height="16"
+                             style="float: left; margin: 2px 5px;"/>
+                        <span style="display: inline-block; color: #333; font-size: 80%; margin-top: 5px;"
+                              data-item="workshop.quantity">
+                        </span>
+                    </div>
+                    <div style="display: inline-block; margin: 8px 0;width: 100%; text-align: left;">
+                        <img src="/img/banner/place.png" 
+                             width="16"
+                             height="16"
+                             style="float: left; margin: 3px 5px;"/>
+                        <span style="display: inline-block; width: 180px; color: #333; font-size: 80%; padding-top: 5px;"
+                              data-item="workshop.address">
+                        </span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <a class="flat-button rounded--sm" 
+                       data-attr="href: workshop.registerDocUrl" 
+                       data-control="if: workshop.registerDocUrl != ''">
+                        <img src="/img/icon/mail.png" 
+                             width="21"/>
+                        <span>
+                            <?= Util::translate("home.button.register_mail") ?>
+                        </span>
+                    </a>
+                    <a class="flat-button rounded--sm" 
+                       data-attr="href: workshop.joinDocUrl"
+                       data-control="if: workshop.joinDocUrl != ''">
+                        <img src="/img/icon/register.png" 
+                             width="21"
+                             height="13"/>
+                        <span>
+                            <?= Util::translate("home.button.register_event") ?>
+                        </span>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<?php
+$googleForm = Services::createConfigurationService()->get("google.form.link");
+if ($googleForm != NULL) {
+    ?>
+    <div class="row visible-pad visible-med visible-wid">
+        <a class="button button-question" 
+           target="_bank"
+           href="<?= isset($googleForm) ? $googleForm->getValue() : '#' ?>"
+           style="font-size: 14px; padding-top: 8px;">
+            ĐĂNG KÝ NHẬN TIN BÀI QUA EMAIL
+        </a>
+    </div>
+<?php 
+
+} 
+?>

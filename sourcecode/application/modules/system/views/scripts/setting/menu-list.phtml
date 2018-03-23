@@ -1,0 +1,115 @@
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/system/setting/",
+                    name: "vm-menu-list.js"
+                }
+            ],
+            bindings: [
+                {
+                    viewer: "MenuListV",
+                    viewmodeler: "menuListVM",
+                    linkback: true,
+                    data: {                        
+                        types: <?= json_encode($this->types) ?>,
+                        type: "<?= $this->type ?>"
+                        
+                    }
+                }
+            ]
+        });
+    });
+<?php
+$params = Zend_Controller_Front::getInstance()->getRequest()->getParams();
+if (isset($params["result"]) && $params["result"] == "FALSE") {
+    ?>
+            alert("Không thể xóa menu này! Hãy xóa menu con trước!");
+    <?php
+}
+?>
+    function deleteMenu(id, name) {
+        if (confirm("Bạn có muốn xóa menu \"" + name + "\" ?")) {
+            document.location.href = "/system/setting/delete-menu?id=" + id;
+        }
+    }
+</script>
+
+<div class="panel content">
+
+    <div data-viewmodeler="MenuListV">
+        <div class="table table--list" 
+             style="padding: 15px;">
+            <div class="border--thin rounded--sm">
+                <form id="form-list"
+                      action="/system/setting/list-menu"
+                      method="get"
+                      style="margin-bottom: 20px;">
+                    <h6 class="sys-title"
+                        style="margin-left: 9px;">
+                        <span style="margin-right: 20px"><?= Util::translate("system.menu.select_type") ?></span>
+                        <select class="width-200"
+                                name="type" id="sl-select-type"
+                                data-in="type"
+                                data-control="for: t in types"
+                                onchange="$('#form-list').submit();">
+                            <option data-attr="value: t.code" data-item="t.name"></option>
+                        </select>
+                        <a style="float: right; margin-right: 30px;"
+                           class="button--sm"
+                           data-call="click: addNewMenu()"><?= Util::translate("form.button.add") ?></a>
+                    </h6>                    
+                </form>
+                <table>
+                    <thead>
+                        <tr class="fnt--12">
+                            <th class="width-50">
+                                <?= Util::translate("form.label.order") ?> 
+                            </th>
+                            <th style="width: 60px">
+                                <?= Util::translate("form.label.logo") ?> 
+                            </th>
+                            <th class="width-150">
+                                <?= Util::translate("setting.menu.name") ?> 
+                            </th>
+                            <th class="width-150">
+                                <?= Util::translate("setting.menu.page_type") ?> 
+                            </th>
+                            <th class="width-200">
+                                <?= Util::translate("setting.menu.link") ?> 
+                            </th>                            
+                            <th>
+                                <?= Util::translate("form.label.logo") ?> 
+                            </th>                           
+                            <th class="width-80">
+                                <?= Util::translate("news.display") ?> 
+                            </th>
+                            <th class="width-250">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $this->index = 1;
+                        $arrangeMenus = array();
+                        foreach ($this->menus as $menu) {
+                            if ($menu->getParentId() <= 0) {
+                                $arrangeMenus[] = $menu;
+                                foreach ($this->menus as $submenu) {
+                                    if ($submenu->getParentId() == $menu->getId()) {
+                                        $arrangeMenus[] = $submenu;
+                                    }
+                                }
+                            }
+                        }
+                        foreach ($arrangeMenus as $menu) {
+                            $this->menu = $menu;
+                            echo $this->render("setting/components/menu-item.phtml");
+                        }
+                        ?>                    
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>   
+</div>

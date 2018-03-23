@@ -1,0 +1,123 @@
+<?php
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$status = $request->getParam("status");
+?>
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/system/product/",
+                    name: "vm-product-list.js"
+                }
+            ],
+            messages: {
+                deleteTitle: '<?= Util::translate("message.delete.title") ?>',
+                deleteProduct: '<?= Util::translate("message.product.delete") ?>',
+                deleteProductError: '<?= Util::translate("message.product.delete.error") ?>'
+            },
+            bindings: [
+                {
+                    viewer: "ProductV",
+                    viewmodeler: "productVM",
+                    linkback: true,
+                    data: {
+                        products: <?= json_encode($this->products) ?>,
+                        categories: <?= json_encode($this->categories) ?>,
+                        categoryId: '<?= $this->categoryId ?>'
+                    }
+                }
+            ]
+        });
+    });
+</script>
+<div class="panel content">
+    <div data-viewmodeler="ProductV">
+        <div id="alert_success"
+             class="alert--success rounded--sm"
+             style="<?= isset($status) && $status == "success" ? 'display: block;' : 'display: none;' ?>">
+            <span class="alert-content">
+                <?= Util::translate("product.create.message.success") ?> 
+            </span>
+            <span class="alert-close" 
+                  onclick="$(this).parent().hide();">&times;</span>
+        </div>
+        <div id="alert_error"
+             class="alert--error rounded--sm"
+             style="<?= isset($status) && $status == "error" ? 'display: block;' : 'display: none;' ?>">
+            <span class="alert-content">
+                <?= Util::translate("product.create.message.error") ?> 
+            </span>
+            <span class="alert-close" 
+                  onclick="$(this).parent().hide();">&times;</span>
+        </div>
+        <div class="row">
+            <form id="form" data-call="submit:" 
+                  action="/system/product/list" 
+                  method="GET">
+                <div style="padding: 15px 0 0 15px;">
+                    <div class="search-product">
+                        <label style="margin-left: 10px; margin-right: 2px;">
+                            <?= Util::translate("product.keyword") ?>
+                        </label>
+                        <input id="keyword" 
+                               name="keyword" 
+                               style="width: 250px;" 
+                               type="text"
+                               value="<?= isset($this->productName) ? $this->productName : '' ?>"/>
+                        <label style="margin-left: 10px; margin-right: 2px;">
+                            <?= Util::translate("product.category") ?>
+                        </label>
+                        <select id="categoryId" 
+                                class="width-150" 
+                                name="categoryId" 
+                                data-in="categoryId"
+                                data-control="for: cat in categories"
+                                onchange="$('#form').submit();">
+                            <option data-attr="value: cat.id" 
+                                    data-item="cat.name"></option>                                                                             
+                        </select>
+                        <button class="button button--sm"
+                                onclick="$('#form').submit();">
+                                    <?= Util::translate("form.button.search") ?>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div class="table table--list" 
+                 style="padding: 15px;">
+                <div class="border--thin rounded--sm">
+                    <table>
+                        <thead>
+                            <tr class="fnt--12">
+                                <th class="width-50">
+                                    <?= Util::translate("form.label.order") ?> 
+                                </th>
+                                <th class="width-100">
+                                    <?= Util::translate("product.image") ?> 
+                                </th>
+                                <th class="width-200 center-text">
+                                    <?= Util::translate("product.code") ?> 
+                                </th>
+                                <th>
+                                    <?= Util::translate("product.name") ?> 
+                                </th>
+                                <th class="width-100">
+                                    <?= Util::translate("news.create_date") ?> 
+                                </th>
+                                <th class="width-200">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody class="product-list-body" 
+                               data-control="for: product in products">
+                                   <?php echo $this->render("product/components/product-item.phtml"); ?>
+                        </tbody>
+                    </table>
+                </div>
+                <?php echo $this->paginationControl($this->paginator); ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo $this->render("components/dialog-confirm.phtml"); ?>
+

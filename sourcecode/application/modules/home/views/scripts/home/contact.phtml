@@ -1,0 +1,156 @@
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/home/news/",
+                    name: "vm-contact.js"
+                }
+            ],
+            bindings: [
+                {
+                    viewer: "ContactV",
+                    viewmodeler: "contactVM",
+                    linkback: true,
+                    data: {
+                    }
+                }
+            ]
+        });
+    });
+</script>
+<div class="panel">
+    <div data-viewmodeler="">
+        <div class="container">
+            <div class="row"
+                 style="padding-top: 5px;">
+                <div class="nar-12 pad-8 med-8 wid-8 colunm-left">
+                    <form data-call="submit:" 
+                          action="" 
+                          method="POST">
+                        <div class='row'>
+                            <div style="width: 100%; margin-bottom: 20px;margin-top: 30px; overflow: hidden;">
+                                <div style="margin: 0 auto; position: relative; ">
+                                    <h6 class="fnt--14 fgr-title bold"
+                                        style="margin: 20px; text-align: center;">
+                                        THÔNG TIN LIÊN HỆ
+                                    </h6>
+                                    <table class="table--info" 
+                                           style="margin: 0 auto; width: auto;">
+                                        <tr>
+                                            <td style="width: 150px;">
+                                                Họ và tên (*)
+                                            </td>
+                                            <td style="width: 300px;">
+                                                <span data-message-for="fullname" 
+                                                      class="fgr--error"></span>
+                                                <input id="fullname" name="fullname" type="text" 
+                                                       data-check="fullname: required"
+                                                       data-required-message="<?= Util::translate("validation.require") ?>"/> 
+                                            </td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Đia chỉ
+                                            </td>
+                                            <td>
+                                                <span data-message-for="email" 
+                                                      class="fgr--error"></span>
+                                                <input id="email" name="email" type="text" 
+                                                       data-check="email: required,isemail"
+                                                       data-required-message="<?= Util::translate("validation.require") ?>"
+                                                       data-isemail-message="<?= Util::translate("validation.email") ?>"/>
+                                            </td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Số điện thoại
+                                            </td>
+                                            <td>
+                                                <span data-message-for="phone" 
+                                                      class="fgr--error"></span>
+                                                <input id="phone" name="phone" type="text" 
+                                                       data-check="phone: required"
+                                                       data-required-message="<?= Util::translate("validation.require") ?>"/>
+                                            </td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Địa chỉ email
+                                            </td>
+                                            <td>
+                                                <span data-message-for="feedback" 
+                                                      class="fgr--error"></span>
+                                                <input id="phone" name="phone" type="text" 
+                                                       data-check="phone: required"
+                                                       data-required-message="<?= Util::translate("validation.require") ?>"/>
+                                            </td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Tiêu đề liên hệ
+                                            </td>
+                                            <td>
+                                                <span data-message-for="feedback" 
+                                                      class="fgr--error"></span>
+                                                <input id="phone" name="phone" type="text" 
+                                                       data-check="phone: required"
+                                                       data-required-message="<?= Util::translate("validation.require") ?>"/> 
+                                            </td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Nội dung
+                                            </td>
+                                            <td>
+                                                <span data-message-for="feedback" 
+                                                      class="fgr--error"></span>
+                                                <textarea id="feedback" 
+                                                          name="feedback" 
+                                                          rows=6 
+                                                          data-check="feedback: required"
+                                                          data-required-message="<?= Util::translate("validation.require") ?>"></textarea>
+                                            </td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"
+                                                style="font-size: 75%; font-style: italic;">
+                                                (Chú ý: Dấu * là yêu cầu bắt buộc)
+                                            </td>
+                                            <td>
+                                                &nbsp;
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div style="text-align: center; width: 100%;">
+                                    <button type="submit"
+                                            class="button button--sm"
+                                            style="width: 80px; height: 28px; margin: 20px 10px 0 0; font-size: 12px; padding-top: 5px;">
+                                        Gửi
+                                    </button>
+                                    <button type="reset"
+                                            class="button button--sm"
+                                            style="width: 80px; margin: 20px 0px; height: 28px; font-size: 12px; padding-top: 5px;">
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>                
+                </div>
+                <!--menu-right-->
+                <div class="nar-12 pad-4 med-4 wid-4 colunm-right">
+                    <?php echo $this->render('menu-right.phtml'); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

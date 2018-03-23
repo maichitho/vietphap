@@ -1,0 +1,34 @@
+<div class="row"
+     id="image-panel"
+     data-control="for: imgItem in images">
+    <div class="nar-6 pad-2 med-2 wid-2 product-thumbnail">
+        <div class="thumbnail"
+             data-skip>
+            <a class="thumbnail-link"
+               href="#">
+                <img class="thumbnail-img" 
+                     data-attr="src: imgItem.thumbnailUrl"
+                     onerror="this.setAttribute('src', '/img/banner/no-image.png')"/>
+            </a>
+            <a class="thumbnail-edit"
+               data-call="click: showDeleteImageDialog($dom,$current)">
+                   <?= Util::translate("form.button.delete") ?>
+            </a>
+            <div class="product-check center-text">
+                <label class="fnt--12 fgr-text"
+                       onclick="productCnuVM.updateHomeThumbnail(this, 1);">
+                           <?= Util::translate("product.image.thumbnail") ?>                   
+                </label>
+                <input class="thumbnail-home"
+                       data-control="if: imgItem.isRepresentation == 0"
+                       type="checkbox"
+                       onclick="productCnuVM.updateHomeThumbnail(this, 0);">
+                <input class="thumbnail-home"
+                       data-control="if: imgItem.isRepresentation == 1"
+                       type="checkbox"
+                       checked="checked"
+                       onclick="productCnuVM.updateHomeThumbnail(this, 0);">
+            </div>
+        </div>
+    </div>
+</div>

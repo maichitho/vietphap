@@ -1,0 +1,114 @@
+<?php
+$menu = $this->menu;
+?>
+<tr style="color: red;">
+    <td class="center-text"><?php
+if ($menu->getParentId() <= 0) {
+    echo $this->index++;
+}
+?></td>   
+    <td>
+        <img src="<?= $menu->getLogoPath() ?>" style="max-width: 50px;"
+             onerror="this.setAttribute('src', '/img/icon/no-image.png')"/>
+    </td>
+    <td>
+        <?php if ($menu->getParentId() > 0) {
+            ?>
+            <img src="/img/icon/right.png" style="height: 12px; width: 30px; margin-right: 5px;"> 
+            <?php
+        }
+        echo $menu->getName();
+        ?>
+    </td>    
+    <td><?php
+        if ($menu->getLinkType() == SA_Entity_Menu::LINK_TYPE_ENTRY) {
+            echo Util::translate("system.menu.type.entry_type");
+        } else if ($menu->getLinkType() == SA_Entity_Menu::LINK_TYPE_ONE_CATEGORY) {
+            echo Util::translate("system.menu.type.one_category");
+        } else if ($menu->getLinkType() == SA_Entity_Menu::LINK_TYPE_MANUAL) {
+            echo Util::translate("system.menu.type.manual");
+        } else if ($menu->getLinkType() == SA_Entity_Menu::LINK_TYPE_SERVICE) {
+            echo Util::translate("system.menu.type.service");
+        } else if ($menu->getLinkType() == SA_Entity_Menu::LINK_TYPE_CATEGORIES) {
+            echo Util::translate("system.menu.type.service_category");
+        } else if ($menu->getLinkType() == SA_Entity_Menu::LINK_TYPE_QA_CATEGORY) {
+            echo Util::translate("system.menu.type.qa_category");
+        } else if ($menu->getLinkType() == SA_Entity_Menu::LINK_TYPE_QA) {
+            echo Util::translate("system.menu.type.qa");
+        } else if ($menu->getLinkType() == SA_Entity_Menu::LINK_TYPE_ALBUM) {
+            echo Util::translate("system.menu.type.album");
+        } else if ($menu->getLinkType() == SA_Entity_Menu::LINK_TYPE_IMAGE) {
+            echo Util::translate("system.menu.type.image");
+        } else if ($menu->getLinkType() == SA_Entity_Menu::LINK_TYPE_HTML) {
+            echo Util::translate("system.menu.type.html");
+        }
+        ?></td>
+    <td>
+        <?= ControllerUtils::getMenuLink($menu); ?>
+    </td>
+    <td class="center-text">
+        <?php
+        if ($menu->getLinkType() == SA_Entity_Menu::LINK_TYPE_IMAGE) {
+            ?>
+            <img src="<?= $menu->getImagePath() ?>" style="max-height: 150px; max-width: 300px;"
+                 onerror="this.setAttribute('src', '/img/icon/no-image.png')"/>
+                 <?php
+             } else if ($menu->getLinkType() == SA_Entity_Menu::LINK_TYPE_HTML) {
+                 ?>
+            <div>
+                <?php
+                echo $menu->getHtmlCode();
+                ?>
+            </div>
+            <?php
+        }
+        ?>
+    </td>
+    <td class="center-text"><?php
+        if ($menu->getStatus() == "1") {
+            ?>
+            <input type="checkbox" checked id="chk-display-<?= $menu->getId() ?>"
+                   data-attr="data-id: '<?= $menu->getId() ?>'"
+                   class="chk-display"/>
+            <img src="/img/icon/loading.gif" style="display:none; width: 20px"
+                 id="img-loading-<?= $menu->getId() ?>"/>
+                 <?php
+             } else {
+                 ?>
+            <input type="checkbox" id="chk-display-<?= $menu->getId() ?>"
+                   data-attr="data-id: '<?= $menu->getId() ?>'"
+                   class="chk-display"/>
+            <img src="/img/icon/loading.gif" style="display:none; width: 20px"
+                 id="img-loading-<?= $menu->getId() ?>"/>
+                 <?php
+             }
+             ?></td>
+    <td class="center-text">
+        <ul class="menu-hr menu-hr--center" >
+            <li class="menu-item divider" >
+                <a href="/system/setting/up-menu?id=<?= $menu->getId() ?>">
+                    <img src="/img/icon/up_16.png"/>
+                </a>
+            </li>
+            <li class="menu-item divider" >
+                <a  href="/system/setting/down-menu?id=<?= $menu->getId() ?>">
+                    <img src="/img/icon/down_16.png"/>
+                </a>
+            </li>
+            <li class="menu-item divider" >
+                <a  class="icon-function"
+                    href="/system/setting/update-menu?id=<?= $menu->getId() ?>">
+                    <img src="/img/icon/edit.png" title="<?= Util::translate("form.label.update") ?>"
+                         />
+                </a>
+            </li>
+            <li class="menu-item">
+                <a  class="icon-function"
+                    onclick="deleteMenu(<?= $menu->getId(); ?>, '<?= $menu->getName(); ?>')">
+                    <img src="/img/icon/trash.png" title="<?= Util::translate("form.label.delete") ?>"
+                        />
+                </a>
+            </li>
+        </ul>
+    </td>
+</tr>

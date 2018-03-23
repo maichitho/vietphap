@@ -1,0 +1,34 @@
+<style>
+    .table--list .department-dialog tr:first-child{
+        border-top: 1px solid transparent;
+    }
+
+    .table--list .department-dialog tr:last-child{
+        border-bottom: 1px solid #ddd;
+    }
+</style>
+<div id="pro_search_diaglog">
+    <div class="row">
+        <input id="pro_add_query"
+               type="text"
+               placeholder="<?= Util::translate("form.input.placeholder.search") ?>"/>
+    </div>
+    <div style="overflow: auto; height: 270px; margin-top:5px; border: 1px solid #ddd;">
+        <div class="table table--list" style="margin: 0;">
+            <table class="department-dialog">
+                <tbody data-control="for: pro in products">
+                    <tr class="row-item"
+                        data-attr="data-index: pro.$index, data-row-id:pro.id">
+                        <td class="text-center"
+                            style="width: 50px;">
+                            <input class="check-item" type="checkbox" />
+                        </td>
+                        <td data-item="pro.code"
+                            style='text-align: left;'></td>
+                        <td data-item="pro.name"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

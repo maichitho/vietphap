@@ -1,0 +1,217 @@
+/*slide*/
+.slides{
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.slides .slide{
+    float: left;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.slides .slide .slide-img{
+    float: left;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    text-align: center;
+    vertical-align: middle;
+    margin: 0 auto;
+}
+
+.slides .slide .slide-des{
+    display: inline-block;
+    font-size: 13px;
+    text-align: center;
+    /*height: 25px;*/
+    width: 100%;
+    cursor: pointer;
+}
+
+.slides .slide .slide-author{
+    display: inline-block;
+    width: 100%;
+    font-size: 11px;
+    height: 25px;
+    text-align: center;
+    font-style: italic;
+    padding-right: 20px;
+    margin-top: 10px;
+}
+
+.slides .slide .slide-img img{
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.slide-image{
+    position: relative;
+    margin: 0 auto;
+}
+
+.catalog-viewer{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+.catalog-view{
+    height: 100%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.catalog-toolbar{
+    position: absolute;
+    top:0;
+    right: -45px;
+    width: 35px;
+    height: 100%;
+    z-index: 100;
+    padding-top: 150px;
+}
+
+.catalog-toolbar .slide-button{
+    float: left;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 20px;
+}
+
+.catalog-viewer .overlay-top{
+    position: relative;
+    height: 30px;
+    background-color: #111;
+    width: 100%;
+}
+
+.catalog-viewer .overlay-bottom{
+    position: relative;
+    height: 50px;
+    background-color: #111;
+    width: 100%;
+}
+
+.catalog-viewer .overlay-bottom h6{
+    width: 100%;
+    height: 100%;
+    font-size: 70%;
+    color: #fff;
+    text-align: center;
+    padding-top: 10px;
+}
+
+
+
+@media ( min-width: 768px ) {
+    .catalog-view{
+        width: 620px;
+    }
+}
+
+@media ( min-width: 1024px ) {
+    .catalog-view{
+        width: 850px;
+    }
+
+    .catalog-viewer .slide-image:before{
+        content: " ";
+        display: block;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        background-image: -moz-linear-gradient(left, #000000 50%,rgba(0,0,0,0));
+        background-image: -o-linear-gradient(left, #000000 50%,rgba(0,0,0,0));
+        /* background-image: -webkit-linear-gradient(left, #000000 50%,rgba(0,0,0,0)); */
+        background-image: linear-gradient(to right, #000000 50%,rgba(0,0,0,0));
+        left: -160px;
+        width: 260px;
+        z-index: 10;
+    }
+
+    .catalog-viewer .slide-image:after{
+        content: " ";
+        display: block;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        background-image: -moz-linear-gradient(left, rgba(0,0,0,0),#000000);
+        background-image: -o-linear-gradient(left, rgba(0,0,0,0),#000000);
+        background-image: -webkit-linear-gradient(left, rgba(0,0,0,0),#000000);
+        background-image: linear-gradient(to right, rgba(0,0,0,0),#000000);
+        background-image: linear-gradient(to left,#000000,rgba(0,0,0,0));
+        right: 0;
+        width: 80px;
+    }
+}
+
+@media ( min-width: 1336px ) {
+    .catalog-view{
+        width: 1160px;
+    }
+}
+
+
+.slide-navigator{
+    list-style: none;
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    z-index: 100;
+}
+
+.slide-navigator li{
+    float: left;
+    height: 10px;
+    width: 10px;
+    border: 1px solid #B12A63;
+    background-color: transparent;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.slide-navigator li.active{
+    background-color: #2F95DB;
+}
+
+.slide-description{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+
+@media (max-width: 480px) {
+    .slide-description{
+        position: relative !important;
+        width: 100%  !important;
+        height: auto  !important;
+        overflow: hidden;
+        padding: 10px;
+    }
+
+    .slide-navigator{
+        left: 20px !important;
+    }
+}
+
+
+

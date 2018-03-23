@@ -1,0 +1,193 @@
+<style>
+    #dialog_confirm .loading{
+        height: 20px;
+        width: 100%;
+        font-size: 13px;
+        padding-left: 50px;
+        display: none;
+        position: absolute;
+        bottom: 20px;
+    }
+
+    #dialog_confirm .loading img{
+        float: left;
+        margin-right: 10px;
+        width: 20px;
+    }
+
+    #dialog_confirm .loading span{
+        display: inline-block;
+        margin-top: 0;
+    }
+
+    #dialog_confirm .dialog-error{
+        color: red;
+        display: none;
+    }
+
+    #dialog_confirm .dialog-success{
+        display: none;
+        color: #268953;
+    }
+
+    #dialog_confirm .dialog-content{
+        overflow: hidden;
+        font-size: 90%;
+    }
+    
+    #dialog_confirm .dialog-img{
+        float: left;
+        margin: 10px;
+        display: none;
+    }
+    
+    #dialog_confirm .dialog-info{
+        padding: 0 15px;
+    }
+</style>
+<div id="dialog_confirm"
+     style="display: none;"
+     class="dialog dialog--close" 
+     data-title="<?= Util::translate("dialog.alert.info.title") ?>">
+    <div class="dialog-content" style="height: 65px;   overflow: hidden;">
+        <img src="/img/banner/no-image.png"
+             width="55"
+             height="55"
+             class="dialog-img" />
+        <p class="dialog-info" style="text-align: center; vertical-align: middle; margin-top: 20px;">
+            <?= Util::translate("product.delete.confirm") ?>
+        </p>
+        <p class="dialog-error" style="text-align: center; vertical-align: middle; margin-top: 20px;">
+            <span><?= Util::translate("dialog.confirm.error") ?></span>
+        </p>
+        <p class="dialog-success" style="text-align: center; vertical-align: middle; margin-top: 20px;">
+            <span><?= Util::translate("dialog.confirm.success") ?></span>
+        </p>
+    </div>
+    <div class="dialog-footer">
+        <div class="loading">
+            <img src="/img/icon/loading.gif"/>
+            <span><?= Util::translate("dialog.loading.process") ?></span>
+        </div>
+        <a id="dialog_confirm_ok"
+           type="button"
+           class="button button--sm"
+           style="float: right; margin: 3px 10px 10px 0;">
+               <?= Util::translate("form.button.ok") ?>
+        </a>
+        <a id="dialog_confirm_cancel" 
+           type="button"
+           class="button button--sm"  
+           style="float: right; margin: 3px 5px 10px 10px;">
+            <?= Util::translate("form.button.cancel") ?>
+        </a>
+    </div>
+</div>
+<script>
+    /**
+     * For confirm dialogs that popup before doing some actions
+     * 
+     * @html: components/dialog-confirm.phtml
+     * @html: 
+     * @type type
+     */
+    var confirmDialog = {
+        namespace: "confirmDialog",
+        options: [],
+        init: function() {
+
+        },
+        registerChanel: function() {
+
+        },
+        show: function(settings) {
+            this.options = $.extend({}, settings);
+
+            if (this.options.title != undefined) {
+                $("#dialog_confirm .dialog-title").text(confirmDialog.options.title);
+            }
+            
+            if (this.options.imageUrl != undefined) {
+                $("#dialog_confirm .dialog-img").attr("src", confirmDialog.options.imageUrl).show();
+            }else{
+                $("#dialog_confirm .dialog-img").hide();
+            }
+
+            if (this.options.info != undefined) {
+                $("#dialog_confirm .dialog-info").text(confirmDialog.options.info);
+            }
+
+            if (this.options.errorMessage != undefined) {
+                $("#dialog_confirm .dialog-error").text(confirmDialog.options.errorMessage);
+            }
+
+            if (this.options.successMessage != undefined) {
+                $("#dialog_confirm .dialog-success").text(confirmDialog.options.successMessage);
+            }
+
+            $("#dialog_confirm_ok").show();
+            $("#dialog_confirm_cancel").show();
+
+            if (confirmDialog.options.isAlert) {
+                $("#dialog_confirm_ok").hide();
+                $("#dialog_confirm_cancel").hide();
+            } else {
+                // binding events and run call back
+                $("#dialog_confirm_ok").click(function() {
+                    if (confirmDialog.options.callbackFn !== undefined && typeof confirmDialog.options.callbackFn === "function") {
+                        $(".loading").show();
+                        confirmDialog.options.callbackFn();
+                    }
+                });
+            }
+
+            $("#dialog_confirm_cancel").click(function(e) {
+                $('#dialog_confirm').hideDialog();
+            });
+
+            $(".loading").hide();
+
+            $(".dialog-error").hide();
+            $(".dialog-info").show();
+            $(".dialog-success").hide();
+
+            $('#dialog_confirm').showDialog({width: '400px'});
+        },
+        hide: function() {
+            $("#dialog_confirm").hideDialog();
+            $(".loading").hide();
+        },
+        showError: function() {
+            $("#dialog_confirm .dialog-error").show();
+            $("#dialog_confirm .dialog-info").hide();
+            $("#dialog_confirm .dialog-success").hide();
+            $(".loading").hide();
+            $("#dialog_confirm_ok").hide();
+            $("#dialog_confirm_cancel").hide();
+        },
+        showMessage: function() {
+            $("#dialog_confirm .dialog-error").hide();
+            $("#dialog_confirm .dialog-info").hide();
+            $("#dialog_confirm .dialog-success").show();
+            $(".loading").hide();
+            $("#dialog_confirm_ok").hide();
+            $("#dialog_confirm_cancel").hide();
+        },
+        hideLoading: function() {
+            $("#dialog_confirm .dialog-info").hide();
+            $("#dialog_confirm .dialog-success").hide();
+            $("#dialog_confirm .dialog-error").hide();
+             $("#dialog_confirm .dialog-img").hide();
+            $(".loading").hide();
+        },
+        showLoading: function() {
+            $("#dialog_confirm .dialog-info").show();
+            $("#dialog_confirm .dialog-success").hide();
+            $("#dialog_confirm .dialog-error").hide();
+            $(".loading").show();
+        }
+    };
+    $(document).ready(function() {
+        confirmDialog.init();
+    });
+</script>

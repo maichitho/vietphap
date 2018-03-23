@@ -1,0 +1,181 @@
+<script type="text/javascript" src="/js/lib/uploadify/jquery.uploadify-3.1.min.js"></script>
+<link href="/js/lib/uploadify/uploadify.css" rel="stylesheet" media="screen"></link>        
+<style type="text/css">    
+    #upload-file{
+        margin: 0;
+    }
+    .uploadify-button{
+        background-color: transparent;
+        border: 0;
+        /*color: blue;*/
+        text-shadow: none;
+        text-align: left;
+        font-weight: normal;
+        color: blue;
+        display: inline-block;
+    }
+
+    .upload-cancel{
+        /*display: none;*/
+    }
+
+    .upload-error{
+        display: none;
+        font-size: 14px;
+        padding: 15px;
+        color: red;
+    }
+
+    .upload-loading{
+        width: 380px;
+        font-size: 13px;
+        margin-top: 20px;
+        margin-left: 10px;
+        margin-right: auto;
+    }
+
+    .upload-name{
+        font-size: 12px;
+        padding-bottom: 3px;
+        display: inline-block;
+        margin-left: 2px;
+    }
+</style>
+<script>
+    +(function(window, document, $, undefined) {
+        var start = document.cookie.indexOf("PHPSESSID=");
+        var end = document.cookie.indexOf(";", start);
+        if (end == -1)
+            end = document.cookie.length; // failed indexOf = -1
+        var cookie = document.cookie.substring(start + 10, end);
+        var uploadFileParam = {
+            'swf': '/js/lib/uploadify/uploadify.swf',
+            'uploader': '/system/file/async-upload-file',
+            'buttonClass': 'link',
+            'buttonText': 'Upload',
+            'cancelImg': '/js/lib/uploadify/uploadify-cancel.png',
+            'scriptAccess': 'always',
+            'queueID': 'upload_progress_dialog_content',
+            'queueSizeLimit': 5,
+            'multi': false,
+            'scriptData': {'PHPSESSID': cookie},
+            'sizeLimit': 500000000000,
+            'auto': true,
+            'scriptData': {'PHPSESSID': '<?php echo session_id(); ?>'},
+            'fileDataName': 'Filedata',
+            'overrideEvents': ['onSelectError', 'onDialogClose', 'onUploadError'],
+            'onSelect': function() {
+            },
+            'onDialogClose': function(queueData) {
+            },
+            'onUploadStart': function(file) {
+                $(".upload-loading").show();
+                $(".upload-error").hide();
+                $("#upload_processing").showDialog({width: "400px"});
+            },
+            'onUploadSuccess': function(file, data, response) {
+
+            },
+            'onUploadError': function(file, errorCode, errorMsg, errorString) {
+                $(".upload-loading").hide();
+                $(".upload-error").show();
+                return false;
+            },
+            'onUploadProgress': function(file, bytesUploaded, bytesTotal, totalBytesUploaded, totalBytesTotal) {
+                var info = file.name + " (" + Math.round(bytesTotal / 1024 / 1024) + "MB)";
+                var percent = Math.ceil((bytesUploaded / bytesTotal) * 100);
+                if (bytesUploaded == bytesTotal) {
+                    percent = 100;
+                }
+                $(".upload-name").text(info);
+                $(".progressbar").updateProgress(percent);
+            },
+            'onSelectError': function(file, errorCode, errorMsg) {
+                confirmDialog.show({
+                    title: "Thông báo",
+                    info: "File không đúng định dạng hoặc số lượng lớn hơn 5!",
+                    isAlert: true
+                });
+                return false;
+            }
+        };
+
+        window.uploadUtil = new function() {
+            // public methods
+            return {
+                upload: function(id, params) {
+                    var options = $.extend({}, uploadFileParam, params);
+                    if (id !== undefined) {
+                        $("#" + id).uploadify(options);
+                    }
+                },
+                hideLoading: function() {
+                    $("#upload_processing").hideDialog();
+                }
+            };
+        }();
+    }(window, document, window.jQuery));
+
+</script>
+<style>
+    .uploadify-button{
+        background-color: transparent;
+        border: 0;
+        color: #4D1F66;
+        text-shadow: none;
+        text-align: left;
+        font-weight: normal;
+        height: 28px !important;
+        width: 100px !important;
+    }
+
+    .upload-button object{
+        height: 32px !important;
+        width: 100px !important;
+    }
+
+    .upload-button{
+        height: 32px !important;
+        width: 100px !important;
+        position: relative;
+    }
+
+    .thumbnail-image{
+        width: 100%;
+    }
+    
+    .thumbnail-image img{
+        max-width: 100%;
+    }
+
+    .dialog-content{
+        display: block;
+        position: relative;
+        margin: 0 auto;
+        padding: 5px;
+        overflow-y: auto;
+    }
+</style>
+<div id="upload_processing"
+     style="display:none; width: 400px;"
+     class="dialog"> 
+    <div class="dialog-content" style="height: 60px; width: 400px;">
+        <div class="upload-loading">
+            <span class="upload-name"></span>
+            <div class="progressbar" 
+                 data-value="0" 
+                 style="margin: 0 auto; width:380px;"></div>
+        </div>
+        <div class="upload-error">
+            <?= Util::translate("category.upload.message.error") ?>
+        </div>
+    </div>
+    <div class="dialog-footer"
+         style="height: 35px">
+        <button class="button button--sm upload-cancel"
+                style="float: right; margin-bottom: 5px;margin-right: 10px;display: none;"
+                onclick="$('#upload_processing').hideDialog();">
+                    <?= Util::translate("form.button.cancel") ?>
+        </button>
+    </div>
+</div>

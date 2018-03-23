@@ -1,0 +1,83 @@
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/home/qa/",
+                    name: "vm-qa-view.js"
+                }
+            ],
+            bindings: [
+                {
+                    viewer: "QaV",
+                    viewmodeler: "qaVM",
+                    linkback: true,
+                    data: {
+                        qa:<?= json_encode($this->qa); ?>,
+                        suggestionQas:<?= json_encode($this->suggestionQas) ?>
+                    }
+                }
+            ]
+        });
+    });
+</script>
+<div class="panel">
+
+    <div class="container">
+        <div class="row"
+             style="padding-top: 5px;">
+            <div data-viewmodeler="QaV">
+                <div class="nar-12 pad-8 med-8 wid-8 colunm-left">
+                    <?php echo $this->render('breadcrumb.phtml'); ?>
+                    <div class="divider--hr"></div>
+                    <div class="row news-view">
+                        <h6>
+                            <a class="news-title"
+                               data-out="qa.title">
+                            </a>
+                        </h6>
+                        <div class="news-intro"
+                             data-out="qa.description">
+                        </div>
+                        <div class="news-content">
+                            <h6>Trả lời</h6>
+                            <div data-out="qa.content"
+                                 data-type="html">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"
+                         style="padding-left: 10px;">
+                        <ul class="share-buttons"> 
+                            <li><a data-attr="href:document.URL" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(document.URL) + '&t=' + encodeURIComponent(document.URL));
+                                    return false;"><img src="/img/icon/flat_web_icon_set/color/Facebook.png"></a></li>
+                            <li><a data-attr="href:document.URL" target="_blank" title="Tweet" onclick="window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(document.title) + ':%20' + encodeURIComponent(document.URL));
+                                    return false;"><img src="/img/icon/flat_web_icon_set/color/Twitter.png"></a></li>
+                            <li><a data-attr="href:document.URL" target="_blank" title="Share on Google+" onclick="window.open('https://plus.google.com/share?url=' + encodeURIComponent(document.URL));
+                                    return false;"><img src="/img/icon/flat_web_icon_set/color/Google+.png"></a></li>
+                        </ul>
+                    </div>
+                    <p></p>
+                    <div  style="padding-left: 10px;"
+                        class="fb-comments"  
+                          data-attr='data-href: document.URL' 
+                          data-numposts="5" 
+                          data-colorscheme="light"
+                          data-version="v2.3"></div>
+
+                    <div class="category-header rounded--sm border--thin">
+                        <div class="category-main"
+                             style="width: 250px;">
+                            <a> Câu hỏi khác</a>
+                        </div>
+                    </div>
+                    <?php echo $this->render('qa/components/qa-relative.phtml'); ?>
+                </div>
+            </div>
+            <!--menu-right-->
+            <div class="nar-12 pad-4 med-4 wid-4 colunm-right">
+                <?php echo $this->render('menu-right.phtml'); ?>
+            </div>
+        </div>
+    </div>
+</div>

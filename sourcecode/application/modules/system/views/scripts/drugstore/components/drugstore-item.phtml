@@ -1,0 +1,34 @@
+<tr data-row>
+    <td class="center-text">
+        <img style="width: 60px;" data-attr="src: store.imagePath"
+             onerror="this.setAttribute('src', '/img/icon/drugstore.jpg')"/>
+    </td>
+    <td data-item="store.name"></td>
+    <td data-item="store.phone"></td>
+    <td data-item="store.address"></td>
+    <td data-item="store.uiDistrictName"></td>  
+    <td data-item="store.uiCityName"></td>  
+    <td>
+        <ul class="menu-hr menu-hr--center" >
+            <li class="menu-item divider">
+                <a data-attr="href: '/'+change_alias(store.name)+'-'+ store.id+'.html'" target="_blank">
+                    <img src="/img/icon/view.png" title="<?= Util::translate("form.label.view") ?>"
+                         style="width: 16px;"/>
+                </a>
+            </li>
+
+            <li class="menu-item divider" >
+                <a data-attr="href: '/system/drugstore/update?id=' + store.id " >
+                    <img src="/img/icon/edit.png" title="<?= Util::translate("form.label.update") ?>"
+                         style="width: 20px;"/>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a data-call="click: showDeleteDialog($dom, store.id)">
+                    <img src="/img/icon/trash.png" title="<?= Util::translate("form.label.delete") ?>"
+                         style="width: 16px;"/>
+                </a>
+            </li>
+        </ul>
+    </td>
+</tr>

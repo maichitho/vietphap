@@ -1,0 +1,181 @@
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/lib/",
+                    name: "jquery.autogrow-textarea.js"
+                },
+                {
+                    src: "/js/system/setting/",
+                    name: "vm-param-list.js"
+                }
+            ],
+            messages: {
+                title: '<?= Util::translate("message.alert.title") ?>',
+                paramRequired: '<?= Util::translate("message.param.required") ?>',
+                typeImg: '<?= SA_Entity_Param::TYPE_IMG ?>',
+                typeCheckbox: '<?= SA_Entity_Param::TYPE_CHECKBOX ?>',
+                typeHtml: '<?= SA_Entity_Param::TYPE_HTML ?>',
+                pTypeGeneral: '<?= SA_Entity_Param::PARAM_TYPE_GENERAL ?>',
+                pTypeImage: '<?= SA_Entity_Param::PARAM_TYPE_IMAGE ?>',
+                pTypeMap: '<?= SA_Entity_Param::PARAM_TYPE_MAP ?>',
+                pTypeSNetwork: '<?= SA_Entity_Param::PARAM_TYPE_SNETWORK ?>',
+                pTypeSeo: '<?= SA_Entity_Param::PARAM_TYPE_SEO ?>'
+            },
+            bindings: [
+                {
+                    viewer: "ParamListV",
+                    viewmodeler: "paramListVM",
+                    linkback: true,
+                    data: {
+                        generalParams: <?= json_encode(ControllerUtils::mapParams($this->generalParams)) ?>,
+                        imageParams: <?= json_encode(ControllerUtils::mapParams($this->imageParams)) ?>,
+                        seoParams: <?= json_encode(ControllerUtils::mapParams($this->seoParams)) ?>,
+                        snetworkParams: <?= json_encode(ControllerUtils::mapParams($this->snetworkParams)) ?>
+                    }
+                }
+            ]
+        });
+    });
+</script>
+<div class="panel content">
+    <div data-viewmodeler="ParamListV">
+        <div class="table table--list" 
+             style="padding: 15px;">
+            <ul class="menu-hr header-tab" >
+                <li class="menu-item tab-active menu-general-info"
+                    data-call="click: menuItemClick('general')">
+                    <a>
+                        <img src="/img/icon/information.png" 
+                             class="icon"/>
+                             <?= Util::translate("setting.param_tab.general") ?>
+                    </a>
+                </li>
+                <li class="menu-item menu-image-info"
+                    data-call="click: menuItemClick('image')">
+                    <a>
+                        <img src="/img/icon/camera.png" 
+                             class="icon"/>
+                             <?= Util::translate("setting.param_tab.image") ?>
+                    </a>
+                </li>     
+                <li class="menu-item menu-seo-info"
+                    data-call="click: menuItemClick('seo')">
+                    <a>
+                        <img src="/img/icon/seo-tag.png" 
+                             class="icon"/>
+                             <?= Util::translate("setting.param_tab.seo") ?>
+                    </a>
+                </li>
+                <li class="menu-item menu-sNetwork-info"
+                    data-call="click: menuItemClick('sNetwork')"
+                    style="border-right:1px solid #ddd">
+                    <a>
+                        <img src="/img/icon/network.png" 
+                             class="icon"/>
+                             <?= Util::translate("setting.param_tab.snetwork") ?>
+                    </a>
+                </li>     
+                <!--                <li class="menu-item menu-map-info"
+                                    data-call="click: menuItemClick('map')">
+                                    <a>
+                                        <img src="/img/icon/maps.png" 
+                                             class="icon"/>
+                <?= Util::translate("setting.param_tab.map") ?>
+                                    </a>
+                                </li>-->
+            </ul>
+            <div class="border--thin rounded--sm div-general-content div-param-content"
+                 style="margin-top: 10px;">
+                <table>
+                    <thead>
+                        <tr class="fnt--12">
+                            <th class="width-50">
+                                <?= Util::translate("form.label.order") ?> 
+                            </th>
+                            <th class="width-400">
+                                <?= Util::translate("setting.param.name") ?> 
+                            </th>
+                            <th>
+                                <?= Util::translate("setting.param.value") ?> 
+                            </th>
+                            <th class="width-150">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody data-control="for: param in generalParams">
+                        <?php echo $this->render("setting/components/param-item.phtml"); ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="border--thin rounded--sm div-image-content div-param-content"
+                 style="display: none; margin-top: 10px;">
+                <table>
+                    <thead>
+                        <tr class="fnt--12">
+                            <th class="width-50">
+                                <?= Util::translate("form.label.order") ?> 
+                            </th>
+                            <th class="width-400">
+                                <?= Util::translate("setting.param.name") ?> 
+                            </th>
+                            <th>
+                                <?= Util::translate("setting.param.value") ?> 
+                            </th>
+                            <th class="width-200">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody data-control="for: param in imageParams">
+                        <?php echo $this->render("setting/components/param-item.phtml"); ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="border--thin rounded--sm div-seo-content div-param-content"
+                 style="display: none; margin-top: 10px;">
+                <table>
+                    <thead>
+                        <tr class="fnt--12">
+                            <th class="width-50">
+                                <?= Util::translate("form.label.order") ?> 
+                            </th>
+                            <th class="width-400">
+                                <?= Util::translate("setting.param.name") ?> 
+                            </th>
+                            <th>
+                                <?= Util::translate("setting.param.value") ?> 
+                            </th>
+                            <th class="width-150">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody data-control="for: param in seoParams">
+                        <?php echo $this->render("setting/components/param-item.phtml"); ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="border--thin rounded--sm div-sNetwork-content div-param-content"
+                 style="display: none; margin-top: 10px;">
+                <table>
+                    <thead>
+                        <tr class="fnt--12">
+                            <th class="width-50">
+                                <?= Util::translate("form.label.order") ?> 
+                            </th>
+                            <th class="width-400">
+                                <?= Util::translate("setting.param.name") ?> 
+                            </th>
+                            <th>
+                                <?= Util::translate("setting.param.value") ?> 
+                            </th>
+                            <th class="width-150">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody data-control="for: param in snetworkParams">
+                        <?php echo $this->render("setting/components/param-item.phtml"); ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <?php echo $this->render('components/dialog-confirm.phtml'); ?>
+        <?php echo $this->render("components/dialog-single-upload.phtml") ?>
+    </div>   
+</div>

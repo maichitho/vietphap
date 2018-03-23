@@ -1,0 +1,171 @@
+<script type="text/javascript" src="/js/lib/uploadify/jquery.uploadify-3.1.min.js"></script>
+<link href="/js/lib/uploadify/uploadify.css" rel="stylesheet" media="screen"></link>  
+<script>
+    +(function(window, document, $, undefined) {
+        var uploaded = 0;
+        var uploadFileParam = {
+            'swf': '/js/lib/uploadify/uploadify.swf',
+            'uploader': '/system/file/async-upload-multi-file',
+            'buttonClass': 'link',
+            'buttonText': 'Upload',
+            'cancelImg': '/js/lib/uploadify/uploadify-cancel.png',
+            'scriptAccess': 'always',
+            'queueID': 'upload_progress_dialog_content',
+            'queueSizeLimit': 15,
+            'uploadLimit': 15,
+            'multi': true,
+            'auto': true,
+            'buttonImg': " ",
+            'wmode': "transparent",
+            'fileObjName': 'Filedata',
+            'overrideEvents': ['onSelectError', 'onDialogClose', 'onUploadError'],
+            'onSelect': function() {
+
+            },
+            'onDialogClose': function(queueData) {
+                uploadDialogVM.screens.length = 0;
+                if (queueData.filesSelected > 0 && queueData.filesSelected < 15) {
+                    for (var i = 0; i < queueData.filesSelected; i++) {
+                        uploadDialogVM.screens.push({
+                            url: "",
+                            title: "Untitled"
+                        });
+                    }
+                    uploaded = 0;
+                    uploadDialogVM.showDialog();
+                    uploadDialogVM.updateValue("screens", uploadDialogVM.screens);
+                    $("#dialog_multi_upload .thumbnail").height($("#dialog_multi_upload .thumbnail").width());
+                    $("#dialog_multi_upload .thumbnail-img").height($("#dialog_multi_upload .thumbnail").width() - 30);
+                } else {
+                    return false;
+                }
+            },
+            'onUploadStart': function(file) {
+
+            },
+            'onUploadSuccess': function(file, data, response) {
+                var data = JSON.parse(data);
+                var path = data.filePath;
+//                var loader = new ImageLoader(path);
+//                loader.loadEvent = function(url, image) {
+                $("#dialog_multi_upload .thumbnail-img").eq(uploaded).attr("src", path);
+                uploadDialogVM.screens[uploaded]['url'] = path;
+//                };
+                //loa???der.load();
+                uploaded++;
+            },
+            'onUploadError': function(file, errorCode, errorMsg, errorString) {
+                uploadDialogVM.showUploadError();
+            },
+            'onUploadProgress': function(file, bytesUploaded, bytesTotal, totalBytesUploaded, totalBytesTotal) {
+                //                alert("started");
+                var info = file.name + " (" + Math.round(totalBytesUploaded / 1024 / 1024) + "MB of " + Math.round(totalBytesTotal / 1024 / 1024) + "MB)";
+                var totalPercent = Math.ceil((totalBytesUploaded / totalBytesTotal) * 100);
+                var percent = Math.ceil((bytesUploaded / bytesTotal) * 100);
+
+                if (bytesUploaded == bytesTotal || bytesUploaded > bytesTotal) {
+                    percent = 100;
+                }
+                $("#dialog_multi_upload .progressbar").eq(uploaded).updateProgress(percent);
+            },
+            'onSelectError': function(file, errorCode, errorMsg) {
+                uploadDialogVM.showSelectError();
+            }
+        };
+        window.uploadUtil = new function() {
+            // public methods
+            return {
+                uploadMultipleFile: function(id, settings) {
+                    uploadDialogVM.options = $.extend({}, uploadDialogVM.options, settings);
+                    if (id !== undefined) {
+                        $("#" + id).uploadify(uploadFileParam);
+                    }
+                }
+            };
+        }();
+    }(window, document, window.jQuery));
+</script>
+<style>
+    .uploadify-button{
+        background-color: transparent;
+        border: 0;
+        color: blue;
+        text-shadow: none;
+        text-align: left;
+        font-weight: normal;
+        height: 28px !important;
+        width: 100px !important;
+    }
+
+    .upload-button object{
+        height: 32px !important;
+        width: 100px !important;
+    }
+
+    .upload-button{
+        height: 32px !important;
+        width: 100px !important;
+        position: relative;
+    }
+
+    .thumbnail-image{
+        width: 100%;
+    }
+    
+    .thumbnail-image img{
+        max-width: 100%;
+    }
+
+    .dialog-content{
+        display: block;
+        position: relative;
+        margin: 0 auto;
+        padding: 5px;
+        overflow-y: auto;
+    }
+</style>
+<div id="dialog_multi_upload"
+     style="display: none;"
+     class="dialog dialog--close" 
+     data-title="<?= Util::translate("dialog.alert.info.title") ?>">
+    <div class="dialog-content">
+        <div class="row"
+             style="overflow: hidden"
+             data-control="for: scr in screens">
+            <div class="pad-4 med-4 wid-4"
+                 style="padding: 5px;">
+                <div class="thumbnail thumbnail-image"
+                     data-skip>
+                    <a class="thumbnail-link">
+                        <img class="thumbnail-img"
+                             data-attr="src: scr.url">
+                    </a>
+                    <h6 class="project-title"
+                        style="display: none;">
+                        Untitled
+                    </h6>
+                    <div class="wrap-progressbar">
+                        <div class="progressbar"
+                             data-attr="id: 'image' + scr.$index"
+                             data-value="0" 
+                             style="margin: 0 auto;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dialog-footer">
+        <a id="dialog_insert"
+           type="button"
+           class="button button--sm"
+           style="float: right; margin: 3px 10px 10px 0;">
+               <?= Util::translate("form.button.insert") ?>
+        </a>
+        <a onclick="$('#dialog_multi_upload').hideDialog()"
+           type="button"
+           class="button button--sm"  
+           style="float: right; margin: 3px 5px 10px 10px;">
+            <?= Util::translate("form.button.cancel") ?>
+        </a>
+    </div>
+</div>

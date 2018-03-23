@@ -1,0 +1,89 @@
+<tr class="data-row">
+    <td class="center-text"  
+        data-out="param.$index+1"></td>
+    <td data-item="param.description"></td>    
+    <td data-control="if: param.type == '<?= SA_Entity_Param::TYPE_TEXTAREA ?>'">
+        <textarea disabled class="param-value"
+                  data-attr="id: 'param_' + param.id"
+                  data-item="param.value"
+                  data-type="text" rows="3"></textarea>
+    </td>
+    <td data-control="if: param.type == '<?= SA_Entity_Param::TYPE_HTML ?>'">
+        <div data-item="param.value" style="width: 100%;"
+             data-attr="id: 'div-html-' + param.id"
+             class="div-demo"
+             data-type="html"></div>
+        <textarea disabled class="param-value" style="display: none;"
+                  data-attr="id: 'param_' + param.id"
+                  data-item="param.value"
+                  data-type="text" rows="3"></textarea>
+    </td>
+    <td data-control="if: param.type == '<?= SA_Entity_Param::TYPE_TEXT ?>'">
+        <input type="text" disabled class="param-value"
+               data-attr="id: 'param_' + param.id, value: param.value">
+    </td>
+    <td data-control="if: param.type == '<?= SA_Entity_Param::TYPE_CHECKBOX ?>'">
+        <input type="checkbox" class="param-value"
+               style="margin-left: 5px;" disabled
+               data-control="if: param.value == '1'" checked
+               />
+        <input type="checkbox" class="param-value"
+               style="margin-left: 5px;" disabled               
+               data-control="if: param.value != '1'"
+               />
+    </td>
+    <td data-control="if: param.type == '<?= SA_Entity_Param::TYPE_IMG ?>'">
+        <div class="thumbnail" 
+             data-skip 
+             style="max-height: 140px; display: inline-block; width: auto;"
+             data-attr='data-path: param.value'>
+            <a class="thumbnail-link">
+                <img  data-attr="src: param.value, id: 'img-'+param.id"
+                      style="height: 130px;" 
+                      onerror="this.setAttribute('src', '/img/icon/picture.png')"
+                      class="thumbnail-img logo-img">
+            </a>
+            <input type="hidden"
+                   data-attr="id: 'param_'+param.id"
+                   data-in="param.value" />
+        </div>
+    </td>
+    <td class="center-text param-action">
+        <ul class="menu-hr menu-hr--center param-update" >
+            <li class="menu-item" >
+                <a data-call="click: updateParam($dom)"
+                   data-attr="data-id: param.id, data-type: param.type">
+                       <?= Util::translate("form.label.update") ?>
+                </a>
+            </li>
+        </ul>
+        <ul class="menu-hr menu-hr--center param-save" >
+            <li class="menu-item divider" 
+                data-control="if: param.type == '<?= SA_Entity_Param::TYPE_IMG ?>'">
+                <a class="link button-upload"
+                   style="margin-top: 5px; position: relative; width: 70px;">
+                    <span>
+                        <?= Util::translate("form.button.upload.image") ?>
+                    </span>
+                    <input class="param-upload" 
+                           data-attr="id:'upload-param' + param.id" 
+                           name="file"
+                           type="file"/>
+                </a>
+            </li>
+            <li class="menu-item divider">
+                <a data-call="click: saveParam(param.id,param.key2,$dom)"
+                   data-attr="data-id: param.id, data-type: param.type">
+                       <?= Util::translate("form.label.save") ?>
+                </a>
+                <img class="img-loading" src="/img/icon/loading.gif" style="display: none; width: 16px;"/>
+            </li>
+            <li class="menu-item" >
+                <a data-call="click: cancelParam($dom)"
+                   data-attr="data-id: param.id, data-type: param.type">
+                       <?= Util::translate("form.label.cancel") ?>
+                </a>
+            </li>
+        </ul>
+    </td>
+</tr>

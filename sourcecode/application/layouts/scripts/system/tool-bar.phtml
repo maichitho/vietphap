@@ -1,0 +1,172 @@
+
+<?php
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$controllerName = $request->getControllerName();
+$actionName = $request->getActionName();
+$type = strpos($actionName, "location") ? "location" : $request->getParam("type");
+$user = Services::createAuthenticationService()->getUser();
+?>
+<div class="toolbar">
+    <div class="toolbar-item">
+        <ul class="menu-hr">
+            <?php
+            if ($controllerName == "gallery") {
+                ?>
+                <li class="menu-item" >
+                    <form id="form" 
+                          action="/system/gallery/list"
+                          method="GET">
+                        <input type="text"
+                               name="title"
+                               value="<?= isset($this->title) ? $this->title : '' ?>"
+                               style="width:300px;display: inline-block;margin-left: 20px;"/>
+                        <button class="button button--sm"
+                                type="submit"
+                                style="margin-left: 5px; margin-bottom: 0; display: inline-block;margin-right: 25px;">
+                                    <?= Util::translate("form.button.search") ?>
+                        </button> 
+                    </form>
+                </li>
+                <li class="menu-item <?= $actionName == "list" ? "menu-item--active" : "" ?>" >
+                    <a href="/system/gallery/list"> 
+                        <?= Util::translate("gallery.list") ?>
+                    </a>
+                </li> 
+
+                                            <!--                <li class="menu-item <?= $actionName == "create" ? "menu-item--active" : "" ?>" >
+                                                            <a href="/system/gallery/create"> 
+                <?= Util::translate("gallery.create") ?>
+                                                            </a>
+                                                        </li> -->
+                <?php
+            } else if ($controllerName == "user") {
+                ?>
+                <li class="menu-item  <?= $actionName == "list" ? "menu-item--active" : "" ?>" >
+                    <a href="/system/user/list"> 
+                        <?= Util::translate("user.list") ?>
+                    </a>
+                </li>
+                <li class="menu-item <?= $actionName == "change-password" ? "menu-item--active" : "" ?>" >
+                    <a href="/system/user/change-password"> 
+                        <?= Util::translate("user.change_password") ?>
+                    </a>
+                </li>
+                <?php
+            } else if ($controllerName == "workshop") {
+                ?>
+                <li class="menu-item  <?= $actionName == "list" ? "menu-item--active" : "" ?>" >
+                    <a href="/system/workshop/list"> 
+                        <?= Util::translate("workshop.list") ?>
+                    </a>
+                </li>
+                <li class="menu-item <?= $actionName == "create" ? "menu-item--active" : "" ?>" >
+                    <a href="/system/workshop/create"> 
+                        <?= Util::translate("workshop.create") ?>
+                    </a>
+                </li>
+                <?php
+            } else if ($controllerName == "news" && !strpos($actionName, "-qa")) {
+                ?>
+                <li class="menu-item  <?= $actionName == "list" ? "menu-item--active" : "" ?>" >
+                    <a href="/system/news/list"> 
+                        <?= Util::translate("news.list") ?>
+                    </a>
+                </li>
+                <li class="menu-item <?= $actionName == "create" ? "menu-item--active" : "" ?>" >
+                    <a href="/system/news/create"> 
+                        <?= Util::translate("news.create") ?>
+                    </a>
+                </li>
+                <?php
+            } else if ($controllerName == "news" && strpos($actionName, "-qa")) {
+                ?>
+                <li class="menu-item  <?= $actionName == "list-qa" ? "menu-item--active" : "" ?>" >
+                    <a href="/system/news/list-qa"> 
+                        <?= Util::translate("news.list_qa") ?>
+                    </a>
+                </li>
+                <li class="menu-item <?= $actionName == "create-qa" ? "menu-item--active" : "" ?>" >
+                    <a href="/system/news/create-qa"> 
+                        <?= Util::translate("news.create_qa") ?>
+                    </a>
+                </li>
+                <?php
+            } else if ($controllerName == "category") {
+                ?>
+            <!--                <li class="menu-item  <?= ($type == null) || ($type == SA_Entity_Category::TYPE_MAIN) ? "menu-item--active" : "" ?>" >
+                            <a href="/system/category/list?type=<?= SA_Entity_Category::TYPE_MAIN ?>"> 
+                <?= Util::translate("category.main") ?>
+                            </a>
+                        </li>-->
+                <li class="menu-item <?= $type == SA_Entity_Category::TYPE_CHILD ? "menu-item--active" : "" ?>" >
+                    <a href="/system/category/list?type=<?= SA_Entity_Category::TYPE_CHILD ?>"> 
+                        <?= Util::translate("category.child") ?>
+                    </a>
+                </li>          
+        <!--                <li class="menu-item <?= $type == SA_Entity_Category::TYPE_ENTRY ? "menu-item--active" : "" ?>" >
+                        <a href="/system/category/list?type=<?= SA_Entity_Category::TYPE_ENTRY ?>"> 
+                <?= Util::translate("category.entry") ?>
+                        </a>
+                    </li>-->
+                <li class="menu-item  <?= $type == SA_Entity_Category::TYPE_SUPPORT ? "menu-item--active" : "" ?>" >
+                    <a href="/system/category/list?type=<?= SA_Entity_Category::TYPE_SUPPORT ?>"> 
+                        <?= Util::translate("category.support") ?>
+                    </a>
+                </li>
+    <!--                <li class="menu-item  <?= $type == SA_Entity_Category::TYPE_QA ? "menu-item--active" : "" ?>" >
+                    <a href="/system/category/list?type=<?= SA_Entity_Category::TYPE_QA ?>"> 
+                <?= Util::translate("category.qNa") ?>
+                    </a>
+                </li>-->
+<!--                <li class="menu-item  <?= $type == SA_Entity_Category::TYPE_TESTIMONIAL ? "menu-item--active" : "" ?>" >
+                    <a href="/system/category/list?type=<?= SA_Entity_Category::TYPE_TESTIMONIAL ?>"> 
+                        <?= Util::translate("category.testiminal") ?>
+                    </a>
+                </li>
+                <li class="menu-item  <?= strpos($actionName, "location") ? "menu-item--active" : "" ?>" >
+                    <a href="/system/category/list-location"> 
+                        <?= Util::translate("category.location") ?>
+                    </a>
+                </li>-->
+                <?php
+            } else if ($controllerName == "setting") {
+                ?>
+                <li class="menu-item <?= $actionName == "list-param" ? "menu-item--active" : "" ?>" >
+                    <a href="/system/setting/list-param"> 
+                        <?= Util::translate("system.setting.list_param") ?>
+                    </a>
+                </li>
+                <li class="menu-item <?= $actionName == "list-menu" ? "menu-item--active" : "" ?>" >
+                    <a href="/system/setting/list-menu"> 
+                        <?= Util::translate("system.setting.list_menu") ?>
+                    </a>
+                </li>
+                <li class="menu-item <?= $actionName == "create-menu" ? "menu-item--active" : "" ?>" >
+                    <a href="/system/setting/create-menu"> 
+                        <?= Util::translate("system.setting.create_menu") ?>
+                    </a>
+                </li>
+<!--                <li class="menu-item <?= $actionName == "backup" ? "menu-item--active" : "" ?>" >
+                    <a href="/system/file/backup"> 
+                      Backup
+                    </a>
+                </li>-->
+                <?php
+            } else if ($controllerName == "drugstore") {
+                ?>
+                <li class="menu-item  <?= $actionName == "list" ? "menu-item--active" : "" ?>" >
+                    <a href="/system/drugstore/list"> 
+                        <?= Util::translate("drugstore.list") ?>
+                    </a>
+                </li>
+                <li class="menu-item <?= $actionName == "create" ? "menu-item--active" : "" ?>" >
+                    <a href="/system/drugstore/create"> 
+                        <?= Util::translate("drugstore.create") ?>
+                    </a>
+                </li>
+                <?php
+            }
+            ?>
+        </ul>
+    </div>
+</div>

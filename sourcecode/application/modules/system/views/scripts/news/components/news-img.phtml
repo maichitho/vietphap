@@ -1,0 +1,28 @@
+<div class="row"
+     id="image-panel">
+    <div class="item-image item-template"
+         style="display: none;">
+        <div class="product-thumbnail">
+            <div class="thumbnail"
+                 data-skip>
+                <a class="thumbnail-link"
+                   href="#">
+                    <img class ="thumbnail-img"/>
+                </a>
+                <a class="thumbnail-edit"
+                   onclick="newsCnuVM.showDeleteImageDialog(this)">
+                    <?= Util::translate("form.button.delete") ?>
+                </a>
+                <div class="product-check center-text">
+                    <label class="fnt--12 fgr-text"
+                           onclick="newsCnuVM.updateHomeThumbnail(this, 0);">
+                        <?= Util::translate("product.image.thumbnail") ?>                   
+                    </label>
+                    <input class="thumbnail-home" 
+                           type="checkbox"
+                           onclick="newsCnuVM.updateHomeThumbnail(this, 1);">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,214 @@
+<?php
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$controllerName = $request->getControllerName();
+$actionName = $request->getActionName();
+?>
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/system/home/",
+                    name: "vm-header.js"
+                }
+            ],
+            messages: {
+            },
+            bindings: [
+                {
+                    viewer: "HeaderV",
+                    viewmodeler: "headerVM",
+                    linkback: true,
+                    data: {
+                    }
+                }
+            ]
+        });
+    });
+</script>
+
+<div class="header" data-viewmodeler="HeaderV">
+    <div class="logo">
+        <div class="logo-box">
+            <a href="/system/">
+                <img/>
+            </a>
+        </div>
+    </div>
+    <div class="header-bar" style="display: inline-block; height: 36px; padding-top: 5px;">
+        <div class="f-menu-hr">
+            <ul class="menu-hr">
+                <li class="menu-item" >
+                    <a href="/"><?= Util::translate("system.header.home") ?></a>
+
+                </li>
+                <li class="menu-item <?= $controllerName == "news" && (!strpos($actionName, "-qa")) ? "menu-item--active" : "" ?>" >
+                    <a href="/system/news/list"><?= Util::translate("system.header.entry") ?></a>
+                    <div class="f-popup-menu">
+                        <div class="f-popup-top-layer"></div>
+                        <ul class="menu-vr">
+                            <li class="menu-item">
+                                <a href="/system/news/list"> 
+                                    <?= Util::translate("news.list") ?>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="/system/news/create"> 
+                                    <?= Util::translate("news.create") ?>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+<!--                <li class="menu-item <?= $controllerName == "drugstore" ? "menu-item--active" : "" ?>" >
+                    <a href="/system/drugstore/list"><?= Util::translate("system.header.drugstore") ?></a>
+                    <div class="f-popup-menu">
+                        <div class="f-popup-top-layer"></div>
+                        <ul class="menu-vr">
+                            <li class="menu-item">
+                                <a href="/system/drugstore/list"> 
+                                    <?= Util::translate("drugstore.list") ?>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="/system/drugstore/create"> 
+                                    <?= Util::translate("drugstore.create") ?>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>-->
+                <li class="menu-item <?= $controllerName == "news" && (strpos($actionName, "-qa") ) ? "menu-item--active" : "" ?>" >
+                    <a href="/system/news/list-qa"><?= Util::translate("system.header.qa") ?></a>
+                    <div class="f-popup-menu">
+                        <div class="f-popup-top-layer"></div>
+                        <ul class="menu-vr">
+                            <li class="menu-item">
+                                <a href="/system/news/list-qa"> 
+                                    <?= Util::translate("news.list_qa") ?>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="/system/news/create-qa"> 
+                                    <?= Util::translate("news.create_qa") ?>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="menu-item <?= $controllerName == "category" ? "menu-item--active" : "" ?>" >
+                    <a href="/system/category/list"><?= Util::translate("system.header.category") ?></a>
+                    <div class="f-popup-menu">
+                        <div class="f-popup-top-layer"></div>
+                        <ul class="menu-vr">
+                            <li class="menu-item">
+                                <a href="/system/category/list?type=<?= SA_Entity_Category::TYPE_CHILD ?>"> 
+                                    <?= Util::translate("category.child") ?>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="/system/category/list?type=<?= SA_Entity_Category::TYPE_SUPPORT ?>"> 
+                                    <?= Util::translate("category.support") ?>
+                                </a>
+                            </li>
+<!--                            <li class="menu-item">
+                                <a href="/system/category/list?type=<?= SA_Entity_Category::TYPE_TESTIMONIAL ?>"> 
+                                    <?= Util::translate("category.testiminal") ?>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="/system/category/list-location"> 
+                                    <?= Util::translate("category.location") ?>
+                                </a>
+                            </li>-->
+                        </ul>
+                    </div>
+                </li> 
+                <li class="menu-item <?= $controllerName == "user" ? "menu-item--active" : "" ?>" >
+                    <a href="/system/user/list"><?= Util::translate("system.header.user") ?></a>
+                    <div class="f-popup-menu">
+                        <div class="f-popup-top-layer"></div>
+                        <ul class="menu-vr">
+                            <li class="menu-item">
+                                <a href="/system/user/list"> 
+                                    <?= Util::translate("user.list") ?>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="/system/user/change-password"> 
+                                    <?= Util::translate("user.change_password") ?>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li> 
+                <li class="menu-item <?= $controllerName == "setting" ? "menu-item--active" : "" ?>" >
+                    <a href="/system/setting/list-param"><?= Util::translate("system.header.setting") ?></a>
+                    <div class="f-popup-menu">
+                        <div class="f-popup-top-layer"></div>
+                        <ul class="menu-vr">
+                            <li class="menu-item">
+                                <a href="/system/setting/list-param"> 
+                                    <?= Util::translate("system.setting.list_param") ?>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="/system/setting/list-menu"> 
+                                    <?= Util::translate("system.setting.list_menu") ?>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="/system/setting/create-menu"> 
+                                    <?= Util::translate("system.setting.create_menu") ?>
+                                </a>
+                            </li>
+<!--                            <li class="menu-item">
+                                <a href="/system/file/backup"> 
+                                    Backup
+                                </a>
+                            </li>-->
+                        </ul>
+                    </div>
+                </li> 
+            </ul>
+        </div>
+    </div>
+    <div class="header-menu">
+        <?php
+        $userName = Services::createAuthenticationService()->getUser();
+//    var_dump($userName);    
+        if ($userName != null) {
+            ?>
+            <div class="user-login">
+                <div class="user-login-name rounded--sm">
+                    <img src="/img/icon/user.png"/>
+                    <span class="bold"
+                          style="margin-right: 10px;font-size: 75%;">
+                              <?= $userName->getUsername() ?>
+                    </span>
+                </div>
+                <ul class="menu-dropdown">
+                    <li>
+                        <a class="link"
+                           style="margin-right: 10px;"
+                           href="/system/user/change-password">
+                               <?= Util::translate("form.link.change_password") ?>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="link"
+                           href="/system/user/logout">
+                               <?= Util::translate("form.link.logout") ?>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <?php
+        }
+        ?>
+    </div>
+    <?php echo $this->render('system/tool-bar.phtml'); ?>
+</div>
+
+
+

@@ -1,0 +1,294 @@
+<?php
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$status = $request->getParam("status");
+?>
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/system/dialog/",
+                    name: "vm-dialog-m-upload.js"
+                },
+                {
+                    src: "/js/system/product/",
+                    name: "vm-product-cnu.js"
+                }
+            ],
+            messages: {
+                providerType: '<?= SA_Entity_Category::TYPE_GROUP_PRODUCT ?>',
+                cancelUpload: '<?= Util::translate("message.upload.cancel") ?>',
+                isMobile: <?= Util::isMobile() ?>,
+                title: '<?= Util::translate("message.alert.title") ?>',
+                deleteTitle: '<?= Util::translate("message.delete.title") ?>',
+                deleteImage: '<?= Util::translate("message.gallery.delete.image") ?>',
+                deleteImageError: '<?= Util::translate("message.gallery.delete.image.error") ?>',
+            },
+            bindings: [
+                {
+                    viewer: "ProductCnuV",
+                    viewmodeler: "productCnuVM",
+                    linkback: true,
+                    data: {
+                        product: <?= json_encode($this->product) ?>,
+                        products: <?= json_encode($this->products) ?>,
+                        categories: <?= json_encode($this->categories) ?>,
+                        images: <?= json_encode($this->images) ?>,
+                        selCategories: <?= json_encode($this->selCategories) ?>,
+                        type: '<?= $this->type ?>',
+                    }
+                },
+                {
+                    viewer: "UploadDialogV",
+                    viewmodeler: "uploadDialogVM",
+                    linkback: true,
+                    data: {
+                    }
+                }
+            ]
+        });
+    });
+</script>
+<div data-viewmodeler="ProductCnuV">
+    <div id="alert_success"
+         class="alert--success rounded--sm"
+         style="<?= isset($status) && $status == "success" ? 'display: block;' : 'display: none;' ?>">
+        <span class="alert-content">
+            <?php if ($this->type == "update") {
+                ?>
+                <?= Util::translate("product.update.message.success") ?> 
+            <?php } else {
+                ?>
+                <?= Util::translate("product.create.message.success") ?> 
+            <?php }
+            ?>
+        </span>
+        <span class="alert-close" 
+              onclick="$(this).parent().hide();">&times;</span>
+    </div>
+    <div id="alert_error"
+         class="alert--error rounded--sm"
+         style="<?= isset($status) && $status == "error" ? 'display: block;' : 'display: none;' ?>">
+        <span class="alert-content">
+            <?php if ($this->type == "update") {
+                ?>
+                <?= Util::translate("product.update.message.error") ?> 
+            <?php } else {
+                ?>
+                <?= Util::translate("product.create.message.error") ?> 
+            <?php }
+            ?>
+        </span>
+        <span class="alert-close" 
+              onclick="$(this).parent().hide();">&times;</span>
+    </div>  
+
+    <div class="panel content">
+        <div class="row">
+            <div class="product-cnu">
+                <span style="display:inline-block; margin:5px 0 0 20px; font-size: 12px;"><?= Util::translate("form.label.suggestion") ?></span>
+                <form id="form" 
+                      data-call="submit: updatePostedValues" action="
+                      <?php
+                      if ($this->type == "create") {
+                          echo '/system/product/create';
+                      } else {
+                          echo '/system/product/update';
+                      }
+                      ?>" method="POST">
+                    <div class="row border--thin rounded--sm"
+                         style="margin: 15px; padding-right: 15px;">
+                        <div class="table--info">
+                            <table  style="width: 100%;">
+                                <tr>
+                                    <td class="width-120 fnt--12 fgr-text"
+                                        style="padding-left: 15px;">
+                                        <?= Util::translate("product.code") ?> (*)
+                                    </td>
+                                    <td>
+                                        <span data-message-for="code" 
+                                              class="fgr--error"></span>
+                                        <input type="text"
+                                               name ="code"
+                                               data-in="product.code"
+                                               data-check="code: required"
+                                               data-required-message="<?= Util::translate("product.code.error.required") ?>"/>
+                                    </td>
+                                    <td class="width-120 fnt--12 fgr-text"
+                                        style="padding-left: 15px;">
+                                        <?= Util::translate("product.name") ?> (*)
+                                    </td>
+                                    <td>
+                                        <span data-message-for="name" 
+                                              class="fgr--error"></span>
+                                        <input type="text"
+                                               name ="name"
+                                               data-in="product.name"
+                                               data-check="name: required"
+                                               data-required-message="<?= Util::translate("product.name.error.required") ?>"
+                                               />
+                                    </td>
+                                    <td class="width-120 fnt--12 fgr-text"
+                                        style="padding-left: 15px;">
+                                            <?= Util::translate("product.model") ?>
+                                    </td>
+                                    <td>
+                                        <input name="model" 
+                                               type="text" 
+                                               data-in="product.model"/> 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="width-120 fnt--12 fgr-text"
+                                        style="padding-left: 15px;">
+                                            <?= Util::translate("product.category") ?> 
+                                    </td>
+                                    <td>
+                                        <select name="category"
+                                                style="float: left;width:100%;"
+                                                id="category"
+                                                data-control="for:cat in categories"
+                                                data-select-type="value">
+                                            <option data-item="cat.name"
+                                                    data-attr="value: cat.id"></option>
+                                        </select>
+                                    </td>
+                                    <td class="width-120 fnt--12 fgr-text"
+                                        style="padding-left: 15px;">
+                                            <?= Util::translate("product.origin") ?>
+                                    </td>
+                                    <td>
+                                        <input name="origin"
+                                               type="text" 
+                                               data-in="product.origin"/> 
+                                    </td>
+                                    <td class="width-120 fnt--12 fgr-text"
+                                        style="padding-left: 15px;">
+                                            <?= Util::translate("product.status.new") ?>
+                                    </td>
+                                    <td>
+                                        <input type="checkbox"
+                                               id="is_new"/>
+                                        <span class="width-120 fnt--12 fgr-text"
+                                              style="padding-left: 15px;">
+                                                  <?= Util::translate("product.display") ?>
+                                        </span>
+                                        <input type="checkbox"
+                                               id="is_show"
+                                               checked="checked"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table style="width: 100%; margin-top: 20px;">
+                                <tr>
+                                    <td class="width-120 fnt--12 fgr-text"
+                                        style="padding-left: 15px;">
+                                            <?= Util::translate("product.description") ?>
+                                    </td>
+                                    <td>
+                                        <textarea name="description"
+                                                  id ="product_description"
+                                                  class="product-description"
+                                                  ></textarea>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table style="width: 100%; margin-top: 10px;">
+                                <tr>
+                                    <td class="width-120">
+                                        <?= Util::translate("form.label.update_image") ?>
+                                    </td>
+                                    <td style="padding-top: 15px; text-align: left;">
+                                        <div class="button button--sm button-upload"
+                                             style="margin-top: 5px;">
+                                                 <?= Util::translate("gallery.addImage") ?>
+                                            <input id="upload_file" 
+                                                   type="file" 
+                                                   name="files[]" 
+                                                   multiple 
+                                                   style="width: 100px;"/> 
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <?= Util::translate("product.image.detail") ?>
+                                    </td>
+                                    <td colspan="5">
+                                        <div class="row">
+                                            <?= $this->render("product/components/product-img.phtml") ?>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!--hidden value-->
+                            <input type="hidden"
+                                   name="id"
+                                   data-in="product.id" />
+                            <input type="hidden"
+                                   name="thumbnailUrl"
+                                   id="thumbnailUrl"
+                                   data-in="product.thumbnailUrl" />
+                            <input type="hidden"
+                                   name="imageLinks"
+                                   id="imageLinks"/>
+                            <input type="hidden"
+                                   name="categoryIds"
+                                   id="categoryIds"/>
+                            <input type="hidden"
+                                   name="isShow"
+                                   id="isShow"
+                                   data-in="product.isShow"/>
+                            <input type="hidden"
+                                   name="isNew"
+                                   id="isNew"
+                                   data-in="product.isNew"/>
+                            <!--end hidden value-->
+
+                            <div class="table-footer"
+                                 style="text-align: right; padding: 10px 10px 15px 0">
+                                <button type="reset" 
+                                        class="button--sm"
+                                        data-call="click: resetForm"
+                                        style="margin-left: 5px;">
+                                            <?= Util::translate("form.button.reset") ?>
+                                </button>
+                                <a class="button--sm" 
+                                   onclick="$('#form').submit()" >
+                                       <?= Util::translate("form.button.save") ?>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div data-viewmodeler='UploadDialogV'>
+        <?php echo $this->render("components/dialog-multi-upload.phtml") ?>
+    </div>
+
+    <?php echo $this->render("components/dialog-confirm.phtml"); ?>
+
+    <script>
+        CKEDITOR.replace('product_description', {
+            toolbar: [
+                {name: 'document', items: ['Source']},
+                ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'],
+                ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+                ['Styles', 'Format', 'Font', 'FontSize', 'TextColor', 'BGColor'],
+                {name: 'basicstyles', items: ['Bold', 'Italic']},
+                {name: 'insert', items: ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']}
+            ]
+        });
+
+        $(document).ready(function() {
+            uploadUtil.uploadMultipleFile("upload_file", {
+                title: '<?= Util::translate("news.upload.file") ?>',
+                callbackFn: productCnuVM.addUploadedImages
+            });
+        });
+
+    </script>
+</div>

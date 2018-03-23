@@ -1,0 +1,267 @@
+
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/system/dialog/",
+                    name: "vm-dialog-m-upload.js"
+                },
+                {
+                    src: "/js/system/drugstore/",
+                    name: "vm-drugstore-cnu.js"
+                }
+            ],
+            messages: {
+                                deleteImage: '<?= Util::translate("dialog.delete.image") ?>',
+                                titleAlert: '<?= Util::translate("dialog.alert.info.title") ?>',
+                                uploadError: '<?= Util::translate("dialog.upload.upload.error") ?>',
+                                selectError: '<?= Util::translate("dialog.upload.select.error") ?>',
+                                cancelUpload: '<?= Util::translate("message.upload.cancel") ?>'
+            },
+            bindings: [
+                {
+                    viewer: "DrugstoreCnuV",
+                    viewmodeler: "drugstoreCnuVM",
+                    linkback: true,
+                    data: {
+                        cities: <?= json_encode($this->cities) ?>,
+                        districts: <?= json_encode($this->districts) ?>,
+                        type: '<?= $this->type ?>',
+                        drugstoreId: '<?= $this->drugstoreId ?>',
+                        drugstore: <?= json_encode($this->drugstore) ?>
+                    }
+                },
+                {
+                    viewer: "UploadDialogV",
+                    viewmodeler: "uploadDialogVM",
+                    linkback: true,
+                    data: {
+                    }
+                }
+            ]
+        });
+    });
+</script>
+<div class="panel content">
+    <div data-viewmodeler="DrugstoreCnuV">
+        <?php
+        if (isset($this->result)) {
+            ?>
+            <div id="alert_success" class="<?php
+        if (isset($this->result) && $this->result == TRUE) {
+            echo "alert--success";
+        } else {
+            echo "alert--error";
+        }
+            ?> rounded--sm">
+                <span class="alert-content">
+                    <?php
+                    if (isset($this->result) && $this->result == TRUE) {
+                        echo Util::translate("drugstore.cnu.message.success");
+                    } else {
+                        echo Util::translate("drugstore.cnu.message.error");
+                    }
+                    ?>
+                </span>
+                <span class="alert-close" 
+                      onclick="$(this).parent().hide();">&times;</span>
+            </div>
+            <?php
+        } else {
+            
+        }
+        ?>
+        <div class="row">
+            <div class="news-info dogo-body">
+                <div class="row border--thin rounded--sm"
+                     style="margin: 15px;">
+                    <form id="form"
+                          data-call="submit: validateInput"
+                          method="POST"
+                          action="
+                          <?php
+                          if ($this->type == "create") {
+                              echo '/system/drugstore/create';
+                          } else {
+                              echo '/system/drugstore/update?id=' . $this->drugstoreId;
+                          }
+                          ?>">
+                        <div style="margin: 15px 25px 10px 10px;">
+                            <table class="table--info" 
+                                   style="width: 100%;">
+                                <tr>
+                                    <td class="width-150">
+                                        <?= Util::translate("drugstore.name") ?>(*)
+                                    </td>
+                                    <td colspan="3">
+                                        <span data-message-for="name" 
+                                              class="fgr--error"></span>
+                                        <input type="text"
+                                               name ="name"
+                                               id="name" 
+                                               data-in="drugstore.name"
+                                               data-check="name: required"
+                                               data-required-message="<?= Util::translate("drugstore.name.error.required") ?>"/>
+                                    </td>
+                                    <td class="width-150" rowspan="4"
+                                        style="vertical-align: top;">
+                                            <?= Util::translate("form.label.avatar") ?>
+                                    </td>
+                                    <td rowspan="4" style="vertical-align: top">
+                                        <div class="thumbnail" 
+                                             data-skip 
+                                             style="max-width: 175px;max-height: 175px; display: inline-block; width: auto;"
+                                             data-attr='data-path: drugstore.imagePath'>
+                                            <a class="thumbnail-link">
+                                                <img  data-attr="src:drugstore.imagePath"
+                                                      style="max-width: 165px;max-height: 165px" 
+                                                      onerror="this.setAttribute('src','/img/icon/picture.png')"
+                                                      class="thumbnail-img home-img">
+                                            </a>
+                                            <input type="hidden"
+                                                   name="imagePath"
+                                                   data-in="drugstore.imagePath" />
+                                        </div>
+                                        <a class="link link-delete delete-image" 
+                                           data-call="click: showDeleteImageDialog($dom,'/img/icon/picture.png')"
+                                           style="display: none;">
+                                               <?= Util::translate("form.label.delete") ?> 
+                                        </a> 
+                                        <div class="link button-upload"
+                                             style="margin-top: 5px;position: relative">
+                                            <span>
+                                                <?= Util::translate("form.button.upload.image") ?>
+                                            </span>
+                                            <input id="avatar_image"
+                                                   name="file" 
+                                                   type="file"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <?= Util::translate("drugstore.city") ?>
+                                    </td>
+                                    <td class="width-250">
+                                        <select id="cityId" style="width: 100%"
+                                                name="cityId"
+                                                data-control="for: city in cities">
+                                            <option data-row data-attr="value: city.id" 
+                                                    data-item="city.name"></option>                                                                             
+                                        </select>
+                                    </td>
+                                    <td class="width-100">
+                                        <?= Util::translate("drugstore.district") ?>
+                                    </td>
+                                    <td class="width-250">
+                                        <select id="districtId" style="width: 100%"
+                                                name="districtId" 
+                                                data-control="for: district in displayDistricts">
+                                            <option data-row data-attr="value: district.id" 
+                                                    data-item="district.name"></option>                                                                             
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <?= Util::translate("form.label.address") ?>(*)
+                                    </td>
+                                    <td colspan="3">
+                                        <span data-message-for="address" 
+                                              class="fgr--error"></span>
+                                        <input type="text"
+                                               name ="address"
+                                               id="address" 
+                                               data-in="drugstore.address"
+                                               data-check="address: required"
+                                               data-required-message="<?= Util::translate("drugstore.address.error.required") ?>"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <?= Util::translate("form.label.phone") ?>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="phone"
+                                               data-in="drugstore.phone"/>
+                                    </td>
+                                    <td>
+                                        <?= Util::translate("form.label.email") ?>
+                                    </td>
+                                    <td>
+                                        <input type="email" name="email"
+                                               data-in="drugstore.email"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><?= Util::translate("form.label.order") ?></td>
+                                    <td>
+                                        <input type="number" class="width-80"
+                                               name="orderNumber"
+                                               data-in="drugstore.orderNumber"/>
+                                    </td>
+                                    <td colspan="2">
+                                        <?= Util::translate("news.display") ?> 
+                                        <input type="checkbox" id="chk-display"
+                                               style="margin-left: 5px;"
+                                               data-control="if: drugstore.status == '1'" checked/>
+                                        <input type="checkbox" id="chk-display"
+                                               style="margin-left: 5px;"
+                                               data-control="if: drugstore.status != '1'"/>
+                                        <input type="hidden" name="status" id="displayValue"/>
+                                        <span class="fnt--11 italic"><?= Util::translate("drugstore.display.suggestion") ?></span>
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td>
+                                        <?= Util::translate("form.label.description") ?>
+                                    </td>
+                                    <td colspan="5">
+                                        <textarea id="drugstore_description" 
+                                                  data-out='drugstore.description'
+                                                  name='description'
+                                                  rows="12"></textarea>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="table-footer"
+                             style="text-align: right; padding: 10px 25px 15px 0">
+                            <button class="button--sm" 
+                                    style="margin-left: 5px;">
+                                        <?= Util::translate("form.button.cancel") ?>
+                            </button>
+                            <button class="button--sm" 
+                                    type="submit">
+                                        <?= Util::translate("form.button.save") ?>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?= $this->render("components/dialog-single-upload.phtml") ?>
+    <?php echo $this->render("components/dialog-confirm.phtml"); ?>
+</div>
+<script>
+    $(document).ready(function() {
+        uploadUtil.upload("avatar_image", {
+            done: function(e, data) {
+                $.each(data.result.files, function(index, file) {
+                    $(".home-img").attr("src", file.url);
+                    $("input[name='imagePath']").val(file.url);
+                    $(".delete-image").parent().find(".thumbnail").attr("data-path", file.url);
+                    $(".delete-image").parent().find(".link-delete").show();
+                    uploadUtil.hideLoading();
+                });
+            }
+        });
+    });
+    CKEDITOR.replace('drugstore_description', {
+        height: "250px"
+    });
+
+</script>

@@ -1,0 +1,40 @@
+<div data-control="for: entry in entries">
+    <div class="row">
+        <div class="news-item">
+            <table>
+                <tr>
+                    <td style="text-align: left; vertical-align: top; font-size: 100%;">
+                        <a data-attr="href: '/'+change_alias(entry.categoryName)+'/'+change_alias(entry.title) +'-'+ entry.id+'.html'">
+                            <img class="news-img" 
+                                 data-attr="src: entry.imagePath"/>
+                        </a>
+                    </td>
+                    <td  style="text-align: left; vertical-align: top; font-size: 100%;">
+                        <div class="news-des">
+                            <a class="news-title"
+                               data-attr="href: '/'+change_alias(entry.categoryName)+'/'+change_alias(entry.title) +'-'+ entry.id+'.html'"
+                               data-out="entry.title">
+                            </a>
+                            <h6 class="news-time fgr-text" 
+                                data-out="entry.createTime">
+                            </h6>
+                            <div class="news-intro" 
+                                 data-out="strimStringOfDom(entry.description,300)">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+<!--                <tr>
+                    <td colspan="2">
+                        <a class="news-link"
+                           data-attr="href: '/'+change_alias(entry.categoryName)+'/'+change_alias(entry.title) +'-'+ entry.id+'.html'">
+                            xem tiếp
+                        </a>
+                    </td>
+                </tr>-->
+            </table>
+
+        </div>
+        <div class="divider--hr"></div>
+    </div>
+</div>

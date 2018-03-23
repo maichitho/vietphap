@@ -1,0 +1,71 @@
+<div 
+    data-viewmodeler="HeaderV">
+    <div class="visible-pad visible-med visible-wid f-menu-extra-left">
+        <div class="f-menu-extra-table">
+            <div class="f-menu-extra-cell"
+                 data-control="for: menu in headerVM.leftMenus">            
+                <div class="f-menu-extra-item"
+                     data-control="if: menu.linkType != '<?= SA_Entity_Menu::LINK_TYPE_HTML ?>' && (menu.logoPath.length > 0 || menu.imagePath.length > 0)">
+                    <a class="f-menu-extra-icon"
+                       data-attr="href: menu.linkUrl">
+                        <img data-attr="src: menu.logoPath, alt: ''" data-control="if: menu.logoPath.length > 0"
+                            />
+                        <img data-attr="src: menu.imagePath , alt: ''" data-control="if: menu.logoPath.length <= 0"
+                             />
+                    </a>
+                    <span class="f-menu-extra-title" data-item="menu.name"  
+                          data-control="if: menu.name.length > 0"></span>
+                </div>
+                <div class="f-menu-extra-item"
+                     data-control="if: menu.linkType != '<?= SA_Entity_Menu::LINK_TYPE_HTML ?>' && (menu.logoPath.length <= 0 && menu.imagePath.length <= 0)">
+                    <span class="f-menu-extra-title" data-item="menu.name"  
+                          data-control="if: menu.name.length > 0"
+                          data-call="click: window.location.href = menu.linkUrl;"
+                          style="cursor: pointer"></span>
+                </div>
+                <div class="f-menu-extra-item"
+                     data-control="if: menu.linkType == '<?= SA_Entity_Menu::LINK_TYPE_HTML ?>'">
+                    <span data-type="html"
+                          data-out="menu.htmlCode"></span>
+                    <span class="f-menu-extra-title" data-item="menu.name"  
+                          data-control="if: menu.name.length > 0"></span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="visible-pad visible-med visible-wid f-menu-extra-right">
+        <div class="f-menu-extra-table">
+            <div class="f-menu-extra-cell"
+                 data-control="for: menu in headerVM.rightMenus">
+                <div class="f-menu-extra-item"
+                     data-control="if: menu.linkType != '<?= SA_Entity_Menu::LINK_TYPE_HTML ?>' && (menu.logoPath.length > 0 || menu.imagePath.length > 0)">
+                    <a class="f-menu-extra-icon"
+                       data-attr="href: menu.linkUrl">
+                        <img data-attr="src: menu.logoPath, alt: ''" data-control="if: menu.logoPath.length > 0"
+                            />
+                        <img data-attr="src: menu.imagePath, alt: ''" data-control="if: menu.logoPath.length <= 0"
+                            />
+                    </a>
+                    <span class="f-menu-extra-title" data-item="menu.name"  
+                          data-control="if: menu.name.length > 0"></span>
+                </div>
+                <div class="f-menu-extra-item"
+                     data-control="if: menu.linkType != '<?= SA_Entity_Menu::LINK_TYPE_HTML ?>' && (menu.logoPath.length <= 0 && menu.imagePath.length <= 0)">
+                    <span class="f-menu-extra-title" data-item="menu.name"  
+                          data-control="if: menu.name.length > 0"
+                          data-call="click: window.location.href = menu.linkUrl;"
+                          style="cursor: pointer"></span>
+                </div>
+                <div class="f-menu-extra-item"
+                     data-control="if: menu.linkType == '<?= SA_Entity_Menu::LINK_TYPE_HTML ?>'">
+                    <span data-type="html"
+                          data-out="menu.htmlCode"></span>
+                    <span class="f-menu-extra-title" data-item="menu.name"  
+                          data-control="if: menu.name.length > 0"></span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

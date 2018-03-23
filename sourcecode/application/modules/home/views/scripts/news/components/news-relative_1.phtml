@@ -1,0 +1,16 @@
+<div class="category-header rounded--sm border--thin">
+    <div class="category-main"
+         style="width: 160px;">
+        <a style="margin-top: 3px;">Các tin tức khác</a>
+    </div>
+</div>
+<div class="hot-news-box news-relative"
+     style="width: 100%; display: inline-block;">
+    <ul data-control="for: news in suggestionEntries">
+        <li style="width: 100%;">
+            <img data-attr="src: news.imagePath"/>
+            <a data-attr="href: '/'+change_alias(news.categoryName)+'/'+change_alias(news.title) +'-'+ news.id+'.html'"
+               data-item="news.title"></a>
+        </li>
+    </ul>
+</div>

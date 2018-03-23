@@ -1,0 +1,131 @@
+<body>
+    <div class="panel">
+        <div style='font: 13px/1.231 "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif; border: 1px solid #ccc;' >
+            <div style="width: 100%; height: 60px; background-color: #009900;">
+                <div style="color: #fff; float: left; margin: 20px; font-weight: bold;">
+                    VNBUYERS.COM
+                </div>
+                <div style="float: right;margin: 30px;color: #fff;">
+                    <?= Util::translate("email.company.slogan") ?>
+                </div>
+            </div>
+            <div style="padding: 10px;">
+                <h6 style="font-size: 15px;text-align: center;">
+                    <?= Util::translate("email.order.confirm.title") ?>
+                </h6>
+                <p><?= Util::translate("email.hello") ?><strong><?php echo $this->customerName; ?></strong>,</p>
+                <div>
+                    <?= Util::translate("email.order.content.part1") ?><strong><?php echo $this->orderNumber; ?></strong><?= Util::translate("email.order.content.part2") ?>
+                    <div style="margin: 10px;">
+                        <span style="display: inline-block;width: 100px;"><?= Util::translate("email.hotline.label") ?></span>
+                        <span style="display: inline-block;"><strong><?= Util::translate("email.hotline.number") ?></strong></span>
+                        <br/>
+                        <span style="display: inline-block;width: 100px;"><?= Util::translate("email.mail.lable") ?></span>
+                        <span style="color:#009900;"><?= Util::translate("email.mail.address") ?></span>
+                    </div>
+                </div>
+                <h6 style="margin-bottom: 5px; font-size: 13px;">
+                    <?= Util::translate("email.order.table.detail.label") ?>
+                </h6>
+                <table style='border-collapse: collapse;width: 95%; margin: 20px auto; border:1px solid #ccc;'>
+                    <tr style='border:1px solid #ccc; background-color: #B4E6B4;'>
+                        <th style='border:1px solid #ccc; padding: 10px; font-size: 11px;'>
+                            <?= Util::translate("email.order.header.product_name") ?>
+                        </th>
+                        <th style='border:1px solid #ccc;padding: 10px; font-size: 11px;'>
+                            <?= Util::translate("email.order.header.unit") ?>
+                        </th>
+                        <th style='border:1px solid #ccc; padding: 10px; font-size: 11px;'>
+                            <?= Util::translate("email.order.header.supplier_price") ?>
+                        </th>
+                        <th style='border:1px solid #ccc;padding: 10px; font-size: 11px;'>
+                            <?= Util::translate("email.order.header.selling_price") ?>
+                        </th>
+                        <th style='border:1px solid #ccc;padding: 10px; font-size: 11px;'>
+                            <?= Util::translate("email.order.header.quantity") ?>
+                        </th>
+                        <th style='border:1px solid #ccc;padding: 10px; font-size: 11px;'>
+                            <?= Util::translate("email.order.header.total_item_amount") ?>
+                        </th>
+                    </tr>
+                    <?php
+                    foreach ($this->orderItems as $item) {
+                        ?>
+                        <tr style='border:1px solid #ccc;'>
+                            <td style='border:1px solid #ccc; padding: 10px 5px; font-size: 12px;'>
+
+                                <?php echo $item['name']; ?>
+                            </td>
+                            <td style='border:1px solid #ccc; padding: 10px 5px; font-size: 12px; text-align: right;'>
+                                <?php echo $item['unit']; ?>
+                            </td>
+                            <td style='border:1px solid #ccc; padding: 10px 5px; font-size: 12px; text-align: right;'>
+                                <?php echo Util::formatcurrency($item["supplierPrice"], 'VND') . Util::translate("form.label.currency.vietnam"); ?>
+                            </td>
+                            <td style='border:1px solid #ccc; padding: 10px 5px; font-size: 12px; text-align: right;'>
+                                <?php echo Util::formatcurrency($item["price"], 'VND') . Util::translate("form.label.currency.vietnam"); ?>
+                            </td>
+                            <td style='border:1px solid #ccc; padding: 10px 5px; font-size: 12px; text-align: center;'>
+                                <?php echo $item['quantity']; ?>
+                            </td>
+                            <td style='border:1px solid #ccc; padding: 10px 5px; font-size: 12px; text-align: right;'>
+                                <?php echo Util::formatcurrency($item["totalItemPrice"], 'VND') . Util::translate("form.label.currency.vietnam"); ?>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                    ?>
+                    <tr>
+                        <td colspan="5" style='padding: 10px 5px; font-size: 12px;'><strong><?= Util::translate("email.order.table.total_amount") ?></strong></td>
+                        <td style='padding: 10px 5px; font-size: 12px; text-align: right;'><strong><?php echo $this->totalAmount; ?></strong></td>
+                    </tr>
+
+                </table>
+                <?php
+                if ($this->paymentMethod == SA_Entity_Order::PAYMENT_VIA_BANK) {
+                    ?>
+                    <h6 style="margin-top: 5px; font-size: 13px;">
+                        <?= Util::translate("email.order.payment.title") ?>
+                    </h6>
+                    <div style="margin: 10px;">
+                        1. <?= Util::translate("email.order.payment.number_title") ?>: <strong><?= Util::translate("email.order.payment.number1") ?></strong> - 
+                        <?= Util::translate("email.order.payment.owner_title") ?>: <strong><?= Util::translate("email.order.payment.owner1") ?></strong> - 
+                        <?= Util::translate("email.order.payment.bank_title") ?>: <strong><?= Util::translate("email.order.payment.bank1") ?></strong><br/>
+                        2. <?= Util::translate("email.order.payment.number_title") ?>: <strong><?= Util::translate("email.order.payment.number2") ?></strong> - 
+                        <?= Util::translate("email.order.payment.owner_title") ?>: <strong><?= Util::translate("email.order.payment.owner2") ?></strong> - 
+                        <?= Util::translate("email.order.payment.bank_title") ?>: <strong><?= Util::translate("email.order.payment.bank2") ?></strong><br/>
+                        3. <?= Util::translate("email.order.payment.number_title") ?>: <strong><?= Util::translate("email.order.payment.number3") ?></strong> - 
+                        <?= Util::translate("email.order.payment.owner_title") ?>: <strong><?= Util::translate("email.order.payment.owner3") ?></strong> - 
+                        <?= Util::translate("email.order.payment.bank_title") ?>: <strong><?= Util::translate("email.order.payment.bank3") ?></strong><br/>
+                    </div>
+                    <?php
+                }
+                ?>
+            </div>
+            <div style="background-color: #D7C4E2; height: 80px; padding: 10px;">
+                <table>
+                    <tr>
+                        <td>
+                            <!--                            http://localhost/img/icon/logo.jpg-->
+                            <div style="background-image: url('<?php echo $this->logoUrl; ?>'); background-size: 80px 80px; height: 80px; width: 80px;background-repeat: no-repeat;"></div>
+                        </td>
+                        <td style="text-align: left; vertical-align: top;">
+                            <ul style="list-style: none; font-size: 12px; margin: 0;">
+                                <li style='margin-bottom: 5px;'>
+                                    <?= Services::createConfigurationService()->get('footer.company.name')->getValue() ?>
+                                </li>
+                                <li style='margin-bottom: 5px;'>
+                                    <?= Util::translate("email.company.address") ?><?= Services::createConfigurationService()->get('footer.company.address')->getValue() ?>
+                                </li>
+                                <li style='margin-bottom: 5px;'>
+                                    <?= Util::translate("email.company.phone") ?><?= Services::createConfigurationService()->get('footer.company.hotline')->getValue() ?>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <p style="font-size: 12px; font-style: italic; margin:10px;"><?= Util::translate("email.notification.no_reply") ?> </p>
+        </div>
+    </div>
+</body>

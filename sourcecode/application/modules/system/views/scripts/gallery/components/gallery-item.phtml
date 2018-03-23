@@ -1,0 +1,34 @@
+<div class="row"
+     data-control="for: gallery in galleries">
+    <div class="nar-12 pad-3 med-3 wid-3"
+         style="padding: 5px;">
+        <div class="thumbnail gallery-thumbnail"
+             data-skip>
+            <div class="thumbnail-edit">
+                <div class="thumbnail-edit-button"
+                     data-call="click:  showDeleteDialog($dom, gallery.id, gallery.thumbnailUrl)">
+                    <img src="/img/icon/trash.png"/>
+                </div>
+                <div class="thumbnail-edit-button"
+                     data-call="click:  document.location.href='/system/gallery/view?id='+gallery.id">
+                    <img src="/img/icon/edit.png"/>
+                </div>
+            </div>
+            <a class="thumbnail-link"
+               data-attr="href: '/system/gallery/view?id='+gallery.id">
+                <img class="thumbnail-img" 
+                     data-attr="src: gallery.thumbnailUrl"
+                     data-control="if: gallery.thumbnailUrl.length > 0">
+                <img class="thumbnail-img" 
+                     src="/img/banner/no-image.png"
+                     data-control="if: gallery.thumbnailUrl.length <= 0">
+            </a>
+            <div class="gallery-des">
+                <h6 class="gallery-title">
+                    <span data-convert-out='strimStringOfDom' 
+                        data-item="gallery.title"></span>
+                </h6>
+            </div>
+        </div>
+    </div>
+</div>

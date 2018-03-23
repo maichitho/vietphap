@@ -1,0 +1,50 @@
+<div  data-control="for: category in categories">
+    <div class="nar-12 b-box-category"
+         style="padding-bottom: 15px; overflow: hidden;"
+         data-control="if: category.entries.length > 0 ">
+        <div class="b-box" style="width: 100%;">
+            <div class="category-header"
+                 style="background-color: #F79618;">
+                <div class="category-main"
+                     style="cursor: default;">
+                    <a data-attr="href:'/'+ category.rewriteUrl"> 
+                        <span data-out="category.name"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="hot-news"
+                 data-control="if: category.type != '<?= SA_Entity_Category::TYPE_QA ?>'">
+                <a data-attr="href: '/'+ category.entries[0].rewriteUrl">
+                    <img data-attr="src:category.entries[0].imagePath"/>
+                    <h2 style="height: 38px; overflow: hidden;"
+                        data-item="strimStringOfDom(category.entries[0].title,85)"></h2>
+                </a>
+                <div class="b-top-description" 
+                     style="height: 48px; overflow: hidden;" 
+                     data-type="html"
+                     data-item="strimStringOfDom(category.entries[0].description, 150)">
+                </div>
+            </div>
+            <div class="hot-news"
+                 data-control="if: category.type == '<?= SA_Entity_Category::TYPE_QA ?>'">
+                <a data-attr="href: '/hoi-dap'">
+                    <img src="/img/banner/question.jpg"/>
+                </a>
+            </div>
+            <div class="hot-news-box"
+                 style="background-color: #f8f8f8;">
+                <ul data-control="for: entry in category.entries">
+                    <li data-control="if: $index > 0">
+                        <img data-attr="src:entry.thumbnailUrl"
+                             data-watch="category.type !== '<?= SA_Entity_Category::TYPE_QA ?>'"/>
+                        <img style="width: 21px; height: 21px;" 
+                            src="/img/icon/question_blue.png"
+                             data-watch="category.type === '<?= SA_Entity_Category::TYPE_QA ?>'"/>
+                        <a data-attr="href: '/'+ entry.rewriteUrl" 
+                           data-item="strimStringOfDom(entry.title, 54)"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

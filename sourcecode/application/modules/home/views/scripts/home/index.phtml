@@ -1,0 +1,154 @@
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/home/home/",
+                    name: "jquery.easing.1.3.js"
+                },
+                {
+                    src: "/js/home/home/",
+                    name: "vm-home-view.js"
+                }
+            ],
+            bindings: [
+                {
+                    viewer: "HomeV",
+                    viewmodeler: "homeVM",
+                    linkback: true,
+                    data: {
+                        hotEntries: <?= json_encode($this->hotEntries) ?>,
+                        topEntry: <?= json_encode($this->topEntry) ?>,
+                        qas: <?= json_encode($this->qas) ?>,
+                        mainCatMap: <?= json_encode($this->mainCatMap) ?>,
+                        copd: <?= json_encode($this->copd) ?>,
+                        hoidap: <?= json_encode($this->hoidap) ?>,
+                        phongbenh: <?= json_encode($this->phongbenh) ?>,
+                        vpq: <?= json_encode($this->vpq) ?>,
+                        tintuc: <?= json_encode($this->tintuc) ?>,
+                        hen: <?= json_encode($this->hen) ?>,
+                        testimonials: <?= json_encode($this->testimonials) ?>
+                    }
+                }
+            ]
+        });
+    });
+</script>
+<div data-viewmodeler="HomeV" >
+    <div class="row" >
+        <div class="main-box">
+            <div data-viewmodeler="HomeV"
+                 class="nar-12 colunm-left">
+                <div class="b-box headlight-panel">
+                    <div class="row">
+                        <div class="headlight-box">
+                            <div class="headlight-item headlight-item-1">
+                                <a class="headlight-media"
+                                   data-attr="href:'/' + homeVM.topEntry.rewriteUrl">
+                                    <div data-watch="homeVM.topEntry.categoryName != 'Video'">
+                                        <img  
+                                            data-attr="src: homeVM.topEntry.imagePath"/>
+                                    </div>
+                                    <div data-watch="homeVM.topEntry.categoryName == 'Video'">
+                                        <div data-out='homeVM.topEntry.description'
+                                             data-type='html'></div>
+                                    </div>
+                                </a>
+                                <div class="headlight-description">
+                                    <p class="headlight-title" 
+                                       data-out='strimStringOfDom(homeVM.topEntry.title, 68)'></p>
+                                    <p class="headlight-short-title" 
+                                       data-out='getWordOfString(homeVM.topEntry.title, 4)'></p>
+                                </div>
+                            </div>
+                            <div class="headlight-item headlight-item-2">
+                                <a class="headlight-media"
+                                   data-attr="href:'/' + hotEntries[0].rewriteUrl">
+                                    <div data-watch="hotEntries[0].categoryName != 'Video'">
+                                        <img  
+                                            data-attr="src: hotEntries[0].imagePath"/>
+                                    </div>
+                                    <div data-watch="hotEntries[0].categoryName == 'Video'">
+                                        <div data-out='hotEntries[0].description'
+                                             data-type='html'></div>
+                                    </div>
+                                </a>
+                                <div class="headlight-description">
+                                    <p class="headlight-title" 
+                                       data-out='strimStringOfDom(hotEntries[0].title, 68)'></p>
+                                    <p class="headlight-short-title" 
+                                       data-out='getWordOfString(hotEntries[0].title, 4)'></p>
+                                </div>
+                            </div>
+                            <div class="headlight-item headlight-item-3">
+                                <a class="headlight-media"
+                                   data-attr="href:'/' + hotEntries[1].rewriteUrl">
+                                    <div data-watch="hotEntries[1].categoryName != 'Video'">
+                                        <img  
+                                            data-attr="src: hotEntries[1].imagePath"/>
+                                    </div>
+                                    <div data-watch="hotEntries[1].categoryName == 'Video'">
+                                        <div data-out='hotEntries[1].description'
+                                             data-type='html'></div>
+                                    </div>
+                                </a>
+                                <div class="headlight-description">
+                                    <p class="headlight-title" 
+                                       data-out='strimStringOfDom(hotEntries[1].title, 68)'></p>
+                                    <p class="headlight-short-title" 
+                                       data-out='getWordOfString(hotEntries[1].title, 4)'></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--                    <div class="row"
+                                             style="margin-top: 15px;"
+                                             id="headlight_list" 
+                                             data-control="for: hot in hotEntries">
+                                            <div class="pad-3 med-3 wid-3 hot-entry">
+                                                <div class="thumbnail"
+                                                     data-skip
+                                                     style="float: left; margin-right: 10px; width: 100%;">
+                                                    <a class="thumbnail-link"
+                                                       data-attr="href: '/'+ hot.rewriteUrl"
+                                                       style="height: 83px;">
+                                                        <img class="thumbnail-img" 
+                                                             data-attr="src: hot.thumbnailUrl"
+                                                             style="width: 100%">
+                                                    </a>
+                                                    <div class="thumbnail-content--bottom"
+                                                         style="margin-bottom: 3px; height: 36px;"> 
+                                                        <a  data-attr="href: '/'+ hot.rewriteUrl">
+                                                            <span class="thumbnail-title"
+                                                                  data-item='strimStringOfDom(hot.title, 50)'></span> 
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>-->
+                </div>
+
+
+                <!--category of news item list-->
+
+                <div class='row'
+                     style='margin-top: 10px;clear: both;'>
+                    
+                         <?php echo $this->render('home/components/category-item.phtml'); ?>
+                    
+                </div>
+
+            </div>
+            <!--menu-right-->
+            <div class="nar-12 colunm-right">
+                <?php echo $this->render('/home/components/supports-box.phtml'); ?>
+                <?php echo $this->render('/home/components/network-box.phtml'); ?>
+                <?php echo $this->render('/home/components/subcrible-box.phtml'); ?>
+                <?php echo $this->render('menu-right.phtml'); ?>
+                <?php echo $this->render('/home/components/advertising-box.phtml'); ?>
+                <?php echo $this->render('/home/components/video-box.phtml'); ?>
+            </div>
+        </div> 
+    </div>
+</div>
+<?php echo $this->render("components/dialog-confirm.phtml"); ?>

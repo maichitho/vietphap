@@ -1,0 +1,58 @@
+<tr style="cursor: pointer;"
+    class="tr-tree-menu"
+    data-attr="title: '<?= Util::translate("system.menu.tree.edit_title") ?>\''+menu.name+'\'',
+    data-id: menu.id"
+    data-control="if: menu.status == '1' && menu.name.length > 0"
+    data-style="menu.parentId != '0': {backgroundColor: '#fff', border-bottom: '1px solid #ddd'}">
+    <td data-style="menu.parentId != '0': {paddingLeft: '20px'}">
+        <span data-item="cutName(menu.name, 40)"
+              style="color: #001e68"></span>
+    </td>
+    <td style="width: 20px;">
+        <img src="/img/icon/edit.png" style="display: none; width: 16px;"
+             class="img-tree-menu"/>
+    </td>
+</tr>
+<tr style="cursor: pointer;"
+    class="tr-tree-menu"
+    data-attr="title: '<?= Util::translate("system.menu.tree.edit_title") ?>\''+menu.name+'\'',
+    data-id: menu.id"
+    data-control="if: menu.status == '1' && menu.name.length <= 0"
+    data-style="menu.parentId != '0': {backgroundColor: '#fff', border-bottom: '1px solid #ddd'}">
+    <td data-style="menu.parentId != '0': {paddingLeft: '20px'}">
+        <span data-item="cutName(menu.linkUrl,40)"
+              style="color: #001e68"></span>
+    </td>
+    <td style="width: 20px;">
+        <img src="/img/icon/edit.png" style="display: none; width: 16px;"
+             class="img-tree-menu"/>
+    </td>
+</tr>
+<tr style="cursor: pointer;"
+    class="tr-tree-menu tr-tree-menu--active"
+    data-attr="title: '<?= Util::translate("system.menu.tree.edit_title") ?>\''+menu.name+'\'',
+    data-id: menu.id"
+    data-control="if: menu.status != '1' && menu.name.length > 0">
+    <td data-style="menu.parentId != '0': {paddingLeft: '20px'}">
+        <span data-item="cutName(menu.name, 40)"
+              style="color: #fff"></span>
+    </td>
+    <td style="width: 20px;">
+        <img src="/img/icon/edit.png" style="display: none; width: 16px;"
+             class="img-tree-menu"/>
+    </td>
+</tr>
+<tr style="cursor: pointer;"
+    class="tr-tree-menu tr-tree-menu--active"
+    data-attr="title: '<?= Util::translate("system.menu.tree.edit_title") ?>\''+menu.name+'\'',
+    data-id: menu.id"
+    data-control="if: menu.status != '1' && menu.name.length <= 0">
+    <td data-style="menu.parentId != '0': {paddingLeft: '20px'}">
+        <span data-item="cutName(menu.linkUrl,40)"
+              style="color: #fff"></span>
+    </td>
+    <td style="width: 20px;">
+        <img src="/img/icon/edit.png" style="display: none; width: 16px;"
+             class="img-tree-menu"/>
+    </td>
+</tr>

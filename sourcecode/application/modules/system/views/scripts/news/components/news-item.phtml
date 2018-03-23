@@ -1,0 +1,54 @@
+<tr data-row>
+    <td class="center-text">
+        <img style="width: 70px; height: 70px;" data-attr="src: entry.imagePath"
+             onerror="this.setAttribute('src', '/img/icon/no-image.png')"/>
+    </td>
+    <td data-item="entry.title"></td>
+    <td class="center-text" data-item="entry.categoryName"></td>
+    <td class="center-text" data-item="entry.creatorName"></td>
+    <td class="center-text" data-item="entry.createTime"></td>    
+    <td>
+        <ul class="menu-hr menu-hr--center" >
+            <li class="menu-item divider">
+                <a  class="icon-function"
+                    data-attr="href: '/'+ entry.rewriteUrl" 
+                    target="_blank">
+                    <img src="/img/icon/view.png" title="<?= Util::translate("form.label.view") ?>"
+                         />
+                </a>
+            </li>
+            <li class="menu-item divider" >  
+
+                <a  class="icon-function"
+                    data-control="if: entry.right=='true'" data-attr="href: '/system/news/update?type=copy&id=' + entry.id " >
+                    <img src="/img/icon/copy.png" title="<?= Util::translate("form.label.copy") ?>"
+                         />
+                </a>
+                <a data-control="if: entry.right=='false'"  >
+                    -
+                </a>
+            </li>
+            <li class="menu-item divider" >  
+
+                <a  class="icon-function"
+                    data-control="if: entry.right=='true'" data-attr="href: '/system/news/update?id=' + entry.id " >
+                    <img src="/img/icon/edit.png" title="<?= Util::translate("form.label.update") ?>"
+                         />
+                </a>
+                <a data-control="if: entry.right=='false'"  >
+                    -
+                </a>
+            </li>
+            <li class="menu-item">
+                <a  class="icon-function"
+                    data-call="click: showDeleteDialog($dom, entry.id)" data-control="if: entry.right=='true'">
+                    <img src="/img/icon/trash_16.png" title="<?= Util::translate("form.label.delete") ?>"
+                         />
+                </a>
+                <a  data-control="if: entry.right=='false'">
+                    -
+                </a>
+            </li>
+        </ul>
+    </td>
+</tr>

@@ -1,0 +1,44 @@
+<tr data-row>
+    <td class="center-text" data-out="qa.$index+1"></td>
+    <td data-item="qa.asker"></td>
+    <td data-item="qa.askerEmail"></td>
+    <td data-item="qa.title"></td>
+    <td class="center-text">
+        <input type="checkbox" data-control="if: qa.display == '1'" checked
+               data-attr="data-id: qa.id" 
+               style="margin-left: 10px;" class="chk-set-display"/>
+        <input type="checkbox" data-control="if: qa.display != '1'" 
+               data-attr="data-id: qa.id" 
+               style="margin-left: 10px;" class="chk-set-display"/>
+        <img src='/img/icon/loading.gif' style="display: none; width: 20px;"
+             data-attr="id: 'img-loading-'+qa.id"/>
+    </td>
+<!--    <td class="center-text" data-item="qa.categoryName"></td>-->
+    <td class="center-text" data-item="qa.createTime"></td>    
+    <td>
+        <ul class="menu-hr menu-hr--center" >
+            <li class="menu-item divider">
+                <a class="icon-function"
+                   data-attr="href: '/'+ qa.rewriteUrl" 
+                   target="_blank">
+                    <img src="/img/icon/view.png" title="<?= Util::translate("form.label.view") ?>"
+                         />
+                </a>
+            </li>
+            <li class="menu-item divider" >
+                <a class="icon-function"
+                   data-attr="href: '/system/news/update-qa?id=' + qa.id ">
+                    <img src="/img/icon/edit.png" title="<?= Util::translate("form.label.update") ?>"
+                         />
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="icon-function"
+                   data-call="click: showDeleteDialog($dom, qa.id)">
+                    <img src="/img/icon/trash_16.png" title="<?= Util::translate("form.label.delete") ?>"
+                         />
+                </a>
+            </li>
+        </ul>
+    </td>
+</tr>

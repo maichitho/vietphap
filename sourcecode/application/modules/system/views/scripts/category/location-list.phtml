@@ -1,0 +1,224 @@
+<?php
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$status = $request->getParam("status");
+?>
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/system/category/",
+                    name: "vm-location-list.js"
+                }
+            ],
+            messages:{
+            },
+            bindings: [
+                {
+                    viewer: "LocationListV",
+                    viewmodeler: "locationListVM",
+                    linkback: true,
+                    data: {
+                        locations: <?= (isset($this->locations)) ? json_encode($this->locations) : '[]' ?>,
+                        location: <?= (isset($this->location)) ? json_encode($this->location) : '[]' ?>,
+                        type: "<?= $this->type ?>",
+                        mainLocation: <?= (isset($this->mainLocation)) ? json_encode($this->mainLocation) : '[]' ?>,
+                        parentLocations: <?= (isset($this->parentLocations)) ? json_encode($this->parentLocations) : '[]' ?>,
+                        selectedParentId: "<?= (isset($this->selectedParentId)) ? $this->selectedParentId : "" ?>"
+                    }
+                }
+            ]
+        });
+    });
+</script>
+<div class="panel content">
+    <div data-viewmodeler="LocationListV">
+        <div id="alert_success"
+             class="alert--success rounded--sm"
+             style="<?= isset($status) && $status == "success" ? 'display: block;' : 'display: none;' ?>">
+            <span class="alert-content"><?= Util::translate("category.update.message.success") ?> </span>
+            <span class="alert-close" 
+                  onclick="$(this).parent().hide();">&times;</span>
+        </div>
+        <div id="alert_error"
+             class="alert--error rounded--sm"
+             style="<?= isset($status) && $status == "error" ? 'display: block;' : 'display: none;' ?>">
+            <span class="alert-content"><?= Util::translate("category.update.message.error") ?> </span>
+            <span class="alert-close" 
+                  onclick="$(this).parent().hide();">&times;</span>
+        </div>
+        <div class="row">
+            <div class="category-cnu">
+                <h6 class="sys-title center-text">
+
+                </h6>
+                <form id="form-general" data-call="submit: updateValueForm" action="
+                <?php
+                if ($this->type == "create") {
+                    echo '/system/category/create-location';
+                } else {
+                    echo '/system/category/update-location';
+                }
+                ?>" method="POST">
+                    <div class="row border--thin rounded--sm"
+                         style="margin: 15px; padding-right: 15px;">
+                        <table id="category_input"
+                               class="table--info" style="width: 100%;">
+                            <tr>
+                                <td class="width-150">
+                                    <?= Util::translate("category.name") ?>(*)
+                                </td>
+                                <td colspan="2">
+                                    <span data-message-for="name" 
+                                          class="fgr--error"></span>
+                                    <input type="text"
+                                           name ="name"
+                                           data-in="location.name"
+                                           data-check="name: required"
+                                           data-required-message="<?= Util::translate("category.list.name.error.required") ?>"/>
+                                    <input type="hidden" name="id"
+                                           id="id-category"
+                                           data-in="location.id">
+                                </td>
+                            </tr>
+                            <tr id="tr-sl-parent-category"
+                                data-control="if: mainLocation.length > 0">
+                                <td class="width-150">
+                                    <?= Util::translate("category.parent.name") ?>(*)
+                                </td>
+                                <td colspan="2">
+                                    <select name="parentLocationId" id="id-sl-parent-category"
+                                            data-control="for: locate in mainLocation"
+                                            data-in="location.parentId">
+                                        <option data-attr="value: locate.id" data-item="locate.displayName">
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="width-150">
+                                    <?= Util::translate("category.code") ?>(*)
+                                </td>
+                                <td>
+                                    <span data-message-for="code" 
+                                          class="fgr--error"></span>
+                                    <input type="text"
+                                           name ="code"
+                                           data-in="location.code"
+                                           data-check="code: required"
+                                           data-required-message="<?= Util::translate("category.list.code.error.required") ?>"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <?= Util::translate("category.description") ?>
+                                </td>
+                                <td>
+                                    <textarea name="description"
+                                              id ="category_des"
+                                              class="category-des"
+                                              rows="5"
+                                              data-out="location.description"
+                                              data-type="html"></textarea>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="table-footer"
+                             style="text-align: right; padding: 5px 10px 15px 0">
+                            <a id="category_close"
+                               href="/system/category/list-location"
+                               class="button--sm">
+                                   <?= Util::translate("form.button.cancel") ?>
+                            </a>
+                            <a id="save_category" 
+                               class="button--sm" 
+                               onclick="$('#form-general').submit()">
+                                   <?= Util::translate("form.button.save") ?>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="category-list">
+                <form id="form-list"
+                      action="/system/category/list-location"
+                      method="get">
+                    <h6 class="sys-title"
+                        style="margin-left: 9px;">
+                        <span style="margin-right: 20px">
+                        <?= Util::translate("category.labe.city_search") ?>
+                        </span>
+                        <select class="width-200" id="sl-select-city"
+                                name="selectedParentId"
+                                data-in="selectedParentId"
+                                data-control="for: loc in parentLocations"
+                                onchange="$('#form-list').submit();">
+                            <option data-item="loc.name" data-attr="value: loc.id"></option>
+                        </select>
+                        <a data-call="click: addNewLocation()"
+                           class="button--sm"
+                           style="float: right; margin-right: 20px;">
+                               <?= Util::translate("form.button.add") ?>
+                        </a>
+                    </h6>
+                </form>
+                <div id="category_list" 
+                     class="table table--list" 
+                     style="padding: 10px;">
+                    <div class="border--thin rounded--sm" data-control="if: locations.length > 0">
+                        <span>
+                            <table>
+                                <thead>
+                                    <tr class="fnt--12">
+                                        <th class="width-50">
+                                            <?= Util::translate("form.label.order") ?> 
+                                        </th>
+                                        <th class="width-200">
+                                            <?= Util::translate("category.name") ?> 
+                                        </th>
+                                        <th>
+                                            <?= Util::translate("category.code") ?> 
+                                        </th>
+                                        <th class="width-200">&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="tbody" 
+                                       data-control="for: locate in locations">
+                                           <?php echo $this->render("category/components/location-item.phtml"); ?>
+                                </tbody>
+                            </table>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?= $this->render("components/dialog-single-upload.phtml") ?>
+</div>
+<script>
+    $(document).ready(function() {
+        CKEDITOR.replace('category_des', {
+            toolbar: [
+                {name: 'document', items: ['Source', '-', 'NewPage', 'Preview', '-', 'Templates']},
+                ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'],
+                {name: 'basicstyles', items: ['Bold', 'Italic']}
+            ]
+        });
+    });
+</script>
+
+<div id="delete_dialog"
+     style="display: none;"
+     class="dialog" 
+     data-button="OK: locationListVM.deleteLocation() , CANCEL: $('#delete_dialog').hideDialog();"
+     data-title="<?= Util::translate("dialog.alert.info.title") ?>">
+    <div class="dialog-content" style="height: 60px;">
+        <p style="text-align: center; vertical-align: middle; margin-top: 20px;">
+            <?= Util::translate("category.delete.confirm") ?>
+        </p>
+        <div class="loading">
+            <img src="/img/icon/loading.gif"/>
+            <span><?= Util::translate("dialog.loading.process") ?></span>
+        </div>
+    </div>
+</div>

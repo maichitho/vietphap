@@ -1,0 +1,68 @@
+<tr>
+    <td data-item="cat.$index + 1"
+        style="text-align: center;width: 50px;"></td> 
+    <td data-control="if: '<?= SA_Entity_Category::TYPE_SUPPORT ?>' != '<?= $this->catType ?>'"
+        style="width: 100px;">
+        <img data-control="if: cat.iconPath != ''"
+             data-attr="src: cat.iconPath"
+             onerror="this.setAttribute('src', '/img/icon/no-image.png')"
+             style="width: 90px;"/>
+    </td>
+    <td data-item="cat.id" class="width-100"></td>
+    <td data-item="cat.name" class="width-200"></td>
+    <td data-item="cat.description"
+        data-type="html" 
+        style="word-break: break-all;"></td>
+        <?php
+        if (SA_Entity_Category::TYPE_QA == $this->catType || SA_Entity_Category::TYPE_CHILD == $this->catType) {
+            ?>
+        <td class="center-text" style="width: 165px;">
+            <input type="checkbox" data-control="if: cat.headerMenu == '1'" checked
+                   data-attr="data-id: cat.id, menu-type: '<?= SA_Entity_Menu::TYPE_HEADER ?>'" class="chk-using-in-menu"/>
+            <input type="checkbox" data-control="if: cat.headerMenu != '1'" 
+                   data-attr="data-id: cat.id, menu-type: '<?= SA_Entity_Menu::TYPE_HEADER ?>'" class="chk-using-in-menu"/> <?= Util::translate('category.using_in_menu.header') ?>                                        
+            <input type="checkbox" data-control="if: cat.footerMenu == '1'" checked
+                   data-attr="data-id: cat.id, menu-type: '<?= SA_Entity_Menu::TYPE_FOOTER ?>'" 
+                   style="margin-left: 10px;" class="chk-using-in-menu"/>
+            <input type="checkbox" data-control="if: cat.footerMenu != '1'" 
+                   data-attr="data-id: cat.id, menu-type: '<?= SA_Entity_Menu::TYPE_FOOTER ?>'" 
+                   style="margin-left: 10px;" class="chk-using-in-menu"/> <?= Util::translate('category.using_in_menu.footer') ?>
+            <img src='/img/icon/loading.gif' style="display: none; width: 20px;"
+                 data-attr="id: 'img-loading-'+cat.id"/>
+
+        </td>
+        <?php
+    }
+    ?>
+    <td style="width:165px;">
+        <ul class="menu-hr menu-hr--center" >
+            <li class="menu-item divider" >
+                <a data-attr="href: '/system/category/up-category?type='+ cat.type + '&id=' + cat.id">
+                    <img src="/img/icon/up_16.png"
+                         title="<?= Util::translate("form.label.up") ?>"/>
+                </a>
+            </li>
+            <li class="menu-item divider">
+                <a  data-attr="href: '/system/category/down-category?type='+ cat.type + '&id=' + cat.id">
+                    <img src="/img/icon/down_16.png"
+                         title="<?= Util::translate("form.label.down") ?>"/>
+                </a>
+            </li>
+            <li class="menu-item divider" >
+                <a  class="icon-function"
+                    data-call="click: updateCategory($dom)"
+                    data-attr="id: cat.id">
+                    <img src="/img/icon/edit.png" title="<?= Util::translate("form.label.update") ?>"
+                         /> 
+                </a>
+            </li>
+            <li class="menu-item">
+                <a  class="icon-function"
+                    data-call="click: showDialogConfirm($dom, cat.id)">
+                    <img src="/img/icon/trash.png" title="<?= Util::translate("form.label.delete") ?>"
+                         />
+                </a>
+            </li>
+        </ul>
+    </td>
+</tr>

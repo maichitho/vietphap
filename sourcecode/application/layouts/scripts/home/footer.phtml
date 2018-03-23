@@ -1,0 +1,123 @@
+<?php
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$controllerName = $request->getControllerName();
+$actionName = $request->getActionName();
+?>
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/home/home/",
+                    name: "vm-footer.js"
+                }
+            ],
+            bindings: [
+                {
+                    viewer: "FooterV",
+                    viewmodeler: "footerVM",
+                    linkback: true,
+                    data: {
+                        footerMenus: <?= json_encode($this->menuFooter) ?>,
+                        footerRootMenus: <?= json_encode($this->menuRootFooter) ?>,
+                        linkFb: '<?= $this->linkFacebook ?>',
+                        linkGg: '<?= $this->linkGoogle ?>',
+                        linkTw: '<?= $this->linkTwitter ?>',
+                        fSlogan: '<?= $this->fSlogan ?>',
+                        footerAvatar: '<?= $this->footerAvatar ?>',
+                        footerAvatarText: '<?= $this->footerAvatarText ?>',
+                        footerAvatarLink: '<?= $this->footerAvatarLink ?>'
+                    }
+                }
+            ]
+        });
+    });
+
+</script>
+<div class="panel" 
+     data-viewmodeler="FooterV">
+    <div class="row">
+        <div class="f-footer-menu">
+            <div class="main-box">
+                <div class="row">
+                    <div class="nar-12 pad-3 med-3 wid-3">
+                        <div class="f-menu-vr">
+                            <ul class="menu-vr"
+                                data-control="for: mFooter in footerList1">
+                                <li class="menu-item">
+                                    <a data-attr="href: mFooter.linkUrl"
+                                       data-item="mFooter.name.toUpperCase()"
+                                       data-control="if: mFooter.linkUrl.length > 0"></a>
+                                    <a href="#"
+                                       data-item="mFooter.name.toUpperCase()"
+                                       data-control="if: mFooter.linkUrl.length <= 0"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="nar-12 pad-3 med-3 wid-3">
+                        <div class="f-menu-vr">
+                            <ul class="menu-vr"
+                                data-control="for: mFooter in footerList2">
+                                <li class="menu-item">
+                                    <a data-attr="href: mFooter.linkUrl"
+                                       data-item="mFooter.name.toUpperCase()"
+                                       data-control="if: mFooter.linkUrl.length > 0"></a>
+                                    <a href="#"
+                                       data-item="mFooter.name.toUpperCase()"
+                                       data-control="if: mFooter.linkUrl.length <= 0"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="nar-12 pad-3 med-3 wid-3">
+                        <div class="f-menu-vr">
+                            <ul class="menu-vr"
+                                data-control="for: mFooter in footerList3">
+                                <li class="menu-item">
+                                    <a data-attr="href: mFooter.linkUrl"
+                                       data-item="mFooter.name.toUpperCase()"
+                                       data-control="if: mFooter.linkUrl.length > 0"></a>
+                                    <a href="#"
+                                       data-item="mFooter.name.toUpperCase()"
+                                       data-control="if: mFooter.linkUrl.length <= 0"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="nar-12 pad-3 med-3 wid-3"
+                         style="padding-left: 10px;">
+                        <div class="f-link-title">LIÊN KẾT</div>
+                        <a class="f-link-item"
+                           data-attr="href: footerVM.linkFb">
+                            <img src="/img/icon/facebook_white.png"
+                                 alt="Facebook"/>
+                        </a>
+                        <a class="f-link-item"
+                           data-attr="href: footerVM.linkGg">
+                            <img src="/img/icon/googleplus_white.png"
+                                 alt="Google Plus"/>
+                        </a>
+                        <a class="f-link-item"
+                           data-attr="href: footerVM.linkTw">
+                            <img src="/img/icon/twitter_white.png"
+                                 alt="Twitter"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+
+    <div class="row f-footer">
+        <div class="container company-info"
+             style="background-color: transparent; padding-bottom: 20px;">
+            <h4><?= Services::createConfigurationService()->get('footer.company.name')->getValue() ?></h4>
+            <p><span>Địa chỉ: </span><span><?= Services::createConfigurationService()->get('footer.company.address')->getValue() ?></span> - <span> Địện thoại: </span><span><?= Services::createConfigurationService()->get('footer.company.telephone')->getValue() ?></span></p>
+            <p><?= Services::createConfigurationService()->get('footer.company.formal_registration')->getValue() ?></p>
+            <p class="copyright">Copyright &COPY; www.hosoduhocphap.edu.vn 2015. All rights reserved. </p>
+        </div>
+
+    </div>
+
+</div>

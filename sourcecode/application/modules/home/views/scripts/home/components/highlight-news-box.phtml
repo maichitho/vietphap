@@ -1,0 +1,31 @@
+<?php
+$adv = Services::createConfigurationService()->get("home.adv.menu.link");
+if ($adv != NULL) {
+    ?>
+    <div class="row visible-pad visible-med visible-wid">
+        <div class="row">
+            <div class="f-menu-right-item">
+                <div class="f-menu-header">
+                    <h4>TIN ĐỌC NHIỀU</h4>
+                </div>
+                <div class="f-menu-right-content">
+                    <div class="f-menu-right-category">
+                        <ul>
+                            <li>
+                                <a href="#">Nhóm tin số 1 Nhóm tin số 1 Nhóm tin số 1</a>
+                            </li>
+                            <li>
+                                <a href="#">Nhóm tin số 2</a>
+                            </li>
+                            <li>
+                                <a href="#">Nhóm tin số 3</a>
+                            </li>
+                        </ul>        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php
+}
+?>

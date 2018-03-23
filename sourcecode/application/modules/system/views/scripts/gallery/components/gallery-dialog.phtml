@@ -1,0 +1,108 @@
+<div id="gallery_update_dialog"
+     style="display: none; height: auto;"
+     class="dialog dialog--close" 
+     data-title="<?= Util::translate("gallery.update.title") ?>">
+    <div class="dialog-content" 
+         style="min-height: 260px; padding: 10px; width: 100%;">
+        <table style="width: 100%">
+            <tr>
+                <td class="fgr-label">
+                    <?= Util::translate("gallery.title") ?>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="fgr--error"
+                          style="display: none;">
+                              <?= Util::translate("message.gallery.title.required") ?>
+                    </span>
+                    <input type="text"
+                           style="text-align: left;"
+                           id="pro_name"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="fgr-label">
+                    <?= Util::translate("form.label.description") ?>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <textarea rows="5"
+                              style="text-align: left;"
+                              id="gallery_des_dl"></textarea>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+    <div class="dialog-footer">
+        <div class="loading-dialogform"
+             style="display:none;">
+            <img src="/img/icon/loading.gif"/>
+            <span><?= Util::translate("dialog.label.loading") ?></span>
+        </div>
+        <a type="button"
+           onclick="galleryVM.updateGallery();
+                   $('#gallery_update_dialog').hideDialog({width: '400px'});"
+           class="button button--sm"
+           style="float: right; margin: 3px 10px 10px 0;">
+               <?= Util::translate("form.button.ok") ?>
+        </a>
+        <a onclick="$('#gallery_update_dialog').hideDialog()"
+           class="button button--sm"  
+           style="float: right; margin: 3px 5px 10px 10px;">
+               <?= Util::translate("form.button.cancel") ?>
+        </a>
+    </div>
+</div>
+
+<!--for updating screen's title-->
+<div id="input_update_dialog"
+     style="display: none; height: auto; z-index: 2001;"
+     class="dialog" 
+     data-title="<?= Util::translate("input.update.title") ?>">
+    <div class="dialog-content" 
+         style="min-height: 100px; padding: 10px 10px 0 10px; width: 100%; overflow: hidden;">
+        <table style="width: 100%">
+            <tr>
+                <td class="fgr-label input-label">
+                    <?= Util::translate("input.title") ?>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="fgr--error input-valid-mes"
+                          style="display: none;">
+                              <?= Util::translate("message.input.title.required") ?>
+                    </span>
+                    <span class="fgr--error input-update-mes"
+                          style="display: none;">
+                              <?= Util::translate("message.input.update.error") ?>
+                    </span>
+                    <input type="text"
+                           id="input_value"
+                           value="Untitled Image"/>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="dialog-footer">
+        <div class="loading-dialogform"
+             style="display:none;">
+            <img src="/img/icon/loading.gif"/>
+            <span><?= Util::translate("dialog.loading.process") ?></span>
+        </div>
+        <a type="button"
+           id="input_ok"
+           class="button button--sm"
+           style="float: right; margin: 1px 15px 10px 0;">
+               <?= Util::translate("form.button.ok") ?>
+        </a>
+        <a onclick="$('#input_update_dialog').hideDialog()"
+           class="button button--sm"  
+           style="float: right; margin: 1px 5px 10px 10px;">
+            <?= Util::translate("form.button.cancel") ?>
+        </a>
+    </div>
+</div>

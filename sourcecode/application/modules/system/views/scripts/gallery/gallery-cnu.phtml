@@ -1,0 +1,114 @@
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/system/dialog/",
+                    name: "vm-dialog-m-upload.js"
+                },
+                {
+                    src: "/js/system/gallery/",
+                    name: "vm-gallery-cnu.js"
+                }
+            ],
+            messages: {
+                isMobile: <?= Util::isMobile() ?>,
+                title: '<?= Util::translate("message.alert.title") ?>',
+                deleteTitle: '<?= Util::translate("message.delete.title") ?>',
+                deleteImage: '<?= Util::translate("message.gallery.delete.image") ?>',
+                deleteImageError: '<?= Util::translate("message.gallery.delete.image.error") ?>',
+                updateStatusSuccess: '<?= Util::translate("message.gallery.update.status.success") ?>',
+                updateStatusError: '<?= Util::translate("message.gallery.update.status.error") ?>',
+                deleteGallery: '<?= Util::translate("message.gallery.delete") ?>',
+                deleteGalleryError: '<?= Util::translate("message.gallery.delete.error") ?>',
+                cancelUpload: '<?= Util::translate("message.upload.cancel") ?>'
+            },
+            bindings: [
+                {
+                    viewer: "GalleryCnuV",
+                    viewmodeler: "galleryCnuVM",
+                    linkback: true,
+                    data: {
+                        images: <?= json_encode($this->images) ?>,
+                        gallery: <?= json_encode($this->gallery) ?>
+                    }
+                },
+                {
+                    viewer: "UploadDialogV",
+                    viewmodeler: "uploadDialogVM",
+                    linkback: true,
+                    data: {
+                    }
+                }
+            ]
+        });
+    });</script>
+<div class="panel  content duhoc-body"
+     data-viewmodeler="GalleryCnuV">
+    <div class="gallery-pl rounded--sm">
+        <div class="row">
+            <table class="table--info" 
+                   style="width: 100%;">
+                <tr>
+                    <td class="width-120">
+                        <?= Util::translate("gallery.title") ?>(*)
+                    </td>
+                    <td style="width: 350px;">
+                        <span data-message-for="title" 
+                              class="fgr--error"></span>
+                        <div class="editable-textbox fnt--14 italic pro-name"
+                             onclick="galleryCnuVM.showEditGalleryDialog();">
+                            <div class="box-description" 
+                                 data-out="gallery.title"></div>
+                            <img src="/img/icon/edit.png"/>
+                        </div>
+                    </td>
+                    <td style="width: 160px;text-align: right;">
+                        <?= Util::translate("workshop.isTop") ?>
+                    </td>
+                    <td>
+                        <input id="gallery_istop" 
+                               type="checkbox"/>
+                    </td>
+                    <td>
+                        <div class="button button--sm button-upload"
+                             style="margin-top: 5px;">
+                                 <?= Util::translate("gallery.addImage") ?>
+                            <input id="upload_file" 
+                                   type="file" 
+                                   name="files[]" 
+                                   multiple 
+                                   style="width: 100px;"/> 
+                        </div>
+                    </td>
+                    <td>
+                        <button class="button button--sm"
+                                style="margin-top: 5px;"
+                                data-call="click: showDeleteGalleryDialog">
+                                    <?= Util::translate("gallery.delete") ?>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            <div class="divider--hr"></div>
+            <div class="gallery-container">
+                <?php echo $this->render("gallery/components/image-item.phtml") ?>
+            </div>
+        </div>
+        <?php echo $this->render('gallery/components/gallery-dialog.phtml'); ?>
+    </div>
+</div>
+<div data-viewmodeler='UploadDialogV'>
+    <?php echo $this->render("components/dialog-multi-upload.phtml") ?>
+</div>
+
+<?php echo $this->render("components/dialog-confirm.phtml"); ?>
+</div>
+<script>
+    $(document).ready(function() {
+        uploadUtil.uploadMultipleFile("upload_file", {
+            title: '<?= Util::translate("news.upload.file") ?>',
+            callbackFn: galleryCnuVM.addImages
+        });
+    });
+</script>

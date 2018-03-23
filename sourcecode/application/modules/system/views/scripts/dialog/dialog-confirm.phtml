@@ -1,0 +1,35 @@
+<div id="confirm_dialog"
+     class="dialog dialog--close" >
+    <div class="dialog-header">
+        <div class="dialog-title"></div>
+        <div class="dialog-close">×</div>
+    </div>
+    <div class="dialog-content" style="padding: 10px;">
+        <div class="message-confirm">
+            <span >
+                <?= Util::translate("product.image.delete.confirm") ?>
+            </span>
+            <img class="loading-image" 
+                 src="/img/icon/loading.gif"/>
+        </div>
+        <div class="message-error">
+            <?= Util::translate("file.delete.message.error") ?>
+        </div>
+    </div>
+    <div class="dialog-footer">
+        <button class="button--sm dialog-button" 
+                onclick="">OK</button>
+        <button class="button--sm dialog-button" 
+                onclick="">CANCEL</button>
+    </div>
+</div>
+
+<script>
+    +(function(window, document, $, timstyle) {
+        
+        var dialogConfirm = {
+            
+        };
+    }(window, document, window.jQuery, timstyle));
+
+</script>

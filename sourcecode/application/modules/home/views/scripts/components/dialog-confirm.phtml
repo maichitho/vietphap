@@ -1,0 +1,115 @@
+<style>
+    .dialog-header{
+        background-color: #009900;
+        color: #fff;
+    }
+
+    .dialog-footer a{
+        background-color: #38164A;
+        color: #fff;
+    }
+
+    .loading{
+        height: 20px;
+        width: 100%;
+        font-size: 13px;
+        padding-left: 50px;
+        display: none;
+    }
+
+    .loading img{
+        float: left;
+        margin-right: 10px;
+        height: 30px;
+        width: 30px;
+    }
+
+    .loading span{
+        display: inline-block;
+        margin-top: 5px;
+    }
+</style>
+<div id="dialog_confirm"
+     style="display: none;"
+     class="dialog dialog--close" 
+     data-title="<?= Util::translate("dialog.alert.info.title") ?>">
+    <div class="dialog-content" style="min-height: 60px; padding-left: 10px;">
+        <p class="dialog-info" style="text-align: center; vertical-align: middle; margin:20px auto;">
+            <?= Util::translate("product.delete.confirm") ?>
+        </p>
+        <div class="loading">
+            <img src="/img/icon/loading.gif"/>
+            <span><?= Util::translate("dialog.loading.process") ?></span>
+        </div>
+    </div>
+    <div class="dialog-footer">
+        <a id="dialog_confirm_ok"
+           type="button"
+           class="button--sm button--vnbuyers"
+           style="float: right; margin: 3px 10px 10px 0; padding-top: 8px;">
+               <?= Util::translate("form.button.ok") ?>
+        </a>
+        <a id="dialog_confirm_cancel" 
+           type="button"
+           class="button--sm button--vnbuyers"  
+           style="float: right; margin: 3px 5px 10px 10px; padding-top: 8px;">
+            <?= Util::translate("form.button.cancel") ?>
+        </a>
+    </div>
+</div>
+<script>
+    /**
+     * For confirm dialogs that popup before doing some actions
+     * 
+     * @html: components/dialog-confirm.phtml
+     * @html: 
+     * @type type
+     */
+    var confirmDialog = {
+        namespace: "confirmDialog",
+        options: [],
+        init: function() {
+
+        },
+        registerChanel: function() {
+
+        },
+        show: function(settings) {
+            this.options = $.extend({}, settings);
+
+            if (this.options.title != undefined) {
+                $("#dialog_confirm .dialog-title").text(confirmDialog.options.title);
+            }
+
+            if (this.options.info != undefined) {
+                $("#dialog_confirm .dialog-info").text(confirmDialog.options.info);
+            }
+
+            if (confirmDialog.options.isAlert) {
+                $("#dialog_confirm_ok").hide();
+                $("#dialog_confirm_cancel").hide();
+            } else {
+                // binding events and run call back
+                $("#dialog_confirm_ok").click(function() {
+                    if (confirmDialog.options.callbackFn !== undefined && typeof confirmDialog.options.callbackFn === "function") {
+                        $(".loading").show();
+                        confirmDialog.options.callbackFn();
+                    }
+                });
+            }
+
+            $("#dialog_confirm_cancel").click(function() {
+                $('#dialog_confirm').hideDialog();
+            });
+
+            $('#dialog_confirm').showDialog({width: '400px'});
+        },
+        hide: function() {
+            $("#dialog_confirm").hideDialog();
+            $(".loading").hide();
+        }
+    };
+    $(document).ready(function() {
+        confirmDialog.init();
+    });
+</script>

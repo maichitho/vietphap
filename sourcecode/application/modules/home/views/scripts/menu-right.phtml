@@ -1,0 +1,154 @@
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/home/home/",
+                    name: "vm-menuright.js"
+                }
+            ],
+            bindings: [
+                {
+                    viewer: "MenurightV",
+                    viewmodeler: "menurightVM",
+                    linkback: true,
+                    data: {
+                    }
+                }
+            ]
+        });
+    });
+</script>
+<div data-viewmodeler='MenurightV'>
+    <?php
+    if (isset($this->menuInnerRight)) {
+        foreach ($this->menuInnerRight as $menu) {
+            if ($menu->getLinkType() == SA_Entity_Menu::LINK_TYPE_IMAGE) {
+                ?>
+                <div class="row">
+                    <div class="f-menu-right-item">
+                        <div class="f-menu-header">
+                            <h4><?= $menu->getName() ?></h4>
+                        </div>
+                        <div class="f-menu-right-content">
+                            <div class="f-menu-right-image">
+                                <a href="">
+                                    <img src="<?= $menu->getImagePath() ?>"/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            } else if ($menu->getLinkType() == SA_Entity_Menu::LINK_TYPE_HTML) {
+                ?>
+                <div class="row">
+                    <div class="f-menu-right-item">
+                        <div class="f-menu-header">
+                            <h4><?= $menu->getName() ?></h4>
+                        </div>
+                        <div class="f-menu-right-content">
+                            <div class="f-menu-right-media">
+                                <?= $menu->getHtmlCode() ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            } else if ($menu->getLinkType() == SA_Entity_Menu::LINK_TYPE_NEWS) {
+                if (isset($this->topViewEntries)) {
+                    ?>
+                    <div class="row visible-pad visible-med visible-wid">
+                        <div class="f-menu-right-item">
+                            <div class="f-menu-header">
+                                <h4><?= $menu->getName()?></h4>
+                            </div>
+                            <div class="f-menu-right-content">
+                                <div class="f-menu-right-category">
+                                    <ul>
+                                        <?php
+                                        foreach ($this->topViewEntries as $entry) {
+                                            ?>
+                                            <li style="min-height: 0;">
+                                                <a href="<?= $entry->getRewriteUrl() ?>"><?= $entry->getTitle() ?></a>
+                                            </li>
+                                            <?
+                                        }
+                                        ?>
+                                    </ul>        
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                }
+            }
+            ?>
+
+            <!--                <div class="row">
+                                        <div class="f-menu-right-item">
+                                            <div class="f-menu-header">
+                                                <h4>MENU BÀI VIẾT</h4>
+                                            </div>
+                                            <div class="f-menu-right-content">
+                                                <div class="f-menu-right-news">
+                                                    <a href="/home/news/product-view">
+                                                        <img src="/img/test/mom_01.jpg"/>
+                                                        <div class="f-news-relative-header">
+                                                            <h4>Cách sử dụng thuốc Cách sử dụng thuốc</h4>
+                                                            <span class="f-next-circle-31"></span>
+                                                        </div>
+                                                    </a>        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="f-menu-right-item">
+                                            <div class="f-menu-header">
+                                                <h4>MENU NHÓM BÀI VIẾT</h4>
+                                            </div>
+                                            <div class="f-menu-right-content">
+                                                <div class="f-menu-right-category">
+                                                    <ul>
+                                                        <li>
+                                                            <a href="#">Nhóm tin số 1 Nhóm tin số 1 Nhóm tin số 1</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#">Nhóm tin số 2</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#">Nhóm tin số 3</a>
+                                                        </li>
+                                                    </ul>        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="f-menu-right-item">
+                                            <div class="f-menu-header">
+                                                <h4>MENU HỎI ĐÁP</h4>
+                                            </div>
+                                            <div class="f-menu-right-content">
+                                                <div class="f-menu-right-qa">
+                                                    <ul>
+                                                        <li>
+                                                            <a href="#">Nhóm tin số 1 Nhóm tin số 1 Nhóm tin số 1</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#">Nhóm tin số 2</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#">Nhóm tin số 3</a>
+                                                        </li>
+                                                    </ul>        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>-->
+            <?php
+        }
+    }
+    ?>
+</div>

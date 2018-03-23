@@ -1,0 +1,155 @@
+<?php
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$controllerName = $request->getControllerName();
+$actionName = $request->getActionName();
+?>
+
+<div class="panel"
+     style="padding-right: 20px;">
+         <?php
+         if ($controllerName == "product" || $controllerName == "order" ) {
+             ?>
+        <ul class="menu-vr">
+            <li class="menu-header fnt--13"
+                style="background-color: #eee; text-align: center; padding-top: 10px;">
+                    <?= Util::translate("category.header") ?>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/product/list-product">
+                    <?= Util::translate("category.living_room_sofa") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/product/list-product">
+                    <?= Util::translate("category.desk") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/product/list-product">
+                    <?= Util::translate("category.child_desk") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/product/list-product">
+                    <?= Util::translate("category.working_table") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/product/list-product">
+                    <?= Util::translate("category.makeup_table") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/product/list-product">
+                    <?= Util::translate("category.coffee_sofa") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/product/list-product">
+                    <?= Util::translate("category.all_in_one") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/product/list-product">
+                    <?= Util::translate("category.decorative_shelf") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/product/list-product">
+                    <?= Util::translate("category.wine_shelf") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/product/list-product">
+                    <?= Util::translate("category.tivi_shelf") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/product/list-product">
+                    <?= Util::translate("category.book_shelf") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/product/list-product">
+                    <?= Util::translate("category.shose_shelf") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/product/list-product">
+                    <?= Util::translate("category.bed_cabinet") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/product/list-product">
+                    <?= Util::translate("category.drawer_cabinet") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/product/list-product">
+                    <?= Util::translate("category.wardrobe") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/product/list-product">
+                    <?= Util::translate("category.sleeping_bed") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/product/list-product">
+                    <?= Util::translate("category.bunk_bed") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/product/list-product">
+                    <?= Util::translate("category.relaxing_desk") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/product/list-product">
+                    <?= Util::translate("category.minnor") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/product/list-product">
+                    <?= Util::translate("category.crips") ?>
+                </a>
+            </li>
+        </ul>
+        <?php
+    } else {
+        ?>
+        <ul class="menu-vr">
+            <li class="menu-header fnt--13"
+                style="background-color: #eee; text-align: center; padding-top: 10px;">
+                    <?= Util::translate("news.list") ?>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/news/detail-news">
+                    <?= Util::translate("news.about_us") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/news/detail-news">
+                    <?= Util::translate("news.agency") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/news/detail-news">
+                    <?= Util::translate("news.room") ?>
+                </a>
+            </li>
+            <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/news/list-news">
+                    <?= Util::translate("news.news") ?>
+                </a>
+            </li>
+             <li class="menu-item <?= $controllerName == "chat" ? "menu-item--active" : "" ?>">
+                <a href="/home/news/detail-news">
+                    <?= Util::translate("news.contact") ?>
+                </a>
+            </li>
+        </ul>
+        <?php
+    }
+    ?>
+</div>

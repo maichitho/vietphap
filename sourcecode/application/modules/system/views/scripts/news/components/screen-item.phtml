@@ -1,0 +1,29 @@
+<div class="row"
+     style="overflow: hidden"
+     data-control="for: scr in screens">
+    <div class="pad-3 med-3 wid-3 item-screen"
+         style="padding: 5px;">
+        <div class="thumbnail thumbnail-screen"
+             data-skip>
+            <a class="thumbnail-link">
+                <img class="thumbnail-img"
+                     data-attr="src: scr.url">
+            </a>
+            <h6 class="project-title"
+                style="display: none;">
+                <input class="hide-input" 
+                       type="text"
+                       style="display: none;"/>
+                <div class="wrap-input">
+                    Untitled Screen
+                </div>
+            </h6>
+            <div class="wrap-progressbar">
+                <div class="progressbar"
+                     data-attr="id: 'screen' + scr.$index"
+                     data-value="0" 
+                     style="margin: 0 auto;"></div>
+            </div>
+        </div>
+    </div>
+</div>

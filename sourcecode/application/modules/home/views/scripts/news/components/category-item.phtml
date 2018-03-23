@@ -1,0 +1,37 @@
+<!--du hoc phap-->
+
+<div class="row"
+     style="overflow: hidden;"
+     data-control="if: category.entries.length > 0">
+    <div class="box-category">
+        <div class="box-header"
+             style='margin-bottom: 5px;'>
+            <img src="/img/icon/arrow_header.png"/>
+            <a data-attr="href:'/'+ category.rewriteUrl"
+               data-out="category.name"> 
+            </a>
+        </div>
+        <div class="hot-news"
+             style="margin-top:10px;">
+            <a data-attr="href: '/'+ category.entries[0].rewriteUrl">
+                <img data-attr="src: 'http://thumb.vietphapaau.com/?src=http://vietphapaau.com/'+category.entries[0].imagePath+'&h=209&w=330'"/>
+                <h2  data-item="strimStringOfDom(category.entries[0].title,105)"></h2>
+            </a>
+            <div data-type="html" 
+                 class="b-top-description"
+                 data-item="strimStringOfDom(category.entries[0].description, 190)">
+            </div>
+        </div>
+        <div class="hot-news-box"
+             style="min-height: 100%;">
+            <ul style="height: 100%;"
+                data-control="for: entry in category.entries">
+                <li data-control="if: $index > 0">
+                    <img data-attr="src: 'http://thumb.vietphapaau.com/?src=http://vietphapaau.com/'+entry.imagePath+'&h=45&w=80'"/>
+                    <a data-attr="href: '/'+ entry.rewriteUrl" 
+                       data-item="strimStringOfDom(entry.title, 54)"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

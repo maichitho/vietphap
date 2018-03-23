@@ -1,0 +1,223 @@
+
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/system/news/",
+                    name: "vm-qa-cnu.js"
+                }
+            ],
+            messages: {
+                deleteImage: '<?= Util::translate("dialog.delete.image") ?>',
+                titleAlert: '<?= Util::translate("dialog.alert.info.title") ?>',
+                uploadError: '<?= Util::translate("dialog.upload.upload.error") ?>',
+                selectError: '<?= Util::translate("dialog.upload.select.error") ?>',
+                cancelUpload: '<?= Util::translate("message.upload.cancel") ?>',
+                rewriteUrlError: '<?= Util::translate("news.cnu.rewriteurl.error") ?>'
+            },
+            bindings: [
+                {
+                    viewer: "QaCnuV",
+                    viewmodeler: "qaCnuVM",
+                    linkback: true,
+                    data: {
+                        //                        categories: <?= json_encode($this->categories) ?>,
+                        type: '<?= $this->type ?>',
+                        entryId: '<?= $this->entryId ?>',
+                        entry: <?= json_encode($this->entry) ?>
+                    }
+                }
+            ]
+        });
+    });
+</script>
+<div class="panel content">
+    <div data-viewmodeler="QaCnuV">
+        <?php
+        if (isset($this->result)) {
+            ?>
+            <div id="alert_success" class="<?php
+            if (isset($this->result) && $this->result == TRUE) {
+                echo "alert--success";
+            } else {
+                echo "alert--error";
+            }
+            ?> rounded--sm">
+                <span class="alert-content">
+                    <?php
+                    if (isset($this->result) && $this->result == TRUE) {
+                        echo Util::translate("qa.cnu.message.success");
+                    } else {
+                        echo Util::translate("qa.cnu.message.error");
+                    }
+                    ?>
+                </span>
+                <span class="alert-close" 
+                      onclick="$(this).parent().hide();">&times;</span>
+            </div>
+            <?php
+        } else {
+            
+        }
+        ?>
+        <div class="row">           
+            <div class="news-info dogo-body">
+                <div class="row border--thin rounded--sm"
+                     style="margin: 15px; padding-right: 15px;">
+                    <form id="form"
+                          data-call="submit: validateInput"
+                          method="POST"
+                          action="
+                          <?php
+                          if ($this->type == "create") {
+                              echo '/system/news/create-qa';
+                          } else {
+                              echo '/system/news/update-qa?id=' . $this->entryId;
+                          }
+                          ?>">
+                        <table class="table--info" 
+                               style="width: 100%;">
+                            <tr>
+                                <td class="width-150">
+                                    <?= Util::translate("qa.asker") ?>(*)
+                                </td>
+                                <td class="width-200">
+                                    <span data-message-for="asker" 
+                                          class="fgr--error"></span>
+                                    <input type="text"
+                                           name ="asker"
+                                           id="asker" 
+                                           data-in="entry.asker"
+                                           data-check="asker: required"
+                                           data-required-message="<?= Util::translate("qa.asker.error.required") ?>"/>
+                                </td>
+                                <td class="width-150"
+                                    style="text-align: right">
+                                        <?= Util::translate("qa.asker_email") ?>
+                                </td>
+                                <td >
+                                    <input type="text" class="width-200"
+                                           name ="askerEmail"
+                                           id="askerEmail" 
+                                           data-in="entry.askerEmail"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <?= Util::translate("qa.title") ?>(*)
+                                </td>
+                                <td colspan="3">
+                                    <span data-message-for="title" 
+                                          class="fgr--error"></span>
+                                    <input type="text"
+                                           name ="title"
+                                           id="title" 
+                                           data-in="entry.title"
+                                           data-check="title: required"
+                                           data-required-message="<?= Util::translate("entry.title.error.required") ?>"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <?= Util::translate("news.rewriteUrl") ?>(*)
+                                </td>
+                                <td colspan="3">
+                                    <span data-message-for="rewriteUrl" 
+                                          class="fgr--error"></span>
+                                    <input type="text" 
+                                           name="rewriteUrl"
+                                           id="rewriteUrl"
+                                           placeholder="Rewrite Url"
+                                           data-in="entry.rewriteUrl"
+                                           data-check="rewriteUrl: required"
+                                           data-required-message="<?= Util::translate("entry.rewriteUrl.error.required") ?>"/>
+                                    <span class="fnt--11 italic"
+                                          style="float: left;margin-left: 10px; margin-top: 5px;"><?= Util::translate("news.rewriteUrl.suggestion") ?></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="width-120">
+                                    <?= Util::translate("qa.summary") ?>
+                                </td>
+                                <td colspan="3">
+                                    <textarea id="summary" 
+                                              type="text" 
+                                              data-in='entry.description'
+                                              rows="3"
+                                              name="summary"></textarea> 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;
+                                    <?php //echo Util::translate("qa.category"); ?>
+                                </td>
+                                <td>
+<!--                                    <select id="categoryId" 
+                                            style="width: 180px; margin-right: 50px;" 
+                                            name="categoryId" 
+                                            data-control="for: category in categories">
+                                        <option data-row data-attr="value: category.id" 
+                                                data-item="category.name"></option>                                                                             
+                                    </select>-->
+                                    <?= Util::translate("qNa.is_top") ?>
+                                    <input type="checkbox" id="chk-isTop"
+                                           style="margin-left: 5px;"
+                                           data-control="if: entry.isTop == '1'" checked/>
+                                    <input type="checkbox" id="chk-isTop"
+                                           style="margin-left: 5px;"
+                                           data-control="if: entry.isTop != '1'"/>
+                                    <input type="hidden" name="isTop" id="idTopValue" data-in="entry.isTop"/>
+                                </td>
+                                <td colspan="2">
+                                    <?= Util::translate("news.display") ?> 
+                                    <input type="checkbox" id="chk-display"
+                                           style="margin-left: 5px;"
+                                           data-control="if: entry.display == '1'" checked/>
+                                    <input type="checkbox" id="chk-display"
+                                           style="margin-left: 5px;"
+                                           data-control="if: entry.display != '1'"/>
+                                    <input type="hidden" name="display" id="displayValue"/>
+                                    <span class="fnt--11 italic"><?= Util::translate("qNa.display.suggestion") ?></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <?= Util::translate("qa.content") ?>
+                                </td>
+                                <td colspan="3">
+                                    <textarea id="news_content" 
+                                              data-out='entry.content'
+                                              name='content'
+                                              rows="8"></textarea>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="table-footer"
+                             style="text-align: right; padding: 10px 10px 15px 0">
+                            <button onclick="qaCnuVM.refreshForm()"
+                                    type="reset" 
+                                    class="button--sm" 
+                                    style="margin-left: 5px;">
+                                        <?= Util::translate("form.button.reset") ?>
+                            </button>
+                            <button class="button--sm" 
+                                    type="submit">
+                                        <?= Util::translate("form.button.save") ?>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php echo $this->render("components/dialog-confirm.phtml"); ?>
+</div>
+
+<script>
+    CKEDITOR.replace('news_content', {
+        height: "300px"
+    });
+</script>

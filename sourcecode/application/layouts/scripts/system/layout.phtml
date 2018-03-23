@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>        
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />    
+        <script type="text/javascript" src="/js/jquery/jquery-1.10.1.min.js"></script>
+        <script type="text/javascript" src="/js/lib/jquery-ui-1.10.4.custom.min.js"></script>
+        <script type="text/javascript" src="/js/lib/ckeditor/ckeditor.js"></script>
+
+        <!--timjs-->
+        <script type="text/javascript" src="/js/timjs/timjs-1.3.4.1.js"></script>
+        <script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
+
+        <link href="/css/system/smoothness/jquery-ui-1.10.4.custom.css" rel="stylesheet"></link>
+        <!--timstyle-->
+        <link href="/css/timstyle/normalize.css" rel="stylesheet"></link>
+        <link href="/css/timstyle/timstyle.core-1.3.css" rel="stylesheet" ></link>
+        <link href="/css/timstyle/timstyle.theme-1.3.css" rel="stylesheet" ></link>
+        <script type="text/javascript" src="/css/timstyle/timstyle-1.3.js"></script>        
+        <link href="/css/timstyle/slideshow-theme.css" rel="stylesheet" ></link>
+        <link href="/css/timstyle/slideshow.css" rel="stylesheet"></link>
+        <!--dogo-->
+        <link href="/css/system/timweb-system.css" rel="stylesheet"></link>
+        <link href="/css/lib/jquery-ui-1.10.4.custom.min.css" rel="stylesheet"></link>
+        <script type="text/javascript" src="/js/system/system.js"></script>
+
+        <link rel="shortcut icon" href="/img/banner/fobic.ico" type="image/x-icon"/>
+        <link rel="icon" href="/img/banner/fobic.ico" type="image/x-icon"/>
+
+    </head>
+    <body>
+        <?php echo $this->render('system/header.phtml'); ?>
+        <div class="row container">
+            <?php echo $this->layout()->content; ?>
+        </div>
+        <?php echo $this->render('system/footer.phtml'); ?>
+    </body>
+</html>

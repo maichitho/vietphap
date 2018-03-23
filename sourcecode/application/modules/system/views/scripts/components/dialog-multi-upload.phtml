@@ -1,0 +1,283 @@
+<!--<script type="text/javascript" src="/js/lib/uploadify/jquery.uploadify-3.1.min.js"></script>
+<link href="/js/lib/uploadify/uploadify.css" rel="stylesheet" media="screen"></link>  -->
+<script src="/js/lib/jquploadfile/js/vendor/jquery.ui.widget.js"></script>
+<script src="/js/lib/jquploadfile/js/jquery.iframe-transport.js"></script>
+<script src="/js/lib/jquploadfile/js/jquery.fileupload.js"></script>
+<script src="/js/lib/jquploadfile/js/jquery.fileupload-process.js"></script>
+<script src="/js/lib/jquploadfile/js/jquery.fileupload-validate.js"></script>
+<script>
+    var jqXHRUpload = null;
+    var DirInfo = {
+        TEMP_DIR: "/temp/"
+    };
+    //init parameters
+    +(function(window, document, $, undefined) {
+        var uploadFileParam = {
+            url: "/system/file/async-upload",
+            dataType: 'json',
+            sequentialUploads: true,
+            limitMultiFileUploads: 10,
+            limitMultiFileUploadSize: 10000000,
+//                    forceIframeTransport: true,
+            progress: function(e, data) {
+                var percent = parseInt(data.loaded / data.total * 100, 10);
+                if (data.loaded == data.total) {
+                    percent = 100;
+                }
+//                console.log("progress:: " + uploaded + " data:: " + data.loaded);
+                $("#dialog_multi_upload .progressbar").eq(uploadDialogVM.index).updateProgress(percent);
+
+            },
+            done: function(e, data) {
+                $.each(data.result.files, function(index, file) {
+//                    console.log(file);
+//                    console.log("done:: " + uploaded + " file:: " + file.url);
+                    $("#dialog_multi_upload .thumbnail-img").eq(uploadDialogVM.index).attr("src", file.thumbnailUrl);
+                    uploadDialogVM.screens[uploadDialogVM.index]['url'] = file.url;
+                    uploadDialogVM.screens[uploadDialogVM.index]['thumbnailUrl'] = file.thumbnailUrl;
+                    uploadDialogVM.screens[uploadDialogVM.index]['name'] = file.name;
+                    uploadDialogVM.screens[uploadDialogVM.index]['type'] = file.type;
+                    uploadDialogVM.index++;
+                });
+            },
+            fail: function(e, data) {
+                data.jqXHR.abort();
+                uploadDialogVM.showSelectError();
+            }
+        };
+
+        if (window.uploadUtil !== undefined) {
+            window.uploadUtil.uploadMultipleFile = function(id, settings) {
+                uploadDialogVM.options = $.extend({}, uploadDialogVM.options, settings);
+                var params = $.extend(uploadFileParam, settings);
+                if (id !== undefined) {
+                    $("#" + id).fileupload(params).prop('disabled', !$.support.fileInput)
+                            .parent().addClass($.support.fileInput ? undefined : 'disabled');
+                    $("#" + id).bind('fileuploadfinished', function(e, data) {
+
+                    });
+                }
+            };
+
+            window.uploadUtil.prepareUpload = function(data) {
+//                uploadDialogVM.screens.length = 0;
+                // file type setting
+                var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+                if (data.files[0]['type'].length && !acceptFileTypes.test(data.files[0]['type'])) {
+                    confirmDialog.show({
+                        title: '<?= Util::translate("message.alert.title") ?>',
+                        errorMessage: '<?= Util::translate("message.upload.filetype.error") ?>',
+                        isAlert: true
+                    });
+                    confirmDialog.showError();
+                    if (jqXHRUpload != null) {
+                        jqXHRUpload.abort();
+                    }
+                    return false;
+                }
+                // max size is 5MB
+                if (data.originalFiles[0]['size'] > 10000000) {
+                    confirmDialog.show({
+                        title: '<?= Util::translate("message.alert.title") ?>',
+                        errorMessage: '<?= Util::translate("message.upload.filesize.error") ?>',
+                        isAlert: true
+                    });
+                    confirmDialog.showError();
+                    if (jqXHRUpload != null) {
+                        jqXHRUpload.abort();
+                    }
+                    return false;
+                }
+
+                // limit uploaded files
+                if (data.originalFiles.length > 10) {
+                    confirmDialog.show({
+                        title: '<?= Util::translate("message.alert.title") ?>',
+                        errorMessage: '<?= Util::translate("message.upload.filenumber.error") ?>',
+                        isAlert: true
+                    });
+                    confirmDialog.showError();
+                    if (jqXHRUpload != null) {
+                        jqXHRUpload.abort();
+                    }
+                    return false;
+                }
+
+                for (var i = 0; i < data.files.length; i++) {
+                    uploadDialogVM.screens.push({
+                        url: "",
+                        title: "Untitled"
+                    });
+                }
+//                    uploaded = -1;
+                if (!$("#dialog_multi_upload").is(":visible")) {
+                    uploadDialogVM.showDialog();
+                }
+                uploadDialogVM.updateValue("screens", uploadDialogVM.screens);
+                $("#dialog_multi_upload .thumbnail").height($("#dialog_multi_upload .thumbnail").width());
+                $("#dialog_multi_upload .thumbnail-img").height($("#dialog_multi_upload .thumbnail").width() - 30);
+
+            };
+        } else {
+            window.uploadUtil = new function() {
+                // public methods
+                return {
+                    uploadMultipleFile: function(id, settings) {
+                        uploadDialogVM.options = $.extend({}, uploadDialogVM.options, settings);
+                        var params = $.extend(uploadFileParam, settings);
+                        if (id !== undefined) {
+                            $("#" + id).fileupload(params).prop('disabled', !$.support.fileInput)
+                                    .parent().addClass($.support.fileInput ? undefined : 'disabled');
+                        }
+                    },
+                    prepareUpload: function(data) {
+//                        uploadDialogVM.screens.length = 0;
+//                        console.log("prepare:: " + data.files.length);
+                        var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+                        if (data.files[0]['type'].length && !acceptFileTypes.test(data.files[0]['type'])) {
+                            confirmDialog.show({
+                                title: '<?= Util::translate("message.alert.title") ?>',
+                                errorMessage: '<?= Util::translate("message.upload.filetype.error") ?>',
+                                isAlert: true
+                            });
+                            confirmDialog.showError();
+                            if (jqXHRUpload != null) {
+                                jqXHRUpload.abort();
+                            }
+                            return false;
+                        }
+                        // max size is 5MB
+                        if (data.originalFiles[0]['size'] > 10000000) {
+                            confirmDialog.show({
+                                title: '<?= Util::translate("message.alert.title") ?>',
+                                errorMessage: '<?= Util::translate("message.upload.filesize.error") ?>',
+                                isAlert: true
+                            });
+                            confirmDialog.showError();
+                            if (jqXHRUpload != null) {
+                                jqXHRUpload.abort();
+                            }
+                            return false;
+                        }
+
+                        // limit uploaded files
+                        if (data.originalFiles.length > 10) {
+                            confirmDialog.show({
+                                title: '<?= Util::translate("message.alert.title") ?>',
+                                errorMessage: '<?= Util::translate("message.upload.filenumber.error") ?>',
+                                isAlert: true
+                            });
+                            confirmDialog.showError();
+                            if (jqXHRUpload != null) {
+                                jqXHRUpload.abort();
+                            }
+                            return false;
+                        }
+
+                        for (var i = 0; i < data.files.length; i++) {
+                            uploadDialogVM.screens.push({
+                                url: "",
+                                title: "Untitled"
+                            });
+                        }
+//                    uploaded = -1;
+                        if (!$("#dialog_multi_upload").is(":visible")) {
+                            uploadDialogVM.showDialog();
+                        }
+                        uploadDialogVM.updateValue("screens", uploadDialogVM.screens);
+                        $("#dialog_multi_upload .thumbnail").height($("#dialog_multi_upload .thumbnail").width());
+                        $("#dialog_multi_upload .thumbnail-img").height($("#dialog_multi_upload .thumbnail").width() - 30);
+
+                    }
+                };
+            }();
+        }
+    }
+
+
+    (window, document, window.jQuery));
+</script>
+<style>
+    .uploadify-button{
+        background-color: transparent;
+        border: 0;
+        color: blue;
+        text-shadow: none;
+        text-align: left;
+        font-weight: normal;
+        height: 28px !important;
+        width: 100px !important;
+    }
+
+    .upload-button object{
+        height: 32px !important;
+        width: 100px !important;
+    }
+
+    .upload-button{
+        height: 32px !important;
+        width: 100px !important;
+        position: relative;
+    }
+
+    .thumbnail-image{
+        width: 100%;
+    }
+
+    .thumbnail-image img{
+        max-width: 100%;
+    }
+
+    .dialog-content{
+        display: block;
+        position: relative;
+        margin: 0 auto;
+        padding: 5px;
+        overflow-y: auto;
+    }
+</style>
+<div id="dialog_multi_upload"
+     style="display: none;"
+     class="dialog dialog--close" 
+     data-title="<?= Util::translate("dialog.alert.info.title") ?>">
+    <div class="dialog-content">
+        <div class="row"
+             style="overflow: hidden"
+             data-control="for: scr in screens">
+            <div class="pad-4 med-4 wid-4"
+                 style="padding: 5px;">
+                <div class="thumbnail thumbnail-image"
+                     data-skip>
+                    <a class="thumbnail-link">
+                        <img class="thumbnail-img"
+                             data-attr="src: scr.url">
+                    </a>
+                    <h6 class="project-title"
+                        style="display: none;">
+                        Untitled
+                    </h6>
+                    <div class="wrap-progressbar">
+                        <div class="progressbar"
+                             data-attr="id: 'image' + scr.$index"
+                             data-value="0" 
+                             style="margin: 0 auto;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dialog-footer">
+        <a id="dialog_insert"
+           type="button"
+           class="button button--sm"
+           style="float: right; margin: 3px 10px 10px 0;">
+               <?= Util::translate("form.button.insert") ?>
+        </a>
+        <a id="dialog_cancel"
+           type="button"
+           class="button button--sm"  
+           style="float: right; margin: 3px 5px 10px 10px;">
+            <?= Util::translate("form.button.cancel") ?>
+        </a>
+    </div>
+</div>

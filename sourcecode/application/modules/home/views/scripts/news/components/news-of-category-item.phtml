@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="news-item">
+        <a class="news-img-wrap"
+           data-attr="href: '/'+ entry.rewriteUrl">
+            <img class="news-img" 
+                 data-attr="src: 'http://thumb.vietphapaau.com/?src=http://hosoduhocphap.edu.vn/'+entry.imagePath+'&h=209&w=330'"/>
+        </a>
+        <div class="news-des">
+            <a class="news-title"
+               data-attr="href: '/'+ entry.rewriteUrl"
+               data-out="strimStringOfDom(entry.title, 200)">
+            </a>
+<!--            <div class="news-time fgr-text">-->
+<!--                <img src="/img/icon/clock_23.png"/>-->
+<!--                <span data-out="entry.createTime"></span>-->
+<!--            </div>-->
+            <div class="news-intro b-news-description"
+                 data-type="html"
+                 data-out="strimStringOfDom(entry.description,300)">
+            </div>
+        </div>
+    </div>
+    <div class="divider--hr"></div>
+</div>

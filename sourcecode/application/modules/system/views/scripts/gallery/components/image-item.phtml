@@ -1,0 +1,29 @@
+<div class="row"
+     data-control="for: image in images">
+    <div style="padding: 5px; float: left; width: 20%;">
+        <div class="thumbnail gallery-thumbnail" 
+             data-skip>
+            <div class="thumbnail-edit">
+                <div class="thumbnail-edit-button"
+                     data-call="click:  showDeleteImageDialog($dom, image.id, image.thumbnailUrl)">
+                    <img src="/img/icon/trash.png"/>
+                </div>
+                <div class="thumbnail-edit-button"
+                     data-call="click:  showEditImageDialog($dom, $current )">
+                    <img src="/img/icon/edit.png"/>
+                </div>
+            </div>
+            <a class="thumbnail-link">
+                <img data-attr="src: image.thumbnailUrl"  
+                     class="thumbnail-img"
+                     onerror="this.setAttribute('src', '/img/banner/no-image.png')"/>
+            </a>
+            <div class="gallery-des">
+                <h6 class="gallery-title"
+                    data-convert-out="strimStringOfDom"
+                    data-item="image.title">                        
+                </h6>
+            </div>
+        </div>
+    </div>
+</div>

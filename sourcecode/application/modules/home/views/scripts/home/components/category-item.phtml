@@ -1,0 +1,302 @@
+<!--Phòng và điều trị-->
+<div  data-control="for: mainCat in mainCatMap">
+    <div class="box-category"
+        >
+        <div class="box-header">
+            <img src="/img/icon/arrow_header.png"/>
+            <a data-attr="href:'/'+ mainCat.rewriteUrl, title:mainCat.description"
+               data-out="mainCat.name"> 
+            </a>
+        </div>
+        <div >
+            <div class="box-content">
+                <div class="row"  data-control="for: category in mainCat.subCatMap">
+                    <div class="nar-12 pad-4 med-4 wid-4">
+                        <div class="f-header-category">
+                            <a data-attr="href:'/'+ category.rewriteUrl, title:category.description"
+                               data-out="category.name"> 
+                            </a>
+
+                        </div>
+                        <div class="box-news-under"
+                             data-control="if: category.entries.length>0" style="margin-right: 5px;">
+                            <a class="box-image" 
+                               data-attr="href: '/'+ category.entries[0].rewriteUrl">
+                                <img data-attr="src: 'http://thumb.vietphapaau.com/?src=http://vietphapaau.com'+category.entries[0].imagePath+'&h=188&w=329'"/>
+                            </a>
+                            <a class="box-title"
+                               data-attr="href: '/'+ category.entries[0].rewriteUrl"
+                               data-out="getWordOfString(category.entries[0].title,14)"></a>
+                            <div class="box-description" 
+                                 data-type="html"
+                                 data-out="strimStringOfDom(category.entries[0].description,184)">
+                            </div>
+                        </div>
+                        <div class="f-entry-item" >
+                            <ul style="margin-left: 15px; margin-top: 5px;">
+                                <li  data-control="if: category.entries.length>1">
+                                    <a data-attr="href: '/'+ category.entries[1].rewriteUrl"
+                                       data-out="getWordOfString(category.entries[1].title,13)">
+                                    </a>
+                                </li>
+                                <li data-control="if: category.entries.length>2">
+                                    <a data-attr="href: '/'+ category.entries[2].rewriteUrl"
+                                       data-out="getWordOfString(category.entries[2].title,13)">
+                                    </a>
+                                </li>
+                                <li data-control="if: category.entries.length>3">
+                                    <a data-attr="href: '/'+ category.entries[3].rewriteUrl"
+                                       data-out="getWordOfString(category.entries[3].title,13)">
+                                    </a>
+                                </li>
+                            </ul>        
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--COPD-->
+
+<!--<div class="box-category">
+    <div class="box-header">
+        <img src="/img/icon/arrow_header.png"/>
+        <a data-attr="href:'/'+ copd.rewriteUrl"
+           data-out="copd.name"> 
+        </a>
+    </div>
+    <div class="box-content"
+         style="background-color:#D8E8F8;">
+        <div class="box-copd-left">
+            <a class="box-image" 
+               data-attr="href: '/'+ copd.entries[0].rewriteUrl">
+                <img data-attr="src: copd.entries[0].imagePath"/>
+            </a>
+            <a class="box-title"
+               data-attr="href: '/'+ copd.entries[0].rewriteUrl"
+               data-out="strimStringOfDom(copd.entries[0].title,85)"></a>
+            <div class="box-description" 
+                 data-type="html"
+                 data-out="strimStringOfDom(copd.entries[0].description, 100)">
+            </div>
+        </div>
+        <div class="box-copd-right">
+            <div class="box-news-wrap"
+                 style="border-bottom: 1px dashed #ccc;padding-bottom: 10px;">
+                <a class="box-news-image" 
+                   data-attr="href: '/'+ copd.entries[1].rewriteUrl">
+                    <img data-attr="src: copd.entries[1].thumbnailUrl"/>
+                </a>
+                <a class="box-news-title"
+                   data-attr="href: '/'+ copd.entries[1].rewriteUrl"
+                   data-out="strimStringOfDom(copd.entries[1].title,85)"></a>
+                <div class="box-news-description" 
+                     data-type="html"
+                     data-out="strimStringOfDom(copd.entries[1].description, 200)">
+                </div>
+            </div>
+            <div class="box-news-wrap">
+                <a class="box-news-image" 
+                   data-attr="href: '/'+ copd.entries[2].rewriteUrl">
+                    <img data-attr="src: copd.entries[2].thumbnailUrl"/>
+                </a>
+                <a class="box-news-title"
+                   data-attr="href: '/'+ copd.entries[2].rewriteUrl"
+                   data-out="strimStringOfDom(copd.entries[2].title,85)"></a>
+                <div class="box-news-description" 
+                     data-type="html"
+                     data-out="strimStringOfDom(copd.entries[2].description, 200)">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+Viêm phế quản
+<div class="box-category"
+     style="margin-top: 30px;">
+    <div class="box-header">
+        <img src="/img/icon/arrow_header.png"/>
+        <a data-attr="href:'/'+ vpq.rewriteUrl"
+           data-out="vpq.name"> 
+        </a>
+    </div>
+    <div class="box-content"
+         style="background-color:#FAE7ED;">
+        <div class="box-copd-left vpq-left">
+            <a class="box-image" 
+               data-attr="href: '/'+ vpq.entries[0].rewriteUrl">
+                <img data-attr="src: vpq.entries[0].imagePath"/>
+            </a>
+            <a class="box-title"
+               style="line-height: 1.5;"
+               data-attr="href: '/'+ vpq.entries[0].rewriteUrl"
+               data-out="strimStringOfDom(vpq.entries[0].title,85)"></a>
+        </div>
+        <div class="box-copd-right vpq-right">
+            <div class="box-news-wrap"
+                 style="border-bottom: 1px dashed #ccc;padding-bottom: 10px;">
+                <a class="box-news-image"
+                   style="width: 35%;"
+                   data-attr="href: '/'+ vpq.entries[1].rewriteUrl">
+                    <img data-attr="src: vpq.entries[1].thumbnailUrl"/>
+                </a>
+                <a class="box-news-title"
+                   data-attr="href: '/'+ vpq.entries[1].rewriteUrl"
+                   data-out="strimStringOfDom(vpq.entries[1].title,85)"></a>
+                <div class="box-news-description" 
+                     data-type="html"
+                     data-out="strimStringOfDom(vpq.entries[1].description, 150)">
+                </div>
+            </div>
+            <div class="box-news-wrap"
+                 style="border-bottom: 1px dashed #ccc;padding-bottom: 10px;">
+                <a class="box-news-image" 
+                   style="width: 35%;"
+                   data-attr="href: '/'+ vpq.entries[2].rewriteUrl">
+                    <img data-attr="src: vpq.entries[2].thumbnailUrl"/>
+                </a>
+                <a class="box-news-title"
+                   data-attr="href: '/'+ vpq.entries[2].rewriteUrl"
+                   data-out="strimStringOfDom(vpq.entries[2].title,85)"></a>
+                <div class="box-news-description" 
+                     data-type="html"
+                     data-out="strimStringOfDom(vpq.entries[2].description, 150)">
+                </div>
+            </div>
+            <div class="box-news-wrap">
+                <a class="box-news-image" 
+                   style="width: 35%;"
+                   data-attr="href: '/'+ vpq.entries[3].rewriteUrl">
+                    <img data-attr="src: vpq.entries[3].thumbnailUrl"/>
+                </a>
+                <a class="box-news-title"
+                   data-attr="href: '/'+ vpq.entries[3].rewriteUrl"
+                   data-out="strimStringOfDom(vpq.entries[3].title,85)"></a>
+                <div class="box-news-description" 
+                     data-type="html"
+                     data-out="strimStringOfDom(vpq.entries[3].description, 150)">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+HEN
+<div class="box-category"
+     style="margin-top: 40px;">
+    <div class="box-header">
+        <img src="/img/icon/arrow_header.png"/>
+        <a data-attr="href:'/'+ hen.rewriteUrl"
+           data-out="hen.name"> 
+        </a>
+    </div>
+    <div class="box-content"
+         data-control="for: entry in hen.entries">
+        <div class="nar-12 pad-4 med-4 wid-4">
+            <div class="box-news-under">
+                <a class="box-image" 
+                   data-attr="href: '/'+ entry.rewriteUrl">
+                    <img data-attr="src: entry.thumbnailUrl"/>
+                </a>
+                <a class="box-title"
+                   data-attr="href: '/'+ entry.rewriteUrl"
+                   data-out="getWordOfString(entry.title,12)"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+-->
+
+
+<!--Hỏi đáp-->
+<div class="row box-category box-qa">
+    <div class="box-header">
+        <img src="/img/icon/arrow_header.png"/>
+        <a data-attr="href:'/'+ hoidap.rewriteUrl"
+           data-out="hoidap.name"> 
+        </a>
+    </div>
+
+    <div class="box-content nar-12 pad-6 med-6 wid-6" 
+         style="background-color:#FAE7ED; ">
+        <div class="box-copd-right"
+             style="width: 100%">
+            <div class="f-menu-right-category">
+                <ul style="margin-top: 10px;"
+                    data-control="for: hd in hoidap.entries">
+                    <li>
+                        <a data-attr="href: '/'+ hd.rewriteUrl">
+                            <span data-item='getWordOfString(hd.title,14)'></span>
+                            <span style='color: #444; font-size: 90%; font-style: italic' 
+                                  data-item='"(" +hd.createTime+ ")"'></span>
+                        </a>
+                    </li>
+                </ul>        
+            </div>
+        </div>
+    </div>
+    <div class="f-qa-post nar-12 pad-6 med-6 wid-6" style="margin-top: 10px; float: right" >
+        <form data-call="submit: addQa()"
+              id="form-add-qa">
+            <div class="row">
+                <div>
+                    <span data-message-for="title" 
+                          class="fgr--error"></span>
+                    <input type="text" name="title" id="title"
+                           data-check="title: required"
+                           data-required-message="<?= Util::translate("entry.title.error.required") ?>"
+                           placeholder="Tiêu đề (*)"/>
+                </div>
+            </div>
+            <div class="row">
+                <span data-message-for="description" 
+                      class="fgr--error"></span>
+                <textarea id="qa_post" id="description"
+                          name="description"
+                          data-check="description: required"
+                          data-required-message="<?= Util::translate("qa.question_detail.error.required") ?>"
+                          placeholder="Nội dung câu hỏi (*)"></textarea>
+            </div>
+            <div class="row">
+                <div class="nar-6 pad-6 med-6 wid-6">
+                    <span data-message-for="asker" 
+                          class="fgr--error"></span>
+                </div>
+                <div class="nar-6 pad-6 med-6 wid-6">
+                    <span style="margin-left: 5px;display: block;"
+                          data-message-for="askerEmail" 
+                          class="fgr--error"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="nar-6 pad-6 med-6 wid-6"
+                     style="padding-right: 5px;height: auto;">
+                    <input type="text" id="asker"
+                           name="asker"
+                           data-check="asker: required"
+                           data-required-message="<?= Util::translate("qa.asker.error.required") ?>"
+                           placeholder="Tên của bạn (*)"/>
+                </div>
+                <div class="nar-6 pad-6 med-6 wid-6"
+                     style="padding-left: 5px;height: auto;">
+                    <input type="text" 
+                           name="askerEmail" 
+                           id="askerEmail"
+                           data-check="askerEmail: isemail"
+                           data-isemail-message="Email không hợp lệ"
+                           placeholder="Email của bạn"/>
+                </div>
+            </div>
+            <div class="row">
+                <img src="/img/icon/loading.gif" style="width: 20px; display: none;"
+                     id="img-loading-insert"/>
+                <button class="button button--sm f-button">Hỏi</button>
+                <button class="button button--sm f-button" type="reset">Làm lại</button>
+            </div>
+        </form>
+    </div>
+
+</div>

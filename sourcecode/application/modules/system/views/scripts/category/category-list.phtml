@@ -1,0 +1,512 @@
+<?php
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$type = $request->getParam("type");
+$status = $request->getParam("status");
+?>
+<script>
+    $(document).ready(function() {
+        tim.initPage({
+            jsfiles: [
+                {
+                    src: "/js/system/category/",
+                    name: "vm-category-list.js"
+                }
+            ],
+            messages: {
+                errorUpdateUsingMenu: '<?= Util::translate('category.list.update.using_in_menu.error') ?>',
+                qaLinkType: '<?= SA_Entity_Menu::LINK_TYPE_QA_CATEGORY ?>',
+                serviceLinkType: '<?= SA_Entity_Menu::LINK_TYPE_SERVICE_CATEGORY ?>',
+                deleteTitle: '<?= Util::translate("message.delete.image.title") ?>',
+                deleteImage: '<?= Util::translate("message.delete.image") ?>',
+                deleteImageError: '<?= Util::translate("message.delete.image.error") ?>'
+            },
+            bindings: [
+                {
+                    viewer: "CategoryListV",
+                    viewmodeler: "categoryListVM",
+                    linkback: true,
+                    data: {
+                        categories: <?= (isset($this->categories)) ? json_encode($this->categories) : '[]' ?>,
+                        category: <?= (isset($this->category)) ? json_encode($this->category) : '[]' ?>,
+                        type: "<?= $this->type ?>",
+                        catType: "<?= $this->catType ?>",
+                        mainCate: <?= (isset($this->mainCate)) ? json_encode($this->mainCate) : '[]' ?>
+                    }
+                }
+            ]
+        });
+    });
+</script>
+<div class="panel content">
+    <div data-viewmodeler="CategoryListV">
+        <div id="alert_success"
+             class="alert--success rounded--sm"
+             style="<?= isset($status) && $status == "success" ? 'display: block;' : 'display: none;' ?>">
+            <span class="alert-content"><?= Util::translate("category.update.message.success") ?> </span>
+            <span class="alert-close" 
+                  onclick="$(this).parent().hide();">&times;</span>
+        </div>
+        <div id="alert_error"
+             class="alert--error rounded--sm"
+             style="<?= isset($status) && $status == "error" ? 'display: block;' : 'display: none;' ?>">
+            <span class="alert-content"><?= Util::translate("category.update.message.error") ?> </span>
+            <span class="alert-close" 
+                  onclick="$(this).parent().hide();">&times;</span>
+        </div>
+        <div class="row">
+            <div class="category-list-div"
+                 style="padding: 10px 0 0 10px;">
+                <h6 class="sys-title center-text"
+                    style="margin-left: 9px;">
+                    <a class="button--sm add-category-button"
+                       style="float: left;">
+                           <?= Util::translate("form.button.add") ?>
+                    </a>
+                </h6>
+                <div id="category_list" 
+                     class="table table--list" 
+                     style="padding: 10px; text-align: center;">
+                    <div class="border--thin rounded--sm" data-control="if: categories.length > 0">
+                        <span data-control="if: categoryListVM.catType != '<?= SA_Entity_Category::TYPE_CHILD ?>'">
+                            <table>
+                                <thead>
+                                    <tr class="fnt--12">
+                                        <th style="width: 50px;">
+                                            <?= Util::translate("form.label.order") ?> 
+                                        </th>
+                                        <th style="width: 110px;"
+                                            data-control="if: ('<?= SA_Entity_Category::TYPE_SUPPORT ?>' != '<?= $this->catType ?>') && ('<?= SA_Entity_Category::TYPE_TESTIMONIAL ?>' != '<?= $this->catType ?>')">
+                                                <?= Util::translate("form.label.logo") ?> 
+                                        </th>
+                                        <th style="width: 110px;"
+                                            data-control="if: ('<?= SA_Entity_Category::TYPE_SUPPORT ?>' != '<?= $this->catType ?>') && ('<?= SA_Entity_Category::TYPE_TESTIMONIAL ?>' == '<?= $this->catType ?>')">
+                                                <?= Util::translate("category.avatar") ?> 
+                                        </th>
+                                        <th class="width-200">
+                                            <?= Util::translate("category.name") ?> 
+                                        </th>
+                                        <th>
+                                            <?= Util::translate("category.description") ?> 
+                                        </th>
+                                        <th style="width: 165px;"
+                                            data-control="if: ('<?= SA_Entity_Category::TYPE_QA ?>' == '<?= $this->catType ?>')">
+                                                <?= Util::translate("category.using_in_menu") ?> 
+                                        </th>
+                                        <th style="width: 165px;">&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="tbody" 
+                                       data-control="for: cat in categories">
+                                           <?php echo $this->render("category/components/category-item.phtml"); ?>
+                                </tbody>
+                            </table>
+                        </span>
+                        <span data-control="if: categoryListVM.catType == '<?= SA_Entity_Category::TYPE_CHILD ?>'">
+                            <table>
+                                <thead style="font-weight: bold;">
+                                    <tr class="fnt--12">
+                                        <th style="width: 50px;">
+                                            <?= Util::translate("form.label.order") ?> 
+                                        </th>
+                                        <th style="width: 110px;">
+                                            <?= Util::translate("form.label.logo") ?> 
+                                        </th>
+                                        <th class="width-100">
+                                            <?= Util::translate("category.id") ?> 
+                                        </th>
+                                        <th class="width-200">
+                                            <?= Util::translate("category.name") ?> 
+                                        </th>
+                                        <th>
+                                            <?= Util::translate("category.description") ?> 
+                                        </th>
+                                        <th style="width: 165px;">
+                                            <?= Util::translate("category.using_in_menu") ?> 
+                                        </th>
+                                        <th style="width:165px;">&nbsp;</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <table data-control="for: mCate in mainCate">
+                                <!--                                data-control="if: categoryListVM.checkExistMainCategoryInList(mCate.id)"-->
+                                <tr style="background-color: #246FA2;">
+                                    <td colspan="5" data-item="mCate.name" style="font-weight: bold; color: white; text-align: center; text-transform: uppercase;"></td>
+                                    <td class="center-text"
+                                        style="color: white; width: 165px;">
+                                        <input type="checkbox" data-control="if: mCate.headerMenu == '1'" checked
+                                               data-attr="data-id: mCate.id, menu-type: '<?= SA_Entity_Menu::TYPE_HEADER ?>'" class="chk-using-in-menu"/>
+                                        <input type="checkbox" data-control="if: mCate.headerMenu != '1'" 
+                                               data-attr="data-id: mCate.id, menu-type: '<?= SA_Entity_Menu::TYPE_HEADER ?>'" 
+                                               class="chk-using-in-menu" /> <?= Util::translate('category.using_in_menu.header') ?>                                        
+                                        <input type="checkbox" data-control="if: mCate.footerMenu == '1'" checked
+                                               data-attr="data-id: mCate.id, menu-type: '<?= SA_Entity_Menu::TYPE_FOOTER ?>'" 
+                                               style="margin-left: 10px;" class="chk-using-in-menu"/>
+                                        <input type="checkbox" data-control="if: mCate.footerMenu != '1'" 
+                                               data-attr="data-id: mCate.id, menu-type: '<?= SA_Entity_Menu::TYPE_FOOTER ?>'" 
+                                               style="margin-left: 10px;" class="chk-using-in-menu"/> <?= Util::translate('category.using_in_menu.footer') ?>
+                                        <img src='/img/icon/loading.gif' style="display: none; width: 20px;"
+                                             data-attr="id: 'img-loading-'+mCate.id"/>
+                                    </td>
+                                    <td style="width:165px;">&nbsp;</td>
+                                </tr>
+                                <tbody data-control="for: cat in categoryListVM.filterByMainCategory(mCate.id)">
+                                    <?php echo $this->render("category/components/category-item.phtml"); ?>
+                                </tbody>
+                            </table>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="med-4 pad-4 wid-4 category-cnu-div"
+                 style="padding: 10px 10px 0 0;">
+                <div class="f-category-panel">
+                    <h6 class="sys-title center-text">
+
+                    </h6>
+                    <form id="form-general" data-call="submit: updateValueForm" action="
+                    <?php
+                    if ($this->type == "create") {
+                        echo '/system/category/create?type=' . (isset($this->catType) ? $this->catType : "root");
+                    } else {
+                        echo '/system/category/update?type=' . (isset($this->catType) ? $this->catType : "root");
+                    }
+                    ?>" method="POST">
+                        <div class="row border--thin rounded--sm"
+                             style="margin: 42px 0 0 0; padding-right: 15px;">
+                            <table id="category_input"
+                                   class="table--info" style="width: 100%;">
+                                       <?php
+                                       if ($this->catType != SA_Entity_Category::TYPE_SUPPORT &&
+                                               $this->catType != SA_Entity_Category::TYPE_TESTIMONIAL) {
+                                           ?>
+                                    <tr>
+                                        <td class="width-100">
+                                            <?= Util::translate("category.name1") ?>(*)
+                                        </td>
+                                        <td colspan="2">
+                                            <span data-message-for="name" 
+                                                  class="fgr--error"></span>
+                                            <input type="text"
+                                                   name ="name"
+                                                   id="categoryName"
+                                                   data-in="category.name"
+                                                   data-check="name: required"
+                                                   data-required-message="<?= Util::translate("category.list.name.error.required") ?>"/>
+                                            <input type="hidden" name="id"
+                                                   id="id-category"
+                                                   data-in="category.id">
+                                        </td>
+                                    </tr>
+                                    <tr id="tr-sl-parent-category"
+                                        data-control="if: mainCate.length > 0">
+                                        <td>
+                                            <?= Util::translate("category.parent.name") ?>(*)
+                                        </td>
+                                        <td colspan="2">
+                                            <select name="parentCateId" id="id-sl-parent-category"
+                                                    data-control="for: cate in mainCate">
+                                                <option data-attr="value: cate.id" data-item="cate.name">
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <?= Util::translate("category.description") ?>
+                                        </td>
+                                        <td>
+                                            <textarea name="description"
+                                                      id ="category_des"
+                                                      class="category-des"
+                                                      rows="2"
+                                                      data-out="category.description"
+                                                     ></textarea>
+                                        </td>
+                                    </tr>
+                                    
+                                     <tr>
+                                        <td>
+                                            Keyword
+                                        </td>
+                                        <td>
+                                            <input type="text"
+                                                   name ="seoKeyword"
+                                                   id="seoKeyword"
+                                                   data-in="category.seoKeyword"
+                                                   />
+
+                                        </td>
+                                    </tr>
+                                     <tr>
+                                        <td>
+                                           Seo description
+                                        </td>
+                                        <td>
+                                            <textarea name="seoDescription"
+                                                      id ="seoDescription"
+                                                      class="category-des"
+                                                      rows="2"
+                                                      data-out="category.seoDescription"
+                                                     ></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <?= Util::translate("form.label.logo") ?> 
+                                        </td>
+                                        <td colspan="2">
+                                            <div class="thumbnail" 
+                                                 data-skip 
+                                                 style="max-width: 60px;max-height: 60px; display: inline-block; width: auto;"
+                                                 data-attr='data-path: category.iconPath'>
+                                                <a class="thumbnail-link">
+                                                    <img  data-attr="src: category.iconPath"
+                                                          style="height: 50px;" 
+                                                          onerror="this.setAttribute('src', '/img/icon/picture.png')"
+                                                          class="thumbnail-img logo-img"
+                                                          id="icon_img_display">
+                                                </a>
+                                                <input type="hidden"
+                                                       name="iconPath"
+                                                       data-in="category.iconPath" />
+                                            </div>
+                                            <a class="link link-delete delete-logo" 
+                                               data-call="click: showDeleteImageDialog($dom,'/img/icon/picture.png')"
+                                               style="display: none;"
+                                               id="delete-icon-img">
+                                                   <?= Util::translate("form.label.delete") ?> 
+                                            </a> 
+                                            <div class="link button-upload"
+                                                 style="margin-top: 5px; position: relative">
+                                                <span>
+                                                    <?= Util::translate("form.button.upload.image") ?>
+                                                </span>
+                                                <input id="icon_image"
+                                                       name="file" 
+                                                       type="file"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <?= Util::translate("category.image.avatar") ?> 
+                                        </td>
+                                        <td colspan="2">
+                                            <div class="thumbnail" 
+                                                 data-skip 
+                                                 style="max-width: 200px;max-height: 150px; display: inline-block; width: auto;"
+                                                 data-attr='data-path: category.imagePath'>
+                                                <a class="thumbnail-link">
+                                                    <img  data-attr="src: category.imagePath"
+                                                          style="max-width: 190px; max-height: 140px;" 
+                                                          onerror="this.setAttribute('src', '/img/icon/picture.png')"
+                                                          class="thumbnail-img logo-img"
+                                                          id="image_img_display">
+                                                </a>
+                                                <input type="hidden"
+                                                       name="imagePath"
+                                                       data-in="category.imagePath" />
+                                            </div>
+                                            <a class="link link-delete delete-logo" 
+                                               data-call="click: showDeleteImageDialog($dom,'/img/icon/picture.png')"
+                                               style="display: none;"
+                                               id="delete-image-img">
+                                                   <?= Util::translate("form.label.delete") ?> 
+                                            </a> 
+                                            <div class="link button-upload"
+                                                 style="margin-top: 5px; position: relative">
+                                                <span>
+                                                    <?= Util::translate("form.button.upload.image") ?>
+                                                </span>
+                                                <input id="logo_image"
+                                                       name="file" 
+                                                       type="file"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                } else {
+                                    if ($this->catType == SA_Entity_Category::TYPE_SUPPORT) {
+                                        ?>
+                                        <tr>
+                                            <td class="width-150">
+                                                <?= Util::translate("category.support.name") ?>(*)
+                                            </td>
+                                            <td colspan="2">
+                                                <span data-message-for="name" 
+                                                      class="fgr--error"></span>
+                                                <input type="text"
+                                                       name ="name"
+                                                       id="categoryName"
+                                                       data-in="category.name"
+                                                       data-check="name: required"
+                                                       data-required-message="<?= Util::translate("category.list.name.error.required") ?>"/>
+                                                <input type="hidden" name="id"
+                                                       id="id-category"
+                                                       data-in="category.id">
+                                            </td>
+                                        </tr>
+            <!--                                    <tr>
+                                            <td>
+                                        <?= Util::translate("category.support.type") ?>(*)
+                                            </td>
+                                            <td>
+                                                <select name="supportType" id="id-sl-support-type" class="width-100"
+                                                        data-in="category.supportType">
+                                                    <option value="<?= SA_Entity_Category::TYPE_SUPPORT_YAHOO ?>"><?= SA_Entity_Category::TYPE_SUPPORT_YAHOO ?></option>
+                                                    <option value="<?= SA_Entity_Category::TYPE_SUPPORT_SKYPE ?>"><?= SA_Entity_Category::TYPE_SUPPORT_SKYPE ?></option>
+                                                </select>
+                                            </td>
+                                        </tr>-->
+                                        <tr>
+                                            <td>
+                                                <?= Util::translate("category.support.skype_username") ?>
+                                            </td>
+                                            <td colspan="2">
+            <!--                                            <span data-message-for="username" 
+                                                      class="fgr--error"></span>
+                                                <input type="text"
+                                                       name ="username"
+                                                       data-in="category.username"
+                                                       data-check="username: required"
+                                                       data-required-message="<?= Util::translate("category.list.username.error.required") ?>"/>-->
+                                                <input type="text"
+                                                       name ="skype_username"
+                                                       data-in="category.skype_username"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <?= Util::translate("category.support.yahoo_username") ?>
+                                            </td>
+                                            <td colspan="2">
+                                                <input type="text"
+                                                       name ="yahoo_username"
+                                                       data-in="category.yahoo_username"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <?= Util::translate("category.support.mobile") ?>
+                                            </td>
+                                            <td colspan="2">
+                                                <input type="text"
+                                                       name ="mobile"
+                                                       data-in="category.mobile"/>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    } else {
+                                        ?>
+                                        <tr>
+                                            <td class="width-150">
+                                                <?= Util::translate("category.testimonial.name") ?>(*)
+                                            </td>
+                                            <td colspan="2">
+                                                <span data-message-for="name" 
+                                                      class="fgr--error"></span>
+                                                <input type="text"
+                                                       name ="name"
+                                                       id="categoryName"
+                                                       data-in="category.name"
+                                                       data-check="name: required"
+                                                       data-required-message="<?= Util::translate("category.list.name.error.required") ?>"/>
+                                                <input type="hidden" name="id"
+                                                       id="id-category"
+                                                       data-in="category.id">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <?= Util::translate("category.testimonial.content") ?>(*)
+                                            </td>
+                                            <td colspan="2">
+                                                <span data-message-for="description" 
+                                                      class="fgr--error"></span>
+                                                <input type="text"
+                                                       name ="description"
+                                                       data-in="category.description"
+                                                       data-check="description: required"
+                                                       data-required-message="<?= Util::translate("category.list.content.error.required") ?>"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <?= Util::translate("category.avatar") ?> 
+                                            </td>
+                                            <td colspan="2">
+                                                <div class="thumbnail" 
+                                                     data-skip 
+                                                     style="max-width: 60px;max-height: 60px; display: inline-block; width: auto;"
+                                                     data-attr='data-path: category.imagePath'>
+                                                    <a class="thumbnail-link">
+                                                        <img  data-attr="src: category.imagePath"
+                                                              style="height: 50px;" 
+                                                              onerror="this.setAttribute('src', '/img/icon/picture.png')"
+                                                              class="thumbnail-img logo-img"
+                                                              id="image_img_display">
+                                                    </a>
+                                                    <input type="hidden"
+                                                           name="imagePath"
+                                                           data-in="category.imagePath" />
+                                                </div>
+                                                <a class="link link-delete delete-logo" 
+                                                   data-call="click: showDeleteImageDialog($dom,'/img/icon/picture.png')"
+                                                   style="display: none;"
+                                                   id="delete-image-img">
+                                                       <?= Util::translate("form.label.delete") ?> 
+                                                </a> 
+                                                <div class="link button-upload"
+                                                     style="margin-top: 5px; position: relative">
+                                                    <span>
+                                                        <?= Util::translate("form.button.upload.image") ?>
+                                                    </span>
+                                                    <input id="logo_image"
+                                                           name="file" 
+                                                           type="file"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </table>
+                            <div class="table-footer"
+                                 style="text-align: right; padding: 5px 10px 15px 0">
+                                <a id="category_close"
+                                   class="button--sm"
+                                   style="">
+                                       <?= Util::translate("form.button.cancel") ?>
+                                </a>
+                                <a id="save_category" 
+                                   class="button--sm" 
+                                   onclick="$('#form-general').submit()">
+                                       <?= Util::translate("form.button.save") ?>
+                                </a>
+                            </div>
+                            <?= $this->render("components/dialog-confirm.phtml"); ?>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <?= $this->render("components/dialog-single-upload.phtml") ?>
+</div>
+
+<div id="delete_dialog"
+     style="display: none;"
+     class="dialog" 
+     data-button="OK: categoryListVM.deleteCategory() , CANCEL: $('#delete_dialog').hideDialog();"
+     data-title="<?= Util::translate("dialog.alert.info.title") ?>">
+    <div class="dialog-content" style="height: 60px;">
+        <p style="text-align: center; vertical-align: middle; margin-top: 20px;">
+            <?= Util::translate("category.delete.confirm") ?>
+        </p>
+        <div class="loading">
+            <img src="/img/icon/loading.gif"/>
+            <span><?= Util::translate("dialog.loading.process") ?></span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="row" data-control="for: menu in innerRightMenus">
+    <a data-attr="href: menu.linkUrl"
+       class="f-news-relative-item"
+       data-control="if: menu.linkType != '<?= SA_Entity_Menu::LINK_TYPE_HTML ?>' && menu.imagePath.length > 0">
+        <div class="f-background-image">
+        </div>
+        <img data-attr="src: menu.imagePath"/>
+        <div class="f-news-relative-header">
+            <h4 data-item="strimStringOfDom(menu.name, 30)"></h4>
+        </div>
+    </a>
+    <a data-attr="href: menu.linkUrl"
+       class="f-news-relative-item"
+       data-control="if: menu.linkType != '<?= SA_Entity_Menu::LINK_TYPE_HTML ?>' && menu.imagePath.length <= 0 && menu.logoPath.length > 0">
+        <div class="f-background-image">
+        </div>
+        <img data-attr="src: menu.logoPath"/>
+        <div class="f-news-relative-header">
+            <h4 data-item="strimStringOfDom(menu.name, 30)"></h4>
+        </div>
+    </a>
+    <a data-attr="href: menu.linkUrl"
+       class="f-news-relative-item"
+       data-control="if: menu.linkType != '<?= SA_Entity_Menu::LINK_TYPE_HTML ?>' && menu.imagePath.length <= 0 && menu.logoPath.length <= 0">
+        <div class="f-background-image">
+        </div>
+        <div class="f-news-relative-header">
+            <h4 data-item="strimStringOfDom(menu.name, 30)"></h4>
+        </div>
+    </a>
+    <a href="#" class="f-news-relative-item"
+       data-control="if: menu.linkType == '<?= SA_Entity_Menu::LINK_TYPE_HTML ?>'">
+        <span data-type="html" data-out="menu.htmlCode"></span>
+    </a>
+</div>

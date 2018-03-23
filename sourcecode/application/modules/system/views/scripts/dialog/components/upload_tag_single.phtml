@@ -1,0 +1,155 @@
+<script src="/js/jquery.form.js"></script>
+<script type="text/javascript">
+<?php $timestamp = time(); ?>
+    var editAvatar = (function() {
+        readURL = function(input) {
+            if (input.files) {
+                var onload = function(e) {
+                    $("#image_preview img").attr("src", e.target.result);
+                };
+                for (var i = 0; i < input.files.length; i++) {
+                    var reader = new FileReader();
+                    reader.onload = onload;
+                    reader.readAsDataURL(input.files[i]);
+                }
+            }
+        };
+        ajaxUploadAvatar = function() {
+            $("form.ajax_upload_form").ajaxSubmit({
+                success: function(response) {
+                    editAvatar.showLoading(false);
+                    editAvatar.onUploadSuccess(response);
+                    $("#edit_avatar").hideDialog();
+                }
+            });
+            editAvatar.showLoading(true);
+        };
+        cancelUploadData = function() {
+            if (userUpdateModel.oldUser) {
+                var form = $(".ajax_upload_form").get(0);
+                $.ajax({
+                    type: "POST",
+                    url: "/admin/upload/delete",
+                    data: {
+                        filename: $(".avatar_path").val(),
+                        module: form['module'].value,
+                        controller: form['controller'].value,
+                        action: form['controller'].value,
+                        token: '1111'
+                    }
+                }).done(function(response) {
+                    editAvatar.showLoading(false);
+                    editAvatar.onCancelCallDone(response);
+                });
+                editAvatar.showLoading(true);
+            }
+        };
+
+        showLoading = function(flag) {
+            if (flag) {
+                $(".loading-img").css("display", "inline-block");
+                $("#image_preview").hide();
+            } else {
+                $("#image_preview").css("display", "inline-block");
+                $(".loading-img").hide();
+            }
+        };
+        return {
+            imgSrc: "/img/icon/avatar_default.png",
+            readURL: readURL,
+            ajaxUploadAvatar: ajaxUploadAvatar,
+            cancelUploadData: cancelUploadData,
+            showLoading: showLoading,
+            onCancelCallDone: function() {
+                $("#image_preview").show();
+                console.log("Cancel done");
+            },
+            onUploadSuccess: function() {
+                console.log("Upload done");
+            }
+        };
+    })();
+
+    $(function() {
+        $("#image_preview img").attr("src", editAvatar.imgSrc);
+        $("#file_upload").change(function() {
+            editAvatar.readURL(this);
+            $(".upload-cancel").show();
+            $(".upload-ok").show();
+        });
+        $(".upload-cancel").click(function() {
+            $(this).hide();
+            $("#file_upload").replaceWith($("#file_upload").clone(true));
+            $(".upload-ok").hide();
+            $(".preview-img").attr("src", "/img/icon/avatar_default.png");
+            $("#edit_avatar").hideDialog();
+        });
+        $("#image_choosing").click(function() {
+            $("#file_upload").click();
+        });
+
+//        $(".image-choosing").mouseenter(function(e) {
+//            $("#image_choosing").fadeIn();
+//            e.stopPropagation();
+//        }).mouseleave(function(e) {
+//            $("#image_choosing").fadeOut();
+//            e.stopPropagation();
+//        });
+    });
+</script>
+
+<div id="edit_avatar" 
+     style="display:none;"  
+     class="dialog dialog--close" 
+     data-title="<?= Util::translate("form.label.update_image") ?>">
+    <div class="dialog-content" 
+         style="padding: 10px 0 10px 10px; overflow: hidden;" > 
+        <table class="table--dialog" 
+               style="width:100%">
+            <tr>
+                <td style="background-color: #eee; width: 450px;">
+                    <div id="image_preview"
+                         class="upload-panel">
+                        <div class="image-choosing">
+                            <button id="image_choosing" 
+                                    class="button--md button--function">
+                                        <?= Util::translate("form.button.select_file") ?>
+                            </button>
+                        </div>
+                        <img class="loading-img" src="/img/icon/loading.gif"/>
+                    </div>
+                </td>
+                <td style="vertical-align: top;">
+                    <div>
+                        <span class="link--default upload-img editing-active fnt--13">
+                            <?= Util::translate("form.label.from_computer") ?>
+                        </span>
+                        <button id="avatar_edit_ok" 
+                                class="button--sm button--function upload-ok"
+                                style="margin: 20px 0 5px 15px; display: none ;"
+                                onclick="editAvatar.ajaxUploadAvatar()">
+                                    <?= Util::translate("form.button.upload") ?>
+                        </button>
+                        <button class="button--sm button--function upload-cancel"
+                                style="margin-left: 15px; display: none ;">
+                                    <?= Util::translate("form.button.cancel") ?>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <form class="ajax_upload_form" 
+              action="/admin/upload" 
+              method="POST" 
+              enctype="multipart/form-data">
+
+            <input type="hidden" name="ajax" value="1"/>
+            <input type="hidden" name="token" value="random"/>
+            <input type="hidden" name="module" value="<?= Zend_Controller_Front::getInstance()->getRequest()->getParam('module') ?>"/>
+            <input type="hidden" name="controller" value="<?= Zend_Controller_Front::getInstance()->getRequest()->getParam('controller') ?>"/>
+            <input type="hidden" name="action" value="<?= Zend_Controller_Front::getInstance()->getRequest()->getParam('action') ?>"/>
+            <input id="file_upload" name="file_upload" type="file" style="display: none;">
+        </form>
+
+    </div>
+</div>

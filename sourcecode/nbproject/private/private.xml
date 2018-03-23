@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group name="BKProject">
+            <file>file:/I:/Projects/vnbuyers/Dev/library/service/SA/ConfigurationService.php</file>
+            <file>file:/I:/Projects/vnbuyers/Dev/application/plugins/Plugin_Layout.php</file>
+            <file>file:/I:/Projects/vnbuyers/Dev/library/service/SA/Entity/Supplier.php</file>
+            <file>file:/I:/Projects/vnbuyers/Dev/library/mapper/SA/DbTable/SupplierNCardType.php</file>
+            <file>file:/I:/Projects/vnbuyers/Dev/application/modules/home/controllers/HomeController.php</file>
+            <file>file:/I:/Projects/vnbuyers/Dev/library/service/SA/CardService.php</file>
+            <file>file:/I:/Projects/vnbuyers/Dev/library/service/SA/Entity/Card.php</file>
+            <file>file:/I:/Projects/vnbuyers/Dev/library/service/SA/SupplierService.php</file>
+            <file>file:/I:/Projects/vnbuyers/Dev/library/Util.php</file>
+            <file>file:/I:/Projects/vnbuyers/Dev/application/Bootstrap.php</file>
+            <file>file:/I:/Projects/vnbuyers/Dev/library/service/SA/CustomerService.php</file>
+            <file>file:/I:/Projects/vnbuyers/Dev/application/modules/system/controllers/UserController.php</file>
+            <file>file:/I:/Projects/vnbuyers/Dev/application/layouts/scripts/system/header.phtml</file>
+            <file>file:/I:/Projects/vnbuyers/Dev/application/modules/system/controllers/CategoryController.php</file>
+            <file>file:/I:/Projects/vnbuyers/Dev/application/modules/system/controllers/CustomerController.php</file>
+            <file>file:/I:/Projects/vnbuyers/Dev/application/layouts/scripts/system/layout.phtml</file>
+            <file>file:/I:/Projects/vnbuyers/Dev/library/MapperUtil.php</file>
+            <file>file:/I:/Projects/vnbuyers/Dev/library/mapper/SA/SupplierMapper.php</file>
+        </group>
+        <group>
+            <file>file:/home/dell/thuannguyen/sililab/proj/benhkhotho/Dev/public/js/home/home/vm-home-view.js</file>
+            <file>file:/home/dell/thuannguyen/sililab/proj/benhkhotho/Dev/public/css/home/benhkhotho-home-elements.css</file>
+            <file>file:/home/dell/thuannguyen/sililab/proj/benhkhotho/Dev/application/modules/home/views/scripts/home/index.phtml</file>
+        </group>
+    </open-files>
+</project-private>

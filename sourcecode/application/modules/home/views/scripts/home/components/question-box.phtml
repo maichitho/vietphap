@@ -1,0 +1,26 @@
+<div class="border--thin"
+     style="margin-top: 5px; margin-right: 10px;">
+    <h6 class="event-header">
+        <a href="/danh-sach-hoi-dap/">Câu hỏi thường gặp »</a>
+    </h6>
+    <div  data-control="for: qa in qaEntries">
+        <div style="width: 100%;">
+            <table class="event-item"
+                   style="width: 100%;">
+                <td style="padding-bottom: 0;background-color: #fff;">
+                    <h4> 
+                        <a style="text-decoration: none;color: #047CAD"
+                           data-attr="href: '/hoi-dap/'+qa.id+'-'+change_alias(qa.title) + '.html'" 
+                           data-item="qa.title"></a>
+                    </h4>
+                </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 80%;"   
+                        data-item="strimStringOfDom(qa.description,100)">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

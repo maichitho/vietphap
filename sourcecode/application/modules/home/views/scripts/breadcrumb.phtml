@@ -1,0 +1,25 @@
+<?php
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$controllerName = $request->getControllerName();
+$actionName = $request->getActionName();
+?>
+<div class="main-box visible-med visible-pad visible-wid" style="margin-top: 5px;"
+     data-control="if: headerVM.navigations.length > 0"
+    data-viewmodeler="HeaderV">
+     <ol class="breadcrumb"
+        data-control="for: item in headerVM.navigations">
+        <li data-control="if: item.link != ''">
+            <a data-attr="href: item.link">
+                <h2 data-item="cutName(item.name, 45)"></h2>
+            </a>
+        </li>
+        <li data-control="if: item.link == ''">
+            <a class="breadcrumb-active"
+               href="#">
+                <h2 data-item="cutName(item.name, 45)"></h2>
+            </a>
+        </li>
+    </ol>
+</div>
+
+

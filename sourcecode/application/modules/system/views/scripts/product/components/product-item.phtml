@@ -1,0 +1,33 @@
+<tr class="data-row">
+    <td class="center-text"
+        data-item="product.$index + 1"></td>
+    <td class="center-text">
+        <img class="product-image"
+             data-attr="src: product.thumbnailUrl"/>
+    </td>
+    <td data-item="product.code"></td>
+    <td data-item="product.name"></td>
+    <td class="center-text"
+        data-item="product.createTime"></td>
+    <td>
+        <ul class="menu-hr menu-hr--center" >
+            <li class="menu-item divider">
+                <a data-attr="href: '/' + product.id + '/detail-product'"
+                   target="_blank">
+                    <?= Util::translate("form.label.view") ?>
+                </a>
+            </li>
+            <li class="menu-item divider" >
+                <a data-attr="href: '/system/product/update?id=' + product.id">
+                    <?= Util::translate("form.label.update") ?>
+                </a>
+            </li>
+
+            <li class="menu-item">
+                <a data-call="click: showDeleteProductDialog($dom, $current)">
+                    <?= Util::translate("form.label.delete") ?>
+                </a>
+            </li>
+        </ul>
+    </td>
+</tr>

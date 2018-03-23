@@ -1,0 +1,66 @@
+/*slide*/
+.slide{
+}
+
+.slide-des{
+    color: #569DCF;
+}
+
+.slide-author{
+    color: #666;
+}
+
+.close-slide{
+    background-image: url('/img/icon/close_slide.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    -webkit-transition: background-image 200ms ease-out;
+    -moz-transition: background-image 200ms ease-out;
+    -o-transition: background-image 200ms ease-out;
+    transition: background-image 200ms ease-out;
+    cursor: pointer;
+}
+
+.back-slide{
+    background-image: url('/img/icon/back_slide.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    -webkit-transition: background-image 200ms ease-out;
+    -moz-transition: background-image 200ms ease-out;
+    -o-transition: background-image 200ms ease-out;
+    transition: background-image 200ms ease-out;
+    cursor: pointer;
+}
+
+.next-slide{
+    background-image: url('/img/icon/next.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    -webkit-transition: background-image 200ms ease-out;
+    -moz-transition: background-image 200ms ease-out;
+    -o-transition: background-image 200ms ease-out;
+    transition: background-image 200ms ease-out;
+    cursor: pointer;
+}
+
+.close-slide:hover{
+    background-image: url('/img/icon/close_slide_sel.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.back-slide:hover{
+    background-image: url('/img/icon/back_sel.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.next-slide:hover{
+    background-image: url('/img/icon/next_sel.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    -webkit-transition: background-image 200ms ease-out;
+    -moz-transition: background-image 200ms ease-out;
+    -o-transition: background-image 200ms ease-out;
+    transition: background-image 200ms ease-out;
+}

@@ -1,0 +1,45 @@
+<?php
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$controllerName = $request->getControllerName();
+$actionName = $request->getActionName();
+$googleForm = Services::createConfigurationService()->get("google.form.link");
+?>
+<div class="f-search-top visible-pad visible-med visible-wid"
+     style="margin-top: 5px;">
+    <form id="b_search" action='/search'>
+        <div class="f-menu-item f-search">
+            <input type="text" 
+                   name="keyword"
+                   placeholder="Tìm kiếm từ khóa"/>
+            <input type="hidden"
+                   name="t"
+                   value="<?= $controllerName ?>" />
+            <a onclick="$('#b_search').submit()">
+                <img class="f-search-icon" 
+                     src="/img/fobic/search.png"
+                     alt="Tìm kiếm"/>
+            </a>
+        </div>
+    </form>
+    <!--    <div class="f-menu-item">
+            <img src="/img/icon/phone.png"
+                 alt="Điện thoại tư vấn"/>
+            <span data-out="'Điện thoại tư vấn: '+headerVM.hotline"></span>
+        </div>-->
+</div>
+<div class="row visible-pad visible-med visible-wid">
+        <div class="f-menu-right-item">
+            <div class="f-menu-header">
+                <h4>HỘI THẢO DU HỌC</h4>
+            </div>
+            <img src=" <?php echo $this->expert_img; ?>"/>
+<!--        <span class="f-supporter-position"><?php echo $this->expert_position; ?></span>
+        <span class="f-supporter-name"><?php echo $this->expert_name; ?></span>
+        <span class="f-supporter-description">
+          
+        </span>-->
+        <a class="button button-question"  href="<?= isset($googleForm) ? $googleForm->getValue() : '#' ?>">
+            ĐĂNG KÝ TẠI ĐÂY
+        </a>
+        </div>
+    </div>

@@ -1,0 +1,31 @@
+<?php
+$advPage = Services::createConfigurationService()->get("entry.adv.link");
+if ($advPage != NULL && $advPage->getValue() != "") {
+    ?>
+    <div class="row visible-pad visible-med visible-wid">
+        <div class="b-adv">
+            <img src="<?= $advPage->getValue() ?>" alt="quang cao"/>
+        </div>
+    </div>
+    <?php
+} else {
+    ?>
+    <div class="row"
+         style="margin-top: 10px;">
+        <embed id="mediaplayer1" 
+               name="mediaplayer2" 
+               src="/img/banner/home_adv.swf" 
+               width="700px" 
+               height="90px" 
+               allowfullscreen="true" 
+               type="application/x-shockwave-flash"
+               pluginspage="http://www.macromedia.com/go/getflashplayer"
+               allowscriptaccess="always"
+               bgcolor="#000000" 
+               wmode="transparent" 
+               align="middle"
+               quality="high">
+    </div>
+    <?php
+}
+?>
